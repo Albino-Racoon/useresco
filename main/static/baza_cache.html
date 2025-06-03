@@ -116,16 +116,16 @@
         <div class="nav-menu mb-3">
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                    <a class="nav-link" href="/static/index.html">Hierarhija</a>
+                    <a class="nav-link" href="/index.html">Hierarhija</a>
                 </li>
                 <li class="nav-item" id="uvozLink" style="display: none;">
-                    <a class="nav-link" href="/static/uvoz.html">Uvoz podatkov</a>
+                    <a class="nav-link" href="/uvoz.html">Uvoz podatkov</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/static/test.html">Test</a>
+                    <a class="nav-link active" href="/test.html">Test</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/static/baza_cache.html">Cached drevo</a>
+                    <a class="nav-link" href="/baza_cache.html">Cached drevo</a>
                 </li>
                 <li class="nav-item ms-auto">
                     <span id="userInfo" style="color: white; margin-right: 15px;"></span>
@@ -719,7 +719,7 @@
         function checkAuth() {
             const user = localStorage.getItem('user');
             if (!user) {
-                window.location.href = '/static/login.html';
+                window.location.href = '/login.html';
                 return;
             }
             
@@ -736,7 +736,7 @@
         
         function logout() {
             localStorage.removeItem('user');
-            window.location.href = '/static/login.html';
+            window.location.href = '/login.html';
         }
 
         // Dodamo gumb za osvežitev podatkov

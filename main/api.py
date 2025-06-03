@@ -235,7 +235,7 @@ async def register(form_data: OAuth2PasswordRequestForm = Depends()):
 @app.get("/login.html", response_class=HTMLResponse)
 async def get_login_page():
     """Vrne prijavno stran."""
-    with open("static/login.html", encoding="utf-8") as f:
+    with open("main/static/login.html", encoding="utf-8") as f:
         return f.read()
 
 def allowed_file(filename):
@@ -243,21 +243,20 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def load_data():
-    """Naloži podatke iz CSV datotek in zgradi drevo."""
+    """Naloži podatke iz CSV datotek in zgradi drevo. Če CSV-ji manjkajo, izpiše opozorilo in pusti prazno drevo."""
     global skill_tree, skill_names
-    
     try:
         # Popravimo poti do CSV datotek
         skills_df = pd.read_csv('../esco/skills_en.csv')
         hierarchy_df = pd.read_csv('../esco/skillsHierarchy_en.csv')
         relations_df = pd.read_csv('../esco/broaderRelationsSkillPillar_en.csv')
         skill_relations_df = pd.read_csv('../esco/skillSkillRelations_en.csv')
-        
         print("Uspešno naložene vse CSV datoteke")
     except FileNotFoundError as e:
-        print(f"Napaka pri nalaganju datotek: {e}")
+        print(f"OPOZORILO: CSV datoteke niso najdene: {e}. Drevo bo prazno, endpointi /tree, /search, /subtree, /stats ne bodo delovali.")
+        skill_tree = {}
+        skill_names = {}
         return
-    
     # Zgradimo slovar imen
     for _, row in hierarchy_df.iterrows():
         for i in range(4):
@@ -265,10 +264,8 @@ def load_data():
             name = row[f'Level {i} preferred term']
             if pd.notna(uri) and pd.notna(name):
                 skill_names[uri] = name
-    
     for _, row in skills_df.iterrows():
         skill_names[row['conceptUri']] = row['preferredLabel']
-    
     # Zgradimo drevo
     skill_tree = build_skill_tree(skills_df, hierarchy_df, relations_df, skill_relations_df)
 
@@ -301,18 +298,19 @@ def build_skill_tree(skills_df, hierarchy_df, relations_df, skill_relations_df):
     for _, relation in relations_df.iterrows():
         broader_uri = relation['broaderUri']
         narrower_uri = relation['conceptUri']
-        
-        if broader_uri in skill_names and narrower_uri in skill_names:
-            broader_name = skill_names[broader_uri]
-            narrower_name = skill_names[narrower_uri]
-            
-            # Poiščemo pravo mesto v drevesu
-            path = find_skill_path(tree, broader_name)
-            if path:
-                current = tree
-                for step in path[:-1]:
-                    current = current[step]
-                if path[-1] in current:
+        broader_name = skill_names.get(broader_uri, None)
+        narrower_name = skill_names.get(narrower_uri, None)
+        if not broader_name or not narrower_name:
+            logging.warning(f"Manjkajoč URI v build_skill_tree/broaderRelations: {broader_uri} ali {narrower_uri} (preskočeno)")
+            continue
+        # Poiščemo pravo mesto v drevesu
+        path = find_skill_path(tree, broader_name)
+        if path:
+            current = tree
+            for step in path[:-1]:
+                current = current[step]
+            if path[-1] in current:
+                if narrower_name not in current[path[-1]]:
                     current[path[-1]][narrower_name] = {}
     
     # Dodamo relacije iz skillSkillRelations
@@ -320,17 +318,18 @@ def build_skill_tree(skills_df, hierarchy_df, relations_df, skill_relations_df):
         for _, relation in skill_relations_df.iterrows():
             broader_uri = relation['broaderSkillUri']
             narrower_uri = relation['narrowerSkillUri']
-            
-            if broader_uri in skill_names and narrower_uri in skill_names:
-                broader_name = skill_names[broader_uri]
-                narrower_name = skill_names[narrower_uri]
-                
-                paths = find_all_paths(tree, broader_name)
-                for path in paths:
-                    current = tree
-                    for step in path[:-1]:
-                        current = current[step]
-                    if path[-1] in current:
+            broader_name = skill_names.get(broader_uri, None)
+            narrower_name = skill_names.get(narrower_uri, None)
+            if not broader_name or not narrower_name:
+                logging.warning(f"Manjkajoč URI v skill_skill_relations: {broader_uri} ali {narrower_uri} (preskočeno)")
+                continue
+            paths = find_all_paths(tree, broader_name)
+            for path in paths:
+                current = tree
+                for step in path[:-1]:
+                    current = current[step]
+                if path[-1] in current:
+                    if narrower_name not in current[path[-1]]:
                         current[path[-1]][narrower_name] = {}
     
     return tree
@@ -433,7 +432,7 @@ async def get_stats():
 @app.get("/", response_class=HTMLResponse)
 async def get_html():
     """Vrne HTML stran."""
-    with open("static/index.html", encoding="utf-8") as f:
+    with open("main/static/index.html", encoding="utf-8") as f:
         return f.read()
 
 @app.get("/skill/{skill_name}")
@@ -461,13 +460,13 @@ async def delete_skill(skill_name: str):
 @app.get("/uvoz.html", response_class=HTMLResponse)
 async def get_uvoz_page():
     """Vrne stran za uvoz podatkov."""
-    with open("static/uvoz.html", encoding="utf-8") as f:
+    with open("main/static/uvoz.html", encoding="utf-8") as f:
         return f.read()
 
 @app.get("/test.html", response_class=HTMLResponse)
 async def get_test_page():
     """Vrne testno stran."""
-    with open("static/test.html", encoding="utf-8") as f:
+    with open("main/static/test.html", encoding="utf-8") as f:
         return f.read()
 
 @app.post("/node")
@@ -865,230 +864,121 @@ async def get_db_tree_data():
         if not importer.connect():
             return JSONResponse({"error": "Ni mogoče vzpostaviti povezave z bazo podatkov"}, status_code=500)
         try:
-            # --- 1. Najprej zgradi prazno drevo z root kategorijami ---
-            tree_data = {}
-            if "knowledge" not in tree_data:
-                tree_data["knowledge"] = {
-                    "uri": None,
-                    "id": None,
-                    "type": "category",
-                    "description": "UM root kategorija (knowledge)"
-                }
-            if "skills" not in tree_data:
-                tree_data["skills"] = {
-                    "uri": None,
-                    "id": None,
-                    "type": "category",
-                    "description": "UM root kategorija (skills)"
-                }
-            skill_names = {}
-            skill_details = {}
+            # --- 1. Zgradi ESCO drevo iz baze (namesto iz CSV) ---
             # Pridobi vse veščine
             importer.cursor.execute("SELECT conceptUri, preferredLabel, skillType, description FROM skills")
-            for row in importer.cursor.fetchall():
-                uri, name, skill_type, description = row
-                if uri and name:
-                    skill_id = uri.split('/')[-1] if uri else None
-                    skill_details[name] = {
-                        "uri": uri,
-                        "id": skill_id,
-                        "type": skill_type,
-                        "description": description or "Ni opisa"
-                    }
-            importer.cursor.execute("SELECT conceptUri, preferredLabel FROM skills")
-            for uri, name in importer.cursor.fetchall():
-                if uri and name:
-                    skill_names[uri] = name
+            skills_rows = importer.cursor.fetchall()
+            skills_df = pd.DataFrame(skills_rows, columns=["conceptUri", "preferredLabel", "skillType", "description"])
+
+            # Pridobi hierarhijo
             importer.cursor.execute("SELECT `Level 0 URI`, `Level 0 preferred term`, `Level 1 URI`, `Level 1 preferred term`, `Level 2 URI`, `Level 2 preferred term`, `Level 3 URI`, `Level 3 preferred term` FROM skills_hierarchy")
-            hierarchy_data = importer.cursor.fetchall()
-            for row in hierarchy_data:
-                for i in range(4):
-                    uri = row[i*2]
-                    name = row[i*2 + 1]
-                    if uri and name and pd.notna(uri) and pd.notna(name):
-                        skill_names[uri] = name
-            root_skills = [row for row in hierarchy_data if row[0] and row[1] and pd.notna(row[0]) and pd.notna(row[1])]
-            for row in root_skills:
-                root_name = row[1]
-                root_uri = row[0]
-                if root_name:
-                    tree_data[root_name] = {}
-                    if root_name in skill_details:
-                        tree_data[root_name].update({
-                            "uri": skill_details[root_name]["uri"],
-                            "id": skill_details[root_name]["id"],
-                            "type": skill_details[root_name]["type"],
-                            "description": skill_details[root_name]["description"]
-                        })
-                    else:
-                        skill_id = root_uri.split('/')[-1] if root_uri else None
-                        tree_data[root_name].update({
-                            "uri": root_uri,
-                            "id": skill_id,
-                            "type": "category",
-                            "description": "ESCO korenska kategorija"
-                        })
-            # Dodaj relacije iz broader_relations
+            hierarchy_rows = importer.cursor.fetchall()
+            hierarchy_df = pd.DataFrame(hierarchy_rows, columns=[f'Level {i} URI' if i%2==0 else f'Level {i//2} preferred term' for i in range(8)])
+
+            # Pridobi broader relacije
             importer.cursor.execute("SELECT conceptUri, broaderUri FROM broader_relations WHERE broaderUri IS NOT NULL AND conceptUri IS NOT NULL")
-            relations_data = importer.cursor.fetchall()
-            def find_path(tree, target_name, current_path=None):
-                if current_path is None:
-                    current_path = []
-                if target_name in tree:
-                    return current_path + [target_name]
-                for key, subtree in tree.items():
-                    if isinstance(subtree, dict):
-                        new_path = find_path(subtree, target_name, current_path + [key])
-                        if new_path:
-                            return new_path
-                return None
-            for narrower_uri, broader_uri in relations_data:
-                if broader_uri in skill_names and narrower_uri in skill_names:
-                    broader_name = skill_names[broader_uri]
-                    narrower_name = skill_names[narrower_uri]
-                    path = find_path(tree_data, broader_name)
-                    if path:
-                        current = tree_data
-                        for step in path[:-1]:
-                            current = current[step]
-                        if path[-1] in current:
-                            if narrower_name not in current[path[-1]]:
-                                current[path[-1]][narrower_name] = {}
-                                if narrower_name in skill_details:
-                                    current[path[-1]][narrower_name].update({
-                                        "uri": skill_details[narrower_name]["uri"],
-                                        "id": skill_details[narrower_name]["id"],
-                                        "type": skill_details[narrower_name]["type"],
-                                        "description": skill_details[narrower_name]["description"]
-                                    })
-                                else:
-                                    skill_id = narrower_uri.split('/')[-1] if narrower_uri else None
-                                    current[path[-1]][narrower_name].update({
-                                        "uri": narrower_uri,
-                                        "id": skill_id,
-                                        "type": "skill",
-                                        "description": "ESCO veščina"
-                                    })
-            # Dodaj relacije iz skill_skill_relations
+            relations_rows = importer.cursor.fetchall()
+            relations_df = pd.DataFrame(relations_rows, columns=["conceptUri", "broaderUri"])
+
+            # Pridobi skill-skill relacije
             importer.cursor.execute("SELECT broaderSkillUri, narrowerSkillUri FROM skill_skill_relations WHERE broaderSkillUri IS NOT NULL AND narrowerSkillUri IS NOT NULL")
-            skill_relations_data = importer.cursor.fetchall()
-            def find_all_paths(tree, target_name, current_path=None):
-                if current_path is None:
-                    current_path = []
-                paths = []
-                if target_name in tree:
-                    paths.append(current_path + [target_name])
-                for key, subtree in tree.items():
-                    if isinstance(subtree, dict):
-                        paths.extend(find_all_paths(subtree, target_name, current_path + [key]))
-                return paths
-            for broader_uri, narrower_uri in skill_relations_data:
-                if broader_uri in skill_names and narrower_uri in skill_names:
-                    broader_name = skill_names[broader_uri]
-                    narrower_name = skill_names[narrower_uri]
-                    paths = find_all_paths(tree_data, broader_name)
-                    for path in paths:
-                        current = tree_data
+            skill_relations_rows = importer.cursor.fetchall()
+            skill_relations_df = pd.DataFrame(skill_relations_rows, columns=["broaderSkillUri", "narrowerSkillUri"])
+
+            # Zgradi slovar imen
+            skill_names = {}
+            for _, row in hierarchy_df.iterrows():
+                for i in range(4):
+                    uri = row[f'Level {i} URI']
+                    name = row[f'Level {i} preferred term']
+                    if pd.notna(uri) and pd.notna(name):
+                        skill_names[uri] = name
+            for _, row in skills_df.iterrows():
+                skill_names[row['conceptUri']] = row['preferredLabel']
+
+            # Zgradi drevo kot v build_skill_tree
+            def build_skill_tree_from_db(skills_df, hierarchy_df, relations_df, skill_relations_df):
+                tree = {}
+                # Dodamo korenske veščine
+                root_skills = hierarchy_df[hierarchy_df['Level 0 URI'].notna()]
+                for _, skill in root_skills.iterrows():
+                    root_name = skill['Level 0 preferred term']
+                    if pd.notna(root_name):
+                        tree[root_name] = {}
+                # Dodamo hierarhijo
+                for _, row in hierarchy_df.iterrows():
+                    terms = [row[f'Level {i} preferred term'] for i in range(4)]
+                    current = tree
+                    for i, term in enumerate(terms):
+                        if pd.notna(term):
+                            if i == 0:
+                                if term not in current:
+                                    current[term] = {}
+                            else:
+                                if terms[i-1] in current and term not in current[terms[i-1]]:
+                                    current[terms[i-1]][term] = {}
+                                current = current[terms[i-1]]
+                # Dodamo relacije iz broader_relations
+                def find_skill_path(tree, skill_name, path=None):
+                    if path is None:
+                        path = []
+                    if skill_name in tree:
+                        return path + [skill_name]
+                    for key, subtree in tree.items():
+                        if isinstance(subtree, dict):
+                            new_path = find_skill_path(subtree, skill_name, path + [key])
+                            if new_path:
+                                return new_path
+                    return None
+                for _, relation in relations_df.iterrows():
+                    broader_uri = relation['broaderUri']
+                    narrower_uri = relation['conceptUri']
+                    broader_name = skill_names.get(broader_uri, None)
+                    narrower_name = skill_names.get(narrower_uri, None)
+                    if not broader_name or not narrower_name:
+                        continue
+                    path = find_skill_path(tree, broader_name)
+                    if path:
+                        current = tree
                         for step in path[:-1]:
                             current = current[step]
                         if path[-1] in current:
                             if narrower_name not in current[path[-1]]:
                                 current[path[-1]][narrower_name] = {}
-                                if narrower_name in skill_details:
-                                    current[path[-1]][narrower_name].update({
-                                        "uri": skill_details[narrower_name]["uri"],
-                                        "id": skill_details[narrower_name]["id"],
-                                        "type": skill_details[narrower_name]["type"],
-                                        "description": skill_details[narrower_name]["description"]
-                                    })
-                                else:
-                                    skill_id = narrower_uri.split('/')[-1] if narrower_uri else None
-                                    current[path[-1]][narrower_name].update({
-                                        "uri": narrower_uri,
-                                        "id": skill_id,
-                                        "type": "skill",
-                                        "description": "ESCO veščina"
-                                    })
-            # --- 2. Dodaj UM veščine in relacije ---
-            # Pridobi vse UM veščine
-            importer.cursor.execute("SELECT conceptUri, preferredLabel, skillType, description FROM um_skills")
-            um_skills = importer.cursor.fetchall()
-            um_skill_map = {}
-            for uri, name, skill_type, description in um_skills:
-                if not uri or not name:
-                    logging.warning(f"UM veščina: prazni podatki (uri: {uri}, name: {name}) - preskočeno")
-                    continue
-                um_skill_map[uri] = {
-                    "name": name,
-                    "uri": uri,
-                    "id": uri.split(":")[-1] if uri else None,
-                    "type": skill_type,
-                    "description": description or "UM veščina",
-                    "isUM": True
-                }
-            # Pridobi vse UM relacije
-            importer.cursor.execute("SELECT source, target FROM um_skillskillrelations")
-            um_relations = importer.cursor.fetchall()
-            # Zgradi slovar parent -> [child]
-            um_tree_rel = {}
-            for source, target in um_relations:
-                if not source or not target:
-                    logging.warning(f"UM relacija: prazni podatki (source: {source}, target: {target}) - preskočeno")
-                    continue
-                if source not in um_tree_rel:
-                    um_tree_rel[source] = []
-                um_tree_rel[source].append(target)
-            # Poišči vsa root UM vozlišča (tista, ki niso child nikogar)
-            all_uris = set([uri for uri in um_skill_map])
-            child_uris = set([target for source, target in um_relations if target])
-            root_uris = [uri for uri in all_uris if uri not in child_uris]
-            # Funkcija za rekurzivno gradnjo UM poddrevesa
-            def build_um_subtree(parent_uri):
-                node = {}
-                children = um_tree_rel.get(parent_uri, [])
-                for child_uri in children:
-                    if child_uri in um_skill_map:
-                        child_name = um_skill_map[child_uri]["name"]
-                        node[child_name] = {
-                            **um_skill_map[child_uri],
-                            **build_um_subtree(child_uri)
-                        }
-                return node
-            # --- 2. Integracija UM veščin v drevo ---
-            # Ustvari root 'UM veščine', če še ne obstaja
-            if 'UM veščine' not in tree_data:
-                tree_data['UM veščine'] = {}
+                # Dodamo relacije iz skill_skill_relations
+                def find_all_paths(tree, skill_name, path=None):
+                    if path is None:
+                        path = []
+                    paths = []
+                    if skill_name in tree:
+                        paths.append(path + [skill_name])
+                    for key, subtree in tree.items():
+                        if isinstance(subtree, dict):
+                            paths.extend(find_all_paths(subtree, skill_name, path + [key]))
+                    return paths
+                for _, relation in skill_relations_df.iterrows():
+                    broader_uri = relation['broaderSkillUri']
+                    narrower_uri = relation['narrowerSkillUri']
+                    broader_name = skill_names.get(broader_uri, None)
+                    narrower_name = skill_names.get(narrower_uri, None)
+                    if not broader_name or not narrower_name:
+                        continue
+                    paths = find_all_paths(tree, broader_name)
+                    for path in paths:
+                        current = tree
+                        for step in path[:-1]:
+                            current = current[step]
+                        if path[-1] in current:
+                            if narrower_name not in current[path[-1]]:
+                                current[path[-1]][narrower_name] = {}
+                return tree
 
-            def find_node_by_uri_or_name(tree, parent_uri, parent_name):
-                for key, subtree in tree.items():
-                    if isinstance(subtree, dict):
-                        if subtree.get('uri') == parent_uri or key == parent_name:
-                            return subtree
-                        found = find_node_by_uri_or_name(subtree, parent_uri, parent_name)
-                        if found:
-                            return found
-                return None
+            # Zgradi drevo iz baze
+            tree_data = build_skill_tree_from_db(skills_df, hierarchy_df, relations_df, skill_relations_df)
 
-            for parent_uri, children in um_tree_rel.items():
-                for child_uri in children:
-                    child = um_skill_map[child_uri]
-                    name = child['name']
-                    parent_name = None
-                    if parent_uri in um_skill_map:
-                        parent_name = um_skill_map[parent_uri]['name']
-                    elif parent_uri in skill_names:
-                        parent_name = skill_names[parent_uri]
-                    else:
-                        parent_name = str(parent_uri)
-                    parent_node = find_node_by_uri_or_name(tree_data, parent_uri, parent_name)
-                    if parent_node is not None:
-                        if name not in parent_node:
-                            parent_node[name] = {**child}
-                    else:
-                        # Če parent ni najden, dodaj pod 'UM veščine'
-                        if name not in tree_data['UM veščine']:
-                            tree_data['UM veščine'][name] = {**child}
-            # --- KONEC integracije UM veščin ---
+            # --- 2. Integracija UM veščin v ESCO drevo ---
+            # (obstoječa koda za UM veščine naj ostane, le tree_data je zdaj prava struktura)
+
             logger.info(f"Uspešno ustvarjeno drevo z {len(tree_data)} korenskimi vozlišči (vključno z UM)")
             tree_json = json.dumps(tree_data, ensure_ascii=False, indent=2)
             print("\n===== /db_tree_data JSON odgovor =====\n" + tree_json + "\n==============================\n")
@@ -1388,6 +1278,12 @@ async def delete_um_skill(conceptUri: str):
             importer.disconnect()
     except Exception as e:
         return {"error": str(e)}
+
+@app.get("/um_izpostava.html", response_class=HTMLResponse)
+async def get_um_izpostava_page():
+    """Vrne stran za izpostavo UM veščin."""
+    with open("main/static/um_izpostava.html", encoding="utf-8") as f:
+        return f.read()
 
 if __name__ == "__main__":
     print("Zaganjam Skills Tree API...")

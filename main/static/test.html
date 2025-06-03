@@ -303,16 +303,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" href="/static/index.html">Hierarhija</a>
+                  <a class="nav-link" href="/index.html">Hierarhija</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/static/test.html">Test</a>
+                  <a class="nav-link" href="/test.html">Test</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/static/baza_cache.html">Cached drevo</a>
+                  <a class="nav-link" href="/baza_cache.html">Cached drevo</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/static/um_izpostava.html"><span class="badge bg-info text-dark">UM pregled</span></a>
+                  <a class="nav-link" href="/um_izpostava.html"><span class="badge bg-info text-dark">UM pregled</span></a>
                 </li>
               </ul>
             </div>
@@ -1851,7 +1851,7 @@
         function checkAuth() {
             const user = localStorage.getItem('user');
             if (!user) {
-                window.location.href = '/static/login.html';
+                window.location.href = '/login.html';
                 return;
             }
             

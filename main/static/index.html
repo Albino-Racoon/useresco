@@ -117,16 +117,16 @@
         <div class="mb-3" style="background-color: #1e88e5; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 4px;">
             <ul class="nav nav-pills" style="padding: 8px;">
                 <li class="nav-item">
-                    <a class="nav-link active" style="color: white; font-weight: bold;" href="/static/index.html">Hierarhija</a>
+                    <a class="nav-link active" style="color: white; font-weight: bold;" href="/index.html">Hierarhija</a>
                 </li>
                 <li class="nav-item" id="uvozLink" style="display: none;">
-                    <a class="nav-link" style="color: white; font-weight: bold;" href="/static/uvoz.html">Uvoz podatkov</a>
+                    <a class="nav-link" style="color: white; font-weight: bold;" href="/uvoz.html">Uvoz podatkov</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white; font-weight: bold;" href="/static/test.html">Test</a>
+                    <a class="nav-link" style="color: white; font-weight: bold;" href="/test.html">Test</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white; font-weight: bold;" href="/static/baza_cache.html">Cached drevo</a>
+                    <a class="nav-link" style="color: white; font-weight: bold;" href="/baza_cache.html">Cached drevo</a>
                 </li>
                 <li class="nav-item ms-auto">
                     <span id="userInfo" style="color: white; margin-right: 15px;"></span>
@@ -1235,7 +1235,7 @@
         function checkAuth() {
             const user = localStorage.getItem('user');
             if (!user) {
-                window.location.href = '/static/login.html';
+                window.location.href = '/login.html';
                 return;
             }
             
@@ -1253,7 +1253,7 @@
 
         function logout() {
             localStorage.removeItem('user');
-            window.location.href = '/static/login.html';
+            window.location.href = '/login.html';
         }
 
         // Nova funkcija za prisilno odpiranje in fokusiranje vozlišča po imenu
