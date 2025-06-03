@@ -1,0 +1,1287 @@
+2025-03-24 22:30:02,913 - INFO - Datoteka 'ESCO_dataset_-_v1.2.0_-_classification_-_en_-_csv_2.zip' uspešno naložena
+2025-03-24 22:30:02,914 - ERROR - Napaka pri nalaganju datoteke: No module named 'main'
+2025-03-24 22:33:16,523 - ERROR - Napaka pri nalaganju datoteke: cannot access local variable 'os' where it is not associated with a value
+2025-03-24 22:39:40,386 - INFO - Datoteka 'ESCO_dataset_-_v1.2.0_-_classification_-_en_-_csv_2.zip' uspešno naložena
+2025-03-24 22:39:40,648 - INFO - Modul EscoImporter uspešno uvožen iz poti: C:\Users\jasar\Desktop\FERI-PB-ESCO\main\static
+2025-03-24 22:39:40,648 - INFO - Začenjam uvoz podatkov iz datoteke: ESCO_dataset_-_v1.2.0_-_classification_-_en_-_csv_2.zip
+2025-03-24 22:39:40,649 - INFO - Zagnana nova nit za uvoz podatkov. Trenutno aktivnih nitov: 1
+2025-03-24 22:39:40,796 - INFO - package: mysql.connector.plugins
+2025-03-24 22:39:40,797 - INFO - plugin_name: mysql_native_password
+2025-03-24 22:39:40,804 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-24 22:39:40,806 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 22:39:40,824 - INFO - Tabele uspešno izbrisane
+2025-03-24 22:39:40,854 - INFO - Tabele uspešno ustvarjene
+2025-03-24 22:39:40,855 - INFO - Ustvarjena začasna mapa: C:\Users\jasar\AppData\Local\Temp\tmpsxp1hps0
+2025-03-24 22:39:41,006 - INFO - ZIP datoteka ekstrahirana v: C:\Users\jasar\AppData\Local\Temp\tmpsxp1hps0
+2025-03-24 22:39:41,093 - ERROR - Napaka pri uvozu podatkov iz C:\Users\jasar\AppData\Local\Temp\tmpsxp1hps0\skills_en.csv: 1054 (42S22): Unknown column 'conceptType' in 'INSERT INTO'
+2025-03-24 22:39:41,137 - ERROR - Napaka pri uvozu podatkov iz C:\Users\jasar\AppData\Local\Temp\tmpsxp1hps0\skillsHierarchy_en.csv: 1054 (42S22): Unknown column 'Level 0 URI' in 'INSERT INTO'
+2025-03-24 22:39:41,173 - ERROR - Napaka pri uvozu podatkov iz C:\Users\jasar\AppData\Local\Temp\tmpsxp1hps0\skillSkillRelations_en.csv: 1054 (42S22): Unknown column 'originalSkillUri' in 'INSERT INTO'
+2025-03-24 22:39:41,209 - ERROR - Napaka pri uvozu podatkov iz C:\Users\jasar\AppData\Local\Temp\tmpsxp1hps0\broaderRelationsSkillPillar_en.csv: 1054 (42S22): Unknown column 'conceptType' in 'INSERT INTO'
+2025-03-24 22:39:41,210 - INFO - Uvoz uspešno zaključen
+2025-03-24 22:39:41,218 - INFO - Začasna mapa izbrisana: C:\Users\jasar\AppData\Local\Temp\tmpsxp1hps0
+2025-03-24 22:39:41,220 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 22:39:41,220 - INFO - Uvoz podatkov uspešno zaključen za datoteko: ESCO_dataset_-_v1.2.0_-_classification_-_en_-_csv_2.zip
+2025-03-24 22:39:41,222 - INFO - Začasna datoteka 'ESCO_dataset_-_v1.2.0_-_classification_-_en_-_csv_2.zip' uspešno izbrisana
+2025-03-24 22:49:13,735 - INFO - Začetek uvoza: Aktivnih uvozov = 1
+2025-03-24 22:49:13,971 - INFO - package: mysql.connector.plugins
+2025-03-24 22:49:13,972 - INFO - plugin_name: mysql_native_password
+2025-03-24 22:49:13,973 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-24 22:49:13,975 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 22:49:13,995 - INFO - Tabele uspešno izbrisane
+2025-03-24 22:49:14,023 - INFO - Tabele uspešno ustvarjene
+2025-03-24 22:49:14,024 - INFO - Ustvarjena začasna mapa: C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i
+2025-03-24 22:49:14,208 - INFO - ZIP datoteka ekstrahirana v: C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i
+2025-03-24 22:49:14,237 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i\skills_en.csv: conceptType, conceptUri, skillType, reuseLevel, preferredLabel, altLabels, status, scopeNote, definition, description
+2025-03-24 22:49:14,339 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:14,408 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:14,484 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:14,558 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:14,631 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:14,705 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:14,775 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:14,849 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:14,923 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:14,996 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:15,068 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:15,140 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:15,208 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:49:15,278 - INFO - Vstavljeno 939 vrstic v tabelo skills
+2025-03-24 22:49:15,278 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i\skills_en.csv
+2025-03-24 22:49:15,309 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i\skillsHierarchy_en.csv: Level 0 URI, Level 0 preferred term, Level 1 URI, Level 1 preferred term, Level 2 URI, Level 2 preferred term, Level 3 URI, Level 3 preferred term
+2025-03-24 22:49:15,374 - INFO - Vstavljeno 640 vrstic v tabelo skills_hierarchy
+2025-03-24 22:49:15,374 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i\skillsHierarchy_en.csv
+2025-03-24 22:49:15,396 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i\skillSkillRelations_en.csv: originalSkillUri, relationType
+2025-03-24 22:49:15,421 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:49:15,447 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:49:15,473 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:49:15,501 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:49:15,531 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:49:15,548 - INFO - Vstavljeno 818 vrstic v tabelo skill_skill_relations
+2025-03-24 22:49:15,548 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i\skillSkillRelations_en.csv
+2025-03-24 22:49:15,574 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i\broaderRelationsSkillPillar_en.csv: conceptType, conceptUri, broaderType, broaderUri
+2025-03-24 22:49:15,623 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:15,674 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:15,726 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:15,769 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:15,807 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:15,848 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:15,890 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:15,928 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:15,968 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,005 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,043 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,207 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,251 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,288 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,324 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,362 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,398 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,436 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,475 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,514 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,544 - INFO - Vstavljeno 822 vrstic v tabelo broader_relations
+2025-03-24 22:49:16,544 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i\broaderRelationsSkillPillar_en.csv
+2025-03-24 22:49:16,545 - INFO - Uvoz uspešno zaključen
+2025-03-24 22:49:16,560 - INFO - Začasna mapa izbrisana: C:\Users\jasar\AppData\Local\Temp\tmp57ww6y2i
+2025-03-24 22:49:16,561 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 22:49:16,561 - INFO - Podatki uspešno uvoženi iz datoteke: ESCO dataset - v1.2.0 - classification - en - csv (2).zip
+2025-03-24 22:49:16,563 - INFO - Konec uvoza: Aktivnih uvozov = 0
+2025-03-24 22:50:59,217 - INFO - Začetek uvoza: Aktivnih uvozov = 1
+2025-03-24 22:50:59,303 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 22:50:59,324 - INFO - Tabele uspešno izbrisane
+2025-03-24 22:50:59,348 - INFO - Tabele uspešno ustvarjene
+2025-03-24 22:50:59,349 - INFO - Ustvarjena začasna mapa: C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav
+2025-03-24 22:50:59,525 - INFO - ZIP datoteka ekstrahirana v: C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav
+2025-03-24 22:50:59,549 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav\skills_en.csv: conceptType, conceptUri, skillType, reuseLevel, preferredLabel, altLabels, status, scopeNote, definition, description
+2025-03-24 22:50:59,640 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:50:59,703 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:50:59,766 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:50:59,827 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:50:59,889 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:50:59,950 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:00,015 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:00,084 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:00,144 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:00,209 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:00,275 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:00,340 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:00,403 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:00,459 - INFO - Vstavljeno 939 vrstic v tabelo skills
+2025-03-24 22:51:00,460 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav\skills_en.csv
+2025-03-24 22:51:00,487 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav\skillsHierarchy_en.csv: Level 0 URI, Level 0 preferred term, Level 1 URI, Level 1 preferred term, Level 2 URI, Level 2 preferred term, Level 3 URI, Level 3 preferred term
+2025-03-24 22:51:00,543 - INFO - Vstavljeno 640 vrstic v tabelo skills_hierarchy
+2025-03-24 22:51:00,543 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav\skillsHierarchy_en.csv
+2025-03-24 22:51:00,561 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav\skillSkillRelations_en.csv: originalSkillUri, relationType
+2025-03-24 22:51:00,583 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:00,612 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:00,636 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:00,660 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:00,687 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:00,702 - INFO - Vstavljeno 818 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:00,703 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav\skillSkillRelations_en.csv
+2025-03-24 22:51:00,724 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav\broaderRelationsSkillPillar_en.csv: conceptType, conceptUri, broaderType, broaderUri
+2025-03-24 22:51:00,768 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:00,815 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:00,855 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:00,886 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:00,919 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:00,950 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:00,981 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,011 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,041 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,072 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,104 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,138 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,172 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,206 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,242 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,276 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,309 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,347 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,381 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,415 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,442 - INFO - Vstavljeno 822 vrstic v tabelo broader_relations
+2025-03-24 22:51:01,443 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav\broaderRelationsSkillPillar_en.csv
+2025-03-24 22:51:01,443 - INFO - Uvoz uspešno zaključen
+2025-03-24 22:51:01,454 - INFO - Začasna mapa izbrisana: C:\Users\jasar\AppData\Local\Temp\tmpkadqxbav
+2025-03-24 22:51:01,455 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 22:51:01,456 - INFO - Podatki uspešno uvoženi iz datoteke: ESCO dataset - v1.2.0 - classification - en - csv (2).zip
+2025-03-24 22:51:01,457 - INFO - Konec uvoza: Aktivnih uvozov = 0
+2025-03-24 22:51:49,568 - INFO - Začetek uvoza: Aktivnih uvozov = 1
+2025-03-24 22:51:49,707 - INFO - package: mysql.connector.plugins
+2025-03-24 22:51:49,707 - INFO - plugin_name: mysql_native_password
+2025-03-24 22:51:49,708 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-24 22:51:49,710 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 22:51:49,728 - INFO - Tabele uspešno izbrisane
+2025-03-24 22:51:49,753 - INFO - Tabele uspešno ustvarjene
+2025-03-24 22:51:49,754 - INFO - Ustvarjena začasna mapa: C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq
+2025-03-24 22:51:49,917 - INFO - ZIP datoteka ekstrahirana v: C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq
+2025-03-24 22:51:49,942 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq\skills_en.csv: conceptType, conceptUri, skillType, reuseLevel, preferredLabel, altLabels, status, scopeNote, definition, description
+2025-03-24 22:51:50,030 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,090 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,152 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,210 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,273 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,334 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,396 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,454 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,513 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,572 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,632 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,691 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,754 - INFO - Vstavljeno 1000 vrstic v tabelo skills
+2025-03-24 22:51:50,815 - INFO - Vstavljeno 939 vrstic v tabelo skills
+2025-03-24 22:51:50,815 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq\skills_en.csv
+2025-03-24 22:51:50,840 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq\skillsHierarchy_en.csv: Level 0 URI, Level 0 preferred term, Level 1 URI, Level 1 preferred term, Level 2 URI, Level 2 preferred term, Level 3 URI, Level 3 preferred term
+2025-03-24 22:51:50,895 - INFO - Vstavljeno 640 vrstic v tabelo skills_hierarchy
+2025-03-24 22:51:50,896 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq\skillsHierarchy_en.csv
+2025-03-24 22:51:50,913 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq\skillSkillRelations_en.csv: originalSkillUri, relationType
+2025-03-24 22:51:50,935 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:50,957 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:50,980 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:51,003 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:51,030 - INFO - Vstavljeno 1000 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:51,042 - INFO - Vstavljeno 818 vrstic v tabelo skill_skill_relations
+2025-03-24 22:51:51,042 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq\skillSkillRelations_en.csv
+2025-03-24 22:51:51,069 - INFO - Najdeni ujemajoči se stolpci v datoteki C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq\broaderRelationsSkillPillar_en.csv: conceptType, conceptUri, broaderType, broaderUri
+2025-03-24 22:51:51,111 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,155 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,191 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,223 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,256 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,289 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,321 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,358 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,392 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,425 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,457 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,490 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,523 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,555 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,589 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,625 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,661 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,704 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,741 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,776 - INFO - Vstavljeno 1000 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,808 - INFO - Vstavljeno 822 vrstic v tabelo broader_relations
+2025-03-24 22:51:51,808 - INFO - Podatki uspešno uvoženi iz: C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq\broaderRelationsSkillPillar_en.csv
+2025-03-24 22:51:51,809 - INFO - Uvoz uspešno zaključen
+2025-03-24 22:51:51,821 - INFO - Začasna mapa izbrisana: C:\Users\jasar\AppData\Local\Temp\tmp9rtr2olq
+2025-03-24 22:51:51,822 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 22:51:51,822 - INFO - Podatki uspešno uvoženi iz datoteke: ESCO dataset - v1.2.0 - classification - en - csv (2).zip
+2025-03-24 22:51:51,825 - INFO - Konec uvoza: Aktivnih uvozov = 0
+2025-03-24 23:06:09,019 - INFO - package: mysql.connector.plugins
+2025-03-24 23:06:09,020 - INFO - plugin_name: mysql_native_password
+2025-03-24 23:06:09,021 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-24 23:06:09,023 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 23:06:09,075 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 23:06:09,157 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 23:06:10,649 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 23:07:15,994 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 23:07:16,039 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 23:07:16,112 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 23:07:17,527 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 23:10:38,413 - INFO - package: mysql.connector.plugins
+2025-03-24 23:10:38,414 - INFO - plugin_name: mysql_native_password
+2025-03-24 23:10:38,414 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-24 23:10:38,416 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 23:10:38,458 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 23:10:38,522 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-24 23:10:39,275 - INFO - Povezava z bazo podatkov zaprta
+2025-03-24 23:10:39,275 - ERROR - Napaka pri pridobivanju podatkov iz baze: string indices must be integers, not 'str'
+2025-03-25 13:13:36,791 - INFO - package: mysql.connector.plugins
+2025-03-25 13:13:36,792 - INFO - plugin_name: mysql_native_password
+2025-03-25 13:13:36,794 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-25 13:13:36,795 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 13:13:36,910 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 13:13:36,993 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 13:13:49,214 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 13:49:11,352 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 13:49:11,395 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 13:49:11,469 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 13:49:21,896 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 13:54:33,034 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 13:54:33,109 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 13:54:33,242 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 13:55:00,224 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:05:40,654 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:05:40,787 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:05:41,021 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:06:06,651 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:06:54,574 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:06:54,655 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:06:54,800 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:07:23,578 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:13:55,482 - INFO - package: mysql.connector.plugins
+2025-03-25 14:13:55,483 - INFO - plugin_name: mysql_native_password
+2025-03-25 14:13:55,506 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-25 14:13:55,508 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:13:55,641 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:13:55,838 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:14:02,616 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:32:39,859 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:32:39,918 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:32:40,011 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:32:42,639 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:36:21,686 - INFO - package: mysql.connector.plugins
+2025-03-25 14:36:21,687 - INFO - plugin_name: mysql_native_password
+2025-03-25 14:36:21,688 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-25 14:36:21,689 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:36:21,741 - INFO - Povezava z bazo podatkov zaprta
+2025-03-25 14:36:22,116 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-25 14:36:51,379 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 11:43:34,511 - INFO - package: mysql.connector.plugins
+2025-03-27 11:43:34,511 - INFO - plugin_name: mysql_native_password
+2025-03-27 11:43:34,520 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-27 11:43:34,534 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 11:43:34,618 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 11:43:34,692 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 11:44:06,096 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:01:38,184 - INFO - package: mysql.connector.plugins
+2025-03-27 12:01:38,186 - INFO - plugin_name: mysql_native_password
+2025-03-27 12:01:38,188 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-27 12:01:38,191 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:01:38,309 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:01:38,494 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:02:52,089 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:47:11,576 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:47:11,682 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:47:11,816 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:47:52,878 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:48:14,565 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:48:14,622 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:48:17,326 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:48:17,398 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:57:15,604 - INFO - package: mysql.connector.plugins
+2025-03-27 12:57:15,604 - INFO - plugin_name: mysql_native_password
+2025-03-27 12:57:15,605 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-27 12:57:15,607 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:57:15,612 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:57:15,612 - ERROR - Napaka pri prijavi: 1146 (42S02): Table 'esco_db.users' doesn't exist
+2025-03-27 12:57:50,706 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:57:50,710 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:57:50,710 - ERROR - Napaka pri registraciji: 1146 (42S02): Table 'esco_db.users' doesn't exist
+2025-03-27 12:58:01,778 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:58:01,780 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 12:58:01,781 - ERROR - Napaka pri prijavi: 1146 (42S02): Table 'esco_db.users' doesn't exist
+2025-03-27 12:58:54,440 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 12:58:54,510 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 13:07:30,911 - INFO - package: mysql.connector.plugins
+2025-03-27 13:07:30,912 - INFO - plugin_name: mysql_native_password
+2025-03-27 13:07:30,913 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-27 13:07:30,915 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 13:07:30,917 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 13:07:30,917 - ERROR - Napaka pri prijavi: 1146 (42S02): Table 'esco_db.users' doesn't exist
+2025-03-27 13:07:41,845 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 13:07:41,847 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 13:07:41,847 - ERROR - Napaka pri prijavi: 1146 (42S02): Table 'esco_db.users' doesn't exist
+2025-03-27 13:07:46,460 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 13:07:46,462 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 13:07:46,463 - ERROR - Napaka pri prijavi: 1146 (42S02): Table 'esco_db.users' doesn't exist
+2025-03-27 13:17:08,289 - INFO - package: mysql.connector.plugins
+2025-03-27 13:17:08,290 - INFO - plugin_name: mysql_native_password
+2025-03-27 13:17:08,291 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-27 13:17:08,292 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 13:17:08,297 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\jasar\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-03-27 13:17:08,680 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 13:17:13,729 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 13:17:14,074 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 13:17:19,589 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 13:17:19,660 - INFO - Povezava z bazo podatkov zaprta
+2025-03-27 13:17:19,772 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-27 13:18:13,672 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:12:03,914 - INFO - package: mysql.connector.plugins
+2025-03-29 20:12:03,914 - INFO - plugin_name: mysql_native_password
+2025-03-29 20:12:03,915 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-29 20:12:03,917 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:12:04,031 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:12:04,101 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:12:27,400 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:26:11,957 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:26:11,960 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\jasar\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-03-29 20:26:12,236 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:26:13,715 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:26:13,764 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:26:13,835 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:26:37,427 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:36:18,047 - INFO - package: mysql.connector.plugins
+2025-03-29 20:36:18,047 - INFO - plugin_name: mysql_native_password
+2025-03-29 20:36:18,048 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-29 20:36:18,049 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:36:18,095 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:36:18,167 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:36:44,683 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:40:10,387 - INFO - package: mysql.connector.plugins
+2025-03-29 20:40:10,387 - INFO - plugin_name: mysql_native_password
+2025-03-29 20:40:10,388 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-29 20:40:10,389 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:40:10,433 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:40:10,503 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:40:36,786 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:54:10,889 - INFO - package: mysql.connector.plugins
+2025-03-29 20:54:10,889 - INFO - plugin_name: mysql_native_password
+2025-03-29 20:54:10,890 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-29 20:54:10,891 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:54:10,949 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:54:11,046 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:54:52,491 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:55:49,914 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:55:49,968 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:55:50,050 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:56:28,074 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:56:28,435 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:56:28,505 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 20:56:28,641 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 20:57:09,732 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 21:06:07,664 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 21:06:07,739 - INFO - Povezava z bazo podatkov zaprta
+2025-03-29 21:06:07,860 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-29 21:07:00,252 - INFO - Povezava z bazo podatkov zaprta
+2025-03-31 11:27:02,735 - INFO - package: mysql.connector.plugins
+2025-03-31 11:27:02,736 - INFO - plugin_name: mysql_native_password
+2025-03-31 11:27:02,738 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-31 11:27:02,740 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-31 11:27:03,055 - INFO - Povezava z bazo podatkov zaprta
+2025-03-31 11:27:03,269 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-31 11:27:44,329 - INFO - Povezava z bazo podatkov zaprta
+2025-03-31 11:30:30,735 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-31 11:30:30,922 - INFO - Povezava z bazo podatkov zaprta
+2025-03-31 11:30:31,164 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-03-31 11:31:24,180 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:04:33,590 - INFO - package: mysql.connector.plugins
+2025-04-11 21:04:33,591 - INFO - plugin_name: mysql_native_password
+2025-04-11 21:04:33,591 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 21:04:33,592 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:04:33,737 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:04:33,828 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:05:01,332 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:11:37,608 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:11:37,653 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:11:37,728 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:12:02,944 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:12:28,831 - INFO - package: mysql.connector.plugins
+2025-04-11 21:12:28,832 - INFO - plugin_name: mysql_native_password
+2025-04-11 21:12:28,832 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 21:12:28,834 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:12:28,880 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:12:29,540 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:13:04,276 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:13:27,041 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:13:27,091 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:13:27,173 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:13:54,107 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:14:32,642 - INFO - package: mysql.connector.plugins
+2025-04-11 21:14:32,643 - INFO - plugin_name: mysql_native_password
+2025-04-11 21:14:32,644 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 21:14:32,644 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:14:32,689 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:14:32,762 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:14:57,819 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:15:12,932 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:15:12,978 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 21:15:13,055 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 21:15:37,202 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:14:16,038 - INFO - package: mysql.connector.plugins
+2025-04-11 22:14:16,039 - INFO - plugin_name: mysql_native_password
+2025-04-11 22:14:16,040 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 22:14:16,041 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:14:41,340 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:18:54,770 - INFO - package: mysql.connector.plugins
+2025-04-11 22:18:54,770 - INFO - plugin_name: mysql_native_password
+2025-04-11 22:18:54,772 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 22:18:54,772 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:18:54,848 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:18:54,964 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:19:23,054 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:23:03,893 - INFO - package: mysql.connector.plugins
+2025-04-11 22:23:03,893 - INFO - plugin_name: mysql_native_password
+2025-04-11 22:23:03,894 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 22:23:03,894 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:23:27,675 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:34:20,382 - INFO - package: mysql.connector.plugins
+2025-04-11 22:34:20,382 - INFO - plugin_name: mysql_native_password
+2025-04-11 22:34:20,383 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 22:34:20,384 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:34:20,437 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:34:20,509 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:34:44,510 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:35:18,516 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:35:18,565 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:55:51,568 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:55:51,628 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:55:51,719 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:56:16,240 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 22:57:05,923 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 22:57:05,971 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:00:55,366 - INFO - package: mysql.connector.plugins
+2025-04-11 23:00:55,366 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:00:55,367 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:00:55,368 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:00:55,418 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:06:57,082 - INFO - package: mysql.connector.plugins
+2025-04-11 23:06:57,083 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:06:57,083 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:06:57,085 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:06:57,132 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:06:57,222 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:07:21,122 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:12:19,739 - INFO - package: mysql.connector.plugins
+2025-04-11 23:12:19,739 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:12:19,740 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:12:19,742 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:12:19,792 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:15:02,747 - INFO - package: mysql.connector.plugins
+2025-04-11 23:15:02,747 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:15:02,748 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:15:02,750 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:15:02,793 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:15:02,881 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:15:27,284 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:16:52,218 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:16:52,276 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:22:19,452 - INFO - package: mysql.connector.plugins
+2025-04-11 23:22:19,453 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:22:19,453 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:22:19,454 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:22:19,506 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:22:19,599 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:22:19,601 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:22:19,602 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'NULLS FIRST, s.name' at line 13
+2025-04-11 23:24:07,854 - INFO - package: mysql.connector.plugins
+2025-04-11 23:24:07,855 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:24:07,856 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:24:07,857 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:24:07,903 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:29:38,035 - INFO - package: mysql.connector.plugins
+2025-04-11 23:29:38,035 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:29:38,036 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:29:38,037 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:29:38,083 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:29:38,170 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:29:38,174 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:29:38,175 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1054 (42S22): Unknown column 's.name' in 'SELECT'
+2025-04-11 23:32:04,347 - INFO - package: mysql.connector.plugins
+2025-04-11 23:32:04,348 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:32:04,349 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:32:04,350 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:32:04,396 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:32:04,468 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:32:04,471 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:32:04,471 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1054 (42S22): Unknown column 's.name' in 'SELECT'
+2025-04-11 23:33:55,155 - INFO - package: mysql.connector.plugins
+2025-04-11 23:33:55,155 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:33:55,156 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:33:55,157 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:33:55,202 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:33:55,278 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:34:22,701 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:40:57,035 - INFO - package: mysql.connector.plugins
+2025-04-11 23:40:57,036 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:40:57,037 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:40:57,038 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:40:57,085 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:40:57,164 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:41:23,876 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:41:54,427 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:41:54,473 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:41:54,546 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:42:17,715 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:44:47,284 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:44:47,343 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:44:47,412 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:45:11,895 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:46:49,679 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:46:49,723 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:48:49,099 - INFO - package: mysql.connector.plugins
+2025-04-11 23:48:49,100 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:48:49,100 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:48:49,102 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:48:49,144 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:48:58,057 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:48:58,099 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:48:58,166 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:49:21,963 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:51:00,635 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:51:00,678 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:51:02,219 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:51:02,260 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:51:19,101 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:51:19,145 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:54:01,685 - INFO - package: mysql.connector.plugins
+2025-04-11 23:54:01,686 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:54:01,687 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:54:01,687 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:54:01,688 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:54:01,689 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'NULLS FIRST, s.name' at line 3
+2025-04-11 23:54:01,756 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:54:01,800 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:54:01,869 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:54:01,870 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:54:01,870 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'NULLS FIRST, s.name' at line 3
+2025-04-11 23:54:04,073 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:54:04,117 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:54:04,182 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:54:04,183 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:54:04,183 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'NULLS FIRST, s.name' at line 3
+2025-04-11 23:57:19,275 - INFO - package: mysql.connector.plugins
+2025-04-11 23:57:19,275 - INFO - plugin_name: mysql_native_password
+2025-04-11 23:57:19,276 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-11 23:57:19,277 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:57:19,321 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:57:19,399 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:57:19,444 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:57:19,507 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:57:45,730 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:57:45,827 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:58:09,756 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:59:28,787 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:59:28,840 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:59:28,916 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:59:28,955 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:59:34,501 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:59:34,541 - INFO - Povezava z bazo podatkov zaprta
+2025-04-11 23:59:34,616 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-11 23:59:34,655 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:00:59,861 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:00:59,901 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:00:59,992 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:01:00,042 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:03:05,413 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:03:05,470 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:03:13,643 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:03:13,684 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:03:13,755 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:03:13,796 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:03:13,868 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:03:41,046 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:03:41,149 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:04:08,119 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:04:08,223 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:04:08,262 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:06:06,464 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:06:06,514 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:06:06,589 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:06:06,631 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:08:20,021 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:08:20,078 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:08:20,159 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:08:20,208 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:10:59,707 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:10:59,751 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:10:59,824 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:10:59,865 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:10:59,932 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:11:23,405 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:11:23,520 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:11:44,832 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:12:18,724 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:12:18,768 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:12:18,839 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:12:18,892 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:34:42,093 - INFO - package: mysql.connector.plugins
+2025-04-12 00:34:42,094 - INFO - plugin_name: mysql_native_password
+2025-04-12 00:34:42,095 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-12 00:34:42,095 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:34:42,138 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:34:42,205 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:34:42,245 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:34:42,311 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:34:42,312 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:34:42,313 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'NULLS FIRST, s.name' at line 8
+2025-04-12 00:34:42,380 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:34:42,381 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:34:42,381 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'NULLS FIRST, s.name' at line 8
+2025-04-12 00:37:05,805 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:37:05,896 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:37:09,157 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:37:09,201 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:37:09,269 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:37:09,310 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:38:59,637 - INFO - package: mysql.connector.plugins
+2025-04-12 00:38:59,637 - INFO - plugin_name: mysql_native_password
+2025-04-12 00:38:59,638 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-12 00:38:59,640 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:38:59,686 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:38:59,764 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:38:59,815 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:45:39,914 - INFO - package: mysql.connector.plugins
+2025-04-12 00:45:39,914 - INFO - plugin_name: mysql_native_password
+2025-04-12 00:45:39,915 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-12 00:45:39,917 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:45:39,920 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:45:39,920 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1146 (42S02): Table 'esco_db.hierarchy' doesn't exist
+2025-04-12 00:45:39,981 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:45:39,982 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:45:39,982 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1146 (42S02): Table 'esco_db.hierarchy' doesn't exist
+2025-04-12 00:45:48,124 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:45:48,125 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:45:48,125 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1146 (42S02): Table 'esco_db.hierarchy' doesn't exist
+2025-04-12 00:45:48,192 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:45:48,193 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:45:48,193 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1146 (42S02): Table 'esco_db.hierarchy' doesn't exist
+2025-04-12 00:45:48,795 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:45:48,797 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:45:48,797 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1146 (42S02): Table 'esco_db.hierarchy' doesn't exist
+2025-04-12 00:45:48,858 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:45:48,859 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:45:48,859 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1146 (42S02): Table 'esco_db.hierarchy' doesn't exist
+2025-04-12 00:45:49,362 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:45:49,364 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:45:49,364 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1146 (42S02): Table 'esco_db.hierarchy' doesn't exist
+2025-04-12 00:45:49,426 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:45:49,428 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:45:49,428 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1146 (42S02): Table 'esco_db.hierarchy' doesn't exist
+2025-04-12 00:54:22,227 - INFO - package: mysql.connector.plugins
+2025-04-12 00:54:22,228 - INFO - plugin_name: mysql_native_password
+2025-04-12 00:54:22,228 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-12 00:54:22,229 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:54:22,230 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:54:22,230 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1054 (42S22): Unknown column 'name' in 'SELECT'
+2025-04-12 00:54:22,294 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 00:54:22,295 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 00:54:22,295 - ERROR - Napaka pri pridobivanju podatkov iz baze: 1054 (42S22): Unknown column 'name' in 'SELECT'
+2025-04-12 01:02:05,478 - INFO - package: mysql.connector.plugins
+2025-04-12 01:02:05,479 - INFO - plugin_name: mysql_native_password
+2025-04-12 01:02:05,480 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-12 01:02:05,481 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:02:05,535 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:02:05,609 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:02:05,662 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:02:05,741 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:02:29,480 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:02:29,559 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:02:50,253 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:10:54,028 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:10:54,069 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:10:54,135 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:10:54,175 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:10:54,235 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:11:17,971 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:11:18,085 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:11:41,201 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:14:05,341 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:14:05,398 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:14:33,553 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:14:33,598 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:17:10,066 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:17:10,112 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:17:10,202 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:17:34,335 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:20:48,767 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:20:48,833 - INFO - Povezava z bazo podatkov zaprta
+2025-04-12 01:21:43,062 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-12 01:21:43,102 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:35:03,417 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:35:03,522 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:35:03,609 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:35:26,827 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:44:48,500 - INFO - package: mysql.connector.plugins
+2025-04-13 22:44:48,501 - INFO - plugin_name: mysql_native_password
+2025-04-13 22:44:48,501 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 22:44:48,502 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:44:48,544 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:44:48,612 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:45:08,458 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:54:35,084 - INFO - package: mysql.connector.plugins
+2025-04-13 22:54:35,084 - INFO - plugin_name: mysql_native_password
+2025-04-13 22:54:35,085 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 22:54:35,086 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:54:35,128 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:54:35,200 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:54:55,650 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:56:39,922 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:56:39,964 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:58:06,297 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:58:06,332 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:58:16,334 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:58:16,373 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 22:59:29,678 - INFO - package: mysql.connector.plugins
+2025-04-13 22:59:29,678 - INFO - plugin_name: mysql_native_password
+2025-04-13 22:59:29,679 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 22:59:29,680 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 22:59:29,725 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:04:15,721 - INFO - package: mysql.connector.plugins
+2025-04-13 23:04:15,722 - INFO - plugin_name: mysql_native_password
+2025-04-13 23:04:15,722 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 23:04:15,724 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:04:15,766 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:04:15,840 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:04:36,949 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:04:45,525 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:04:45,571 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:08:07,314 - INFO - package: mysql.connector.plugins
+2025-04-13 23:08:07,315 - INFO - plugin_name: mysql_native_password
+2025-04-13 23:08:07,315 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 23:08:07,317 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:08:07,364 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:08:17,268 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:08:17,318 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:08:27,755 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:08:27,792 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:09:47,327 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:09:47,379 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:09:47,458 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:10:11,127 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:10:18,552 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:10:18,599 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:10:30,071 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:10:30,112 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:10:48,539 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:10:48,600 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:13:03,707 - INFO - package: mysql.connector.plugins
+2025-04-13 23:13:03,707 - INFO - plugin_name: mysql_native_password
+2025-04-13 23:13:03,708 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 23:13:03,709 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:13:03,748 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:13:15,094 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:13:15,138 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:13:33,243 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:13:33,286 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:16:06,116 - INFO - package: mysql.connector.plugins
+2025-04-13 23:16:06,117 - INFO - plugin_name: mysql_native_password
+2025-04-13 23:16:06,117 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 23:16:06,118 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:16:06,155 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:16:06,224 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:16:28,729 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:16:37,281 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:16:37,324 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:16:39,137 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:16:39,176 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:16:39,792 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:16:39,834 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:16:40,436 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:16:40,475 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:16:41,018 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:16:41,055 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:17:24,568 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:17:24,613 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:21:35,345 - INFO - package: mysql.connector.plugins
+2025-04-13 23:21:35,346 - INFO - plugin_name: mysql_native_password
+2025-04-13 23:21:35,347 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 23:21:35,348 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:21:35,392 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:25:08,601 - INFO - package: mysql.connector.plugins
+2025-04-13 23:25:08,601 - INFO - plugin_name: mysql_native_password
+2025-04-13 23:25:08,602 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 23:25:08,603 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:25:08,647 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:25:08,709 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:25:29,556 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:25:57,909 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:25:57,951 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:26:11,979 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:26:12,019 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:26:25,020 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:26:25,093 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:26:32,996 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:26:33,046 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:26:53,013 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:26:53,056 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:27:26,335 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:27:26,372 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:33:59,378 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:33:59,434 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:33:59,512 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:34:19,799 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:36:34,173 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:36:34,215 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:38:12,499 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:38:12,555 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:40:06,901 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:40:06,948 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:40:07,027 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:40:28,218 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:43:13,171 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:43:13,216 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:43:16,574 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:43:16,613 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:43:41,192 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:43:41,238 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:43:48,666 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:43:48,708 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:43:52,764 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:43:52,804 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:44:00,598 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:44:00,641 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:46:05,630 - INFO - package: mysql.connector.plugins
+2025-04-13 23:46:05,630 - INFO - plugin_name: mysql_native_password
+2025-04-13 23:46:05,630 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 23:46:05,632 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:46:05,671 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:46:05,744 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:46:26,960 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:51:37,123 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:51:37,174 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:51:37,245 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:51:57,081 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:53:13,709 - INFO - package: mysql.connector.plugins
+2025-04-13 23:53:13,709 - INFO - plugin_name: mysql_native_password
+2025-04-13 23:53:13,710 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-13 23:53:13,710 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:53:13,754 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:54:54,794 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:54:54,836 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:57:27,244 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:57:27,297 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:57:27,381 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:57:49,533 - INFO - Povezava z bazo podatkov zaprta
+2025-04-13 23:59:20,000 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-13 23:59:20,043 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:00:54,031 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:00:54,073 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:01:10,501 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:01:10,546 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:02:43,370 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:02:43,424 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:03:36,516 - INFO - package: mysql.connector.plugins
+2025-04-14 00:03:36,517 - INFO - plugin_name: mysql_native_password
+2025-04-14 00:03:36,517 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-14 00:03:36,519 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:03:36,559 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:03:36,626 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:03:57,564 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:29:41,209 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:29:41,255 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:29:41,337 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:30:03,500 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:31:35,645 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:31:35,715 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:32:01,368 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:32:01,414 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:36:24,725 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:36:24,803 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:36:24,923 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:36:51,077 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:46:39,245 - INFO - package: mysql.connector.plugins
+2025-04-14 00:46:39,245 - INFO - plugin_name: mysql_native_password
+2025-04-14 00:46:39,246 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-14 00:46:39,247 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:47:03,484 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:54:53,796 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:55:13,888 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:56:10,200 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:56:32,547 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:57:11,583 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:57:32,767 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:57:49,365 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:58:10,755 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 00:58:45,464 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 00:59:08,014 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:13:02,899 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:13:34,001 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:13:45,508 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:14:16,109 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:17:15,907 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:17:45,453 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:20:22,689 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:20:52,219 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:21:12,072 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:21:48,714 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:23:48,669 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:24:18,696 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:27:32,338 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:28:00,827 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:28:27,994 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:28:57,022 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:29:21,616 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:29:49,919 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:36:23,312 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:36:59,420 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:37:40,563 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:38:09,816 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:38:41,980 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:39:12,005 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:40:12,107 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:40:41,482 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 01:50:39,155 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 01:51:11,844 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 09:08:52,307 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 09:09:53,520 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 09:15:50,840 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 09:16:45,887 - INFO - Povezava z bazo podatkov zaprta
+2025-04-14 09:32:50,348 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-14 09:33:43,988 - INFO - Povezava z bazo podatkov zaprta
+2025-04-18 11:41:03,407 - INFO - package: mysql.connector.plugins
+2025-04-18 11:41:03,409 - INFO - plugin_name: mysql_native_password
+2025-04-18 11:41:03,413 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-18 11:41:03,418 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-04-18 11:42:25,774 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 17:51:46,636 - INFO - package: mysql.connector.plugins
+2025-05-01 17:51:46,636 - INFO - plugin_name: mysql_native_password
+2025-05-01 17:51:46,638 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-05-01 17:51:46,641 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 17:52:27,402 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 17:52:27,525 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 17:53:03,082 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 19:40:26,834 - ERROR - Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+2025-05-01 19:45:37,639 - INFO - Osveževanje predpomnilnika drevesa...
+2025-05-01 19:45:37,755 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 19:47:07,687 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 19:51:09,863 - INFO - Osveževanje predpomnilnika drevesa...
+2025-05-01 19:51:09,979 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 19:52:44,146 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 19:53:43,976 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 19:54:17,344 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 19:55:01,021 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 19:55:27,878 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 19:55:30,786 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 19:56:00,814 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 19:56:42,883 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 19:57:07,073 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 19:57:11,464 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 19:58:50,033 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 20:02:55,129 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 20:03:34,643 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 20:04:36,838 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 20:04:40,617 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-01 20:05:15,242 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 20:06:07,784 - INFO - Povezava z bazo podatkov zaprta
+2025-05-01 21:31:44,199 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 00:58:51,574 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 00:59:32,108 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 00:59:38,161 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 01:00:17,168 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 01:00:17,288 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 01:00:47,616 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 01:03:39,295 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 01:04:39,698 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 01:04:46,425 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 01:05:37,287 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 01:34:41,597 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:00:48,359 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:01:32,402 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 02:03:13,686 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:03:54,167 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 02:05:00,056 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:05:00,082 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 02:05:00,090 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:05:40,254 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 02:12:10,600 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:12:10,614 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 02:12:10,621 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:12:51,082 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 02:33:40,715 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:33:41,534 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:33:42,159 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 02:33:42,184 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:34:25,466 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 02:34:37,117 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 02:34:38,483 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 02:35:01,966 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:10:00,928 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:10:00,946 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:10:00,954 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:10:02,100 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:10:49,460 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:11:34,928 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:14:50,205 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:14:50,219 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:14:50,227 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:14:51,093 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:15:36,802 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:16:20,428 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:22:44,497 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:22:45,671 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:22:46,288 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:22:46,327 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:23:29,754 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:32:05,089 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:32:06,233 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:32:06,895 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:32:06,955 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:32:46,886 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:33:24,280 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:35:54,534 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:35:54,545 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:35:54,552 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:35:55,148 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:36:35,608 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:37:15,656 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:40:42,706 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:41:04,588 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:43:17,632 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:43:39,476 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:43:39,519 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:43:39,567 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:43:39,577 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:44:02,161 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:44:09,163 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:44:28,270 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:54:45,873 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:55:11,491 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:55:37,820 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:55:59,670 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:57:26,052 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:57:59,317 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:57:59,453 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:58:29,454 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:58:48,232 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:59:25,217 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 11:59:25,311 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 11:59:58,138 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 12:00:35,413 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 12:01:08,612 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 12:01:14,909 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 12:01:41,837 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 12:04:16,257 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 12:04:42,421 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 12:06:14,404 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 12:06:44,448 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 12:10:19,416 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 12:10:42,909 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 12:12:03,032 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 12:12:31,265 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 12:12:50,206 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 12:13:13,203 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:29:07,935 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:29:07,952 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:29:13,617 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:29:13,652 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:29:14,976 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:29:14,989 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:29:15,824 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:29:15,853 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-04 23:29:18,418 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:29:18,431 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:29:19,221 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:29:19,232 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:29:24,474 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:29:24,497 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:29:28,246 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:29:28,258 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:31:11,259 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:31:11,275 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:31:13,929 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:31:13,957 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:31:15,759 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:31:15,771 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-04 23:31:19,391 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:31:19,422 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:31:24,978 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:31:24,991 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:32:55,660 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:32:55,688 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-04 23:32:56,751 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:32:56,772 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-04 23:32:57,515 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:32:57,527 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-04 23:33:00,224 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:33:00,256 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:33:03,557 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:33:03,586 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-04 23:33:11,346 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:33:11,363 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-04 23:33:14,105 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:33:14,119 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:33:21,426 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:33:21,459 - INFO - Povezava z bazo podatkov zaprta
+2025-05-04 23:59:04,468 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:59:04,479 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-04 23:59:11,915 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-04 23:59:11,943 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:07:34,789 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:07:34,898 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:07:34,937 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:07:35,005 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:18:02,165 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:18:02,240 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:18:37,031 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:18:37,046 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-05 09:18:41,644 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:18:41,685 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:18:44,833 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:18:44,866 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:19:06,978 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:19:07,053 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:20:57,182 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:20:57,249 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-05 09:21:11,426 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:21:11,492 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:21:13,858 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:21:13,900 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:21:27,703 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:21:27,784 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:21:33,265 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:21:33,315 - ERROR - Napaka pri pridobivanju podrobnosti veščine: Unread result found
+2025-05-05 09:21:40,239 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:21:40,301 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:22:08,494 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:22:08,544 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:22:12,991 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:22:13,059 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:23:08,262 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:23:08,341 - INFO - Povezava z bazo podatkov zaprta
+2025-05-05 09:23:40,002 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-05 09:23:40,053 - INFO - Povezava z bazo podatkov zaprta
+2025-05-19 00:59:01,376 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-05-19 00:59:01,403 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 22:35:28,087 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 22:35:28,439 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 22:40:55,857 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 22:40:55,868 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 22:43:59,674 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 22:43:59,682 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 22:52:08,123 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 22:52:08,126 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 22:55:05,206 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 22:55:05,209 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:00:32,999 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:00:33,007 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:04:33,781 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:04:33,784 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:09:39,079 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:09:39,090 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:15:22,676 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:15:22,684 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:22:19,083 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:22:19,091 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:25:46,499 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:25:46,507 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:28:44,638 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:28:44,648 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:39:16,210 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:39:16,219 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:43:07,891 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:43:07,909 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:44:00,507 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:44:00,515 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:45:30,768 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:45:30,776 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:52:18,166 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:52:18,172 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:56:45,584 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:56:45,590 - INFO - Povezava z bazo podatkov zaprta
+2025-06-02 23:59:49,369 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-02 23:59:49,375 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 00:00:06,132 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 00:00:06,137 - WARNING - /skill: parent_uri ni najden, vstavljam 'unknown' kot source za urn:um_skill:aedcft_tr5h
+2025-06-03 00:00:06,139 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 00:07:21,678 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 00:07:21,687 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:qfw: knowledge
+2025-06-03 00:07:21,688 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 00:07:40,909 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 00:07:40,913 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:hmhmhfm: knowledge > natural sciences, mathematics and statistics
+2025-06-03 00:07:40,916 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 00:13:15,457 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 00:13:15,461 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:qewrgvbae: knowledge
+2025-06-03 00:13:15,463 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 00:17:33,498 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 00:17:33,503 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:asd1: knowledge
+2025-06-03 00:17:33,504 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 01:04:27,145 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 01:04:27,275 - WARNING - UM veščina NI DODANA: source 'http://data.europa.eu/esco/skill/language-skills-and-knowledge' ni najden v drevesu!
+2025-06-03 01:04:27,275 - WARNING - UM veščina NI DODANA: source 'http://data.europa.eu/esco/skill/test-skill' ni najden v drevesu!
+2025-06-03 01:04:27,275 - WARNING - UM veščina NI DODANA: source 'http://data.europa.eu/esco/skill/q' ni najden v drevesu!
+2025-06-03 01:04:27,276 - WARNING - UM veščina NI DODANA: source 'um_ppp' ni najden v drevesu!
+2025-06-03 01:04:27,276 - WARNING - UM veščina NI DODANA: source 'um_ppppppp' ni najden v drevesu!
+2025-06-03 01:04:27,276 - WARNING - UM veščina NI DODANA: source 'unknown' ni najden v drevesu!
+2025-06-03 01:04:27,276 - WARNING - UM veščina NI DODANA: source 'http://data.europa.eu/esco/skill/6f2ac3e9-859e-442e-91fd-2db1a2bc8467' ni najden v drevesu!
+2025-06-03 01:04:27,276 - WARNING - UM veščina NI DODANA: source 'knowledge' ni najden v drevesu!
+2025-06-03 01:04:27,276 - WARNING - UM veščina NI DODANA: pot 'knowledge > natural sciences, mathematics and statistics' ni najdena v drevesu (tried: )
+2025-06-03 01:04:27,276 - WARNING - UM veščina NI DODANA: source 'knowledge > natural sciences, mathematics and statistics' ni najden v drevesu!
+2025-06-03 01:04:27,276 - INFO - Uspešno ustvarjeno drevo z 0 korenskimi vozlišči (vključno z UM)
+2025-06-03 01:04:27,277 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 01:08:35,194 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 01:08:35,200 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:4678r: knowledge
+2025-06-03 01:08:35,201 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 01:46:21,605 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 01:46:21,614 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 01:46:26,592 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 01:46:26,597 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:123321: skills > assisting and caring > providing information and support to the public and clients > attend to fitness clients under controlled health conditions > prescribe exercises for controlled health conditions
+2025-06-03 01:46:26,600 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:01:47,555 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:01:47,557 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:02:13,025 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:02:13,028 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:02:13,040 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:02:13,041 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:05:33,576 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:05:33,662 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:05:33,674 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:05:33,792 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:05:33,792 - ERROR - Napaka pri pridobivanju podatkov iz baze: 'http://data.europa.eu/esco/skill/test-skill'
+2025-06-03 02:05:40,071 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:05:40,073 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:09:55,528 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:09:55,968 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:10:08,808 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:10:09,269 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:10:10,248 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:10:10,679 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:12:28,477 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:12:29,039 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:gzhfbvnj: skills
+2025-06-03 02:12:29,314 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:14:51,472 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:14:51,952 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:14:53,574 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:14:54,004 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:15:02,641 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:15:03,163 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:fgjznh: skills
+2025-06-03 02:15:03,413 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:19:16,791 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:19:17,290 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:sdfew: skills
+2025-06-03 02:19:17,535 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:20:17,435 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:20:17,948 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:qweewqwe: skills
+2025-06-03 02:20:18,256 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:23:44,668 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:23:45,284 - INFO - Povezava z bazo podatkov zaprta
+2025-06-03 02:27:41,093 - INFO - Povezava z bazo podatkov uspešno vzpostavljena
+2025-06-03 02:27:41,603 - WARNING - /skill: parent_uri ni najden, vstavljam path kot source za urn:um_skill:hjkl: skills
+2025-06-03 02:27:41,873 - INFO - Povezava z bazo podatkov zaprta

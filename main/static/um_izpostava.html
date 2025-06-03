@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>UM izpostava</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .um-table th, .um-table td { vertical-align: middle; }
+        .um-badge { background: #1565c0; color: #fff; font-weight: bold; margin-right: 5px; }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container py-4">
+    <h2 class="mb-4">UM izpostava <span class="badge um-badge">UM</span></h2>
+    <div class="mb-3 row">
+        <div class="col-md-6">
+            <input type="text" id="searchInput" class="form-control" placeholder="Išči po UM veščinah...">
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Dodaj UM veščino</button>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover um-table" id="umTable">
+        <thead class="table-primary">
+            <tr>
+                <th>Oznaka</th>
+                <th>Ime</th>
+                <th>Tip</th>
+                <th>Opis</th>
+                <th>URI</th>
+                <th>Akcije</th>
+            </tr>
+        </thead>
+        <tbody id="umTableBody">
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal za dodajanje/urejanje -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">Dodaj UM veščino</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zapri"></button>
+      </div>
+      <div class="modal-body">
+        <form id="umForm">
+          <div class="mb-3">
+            <label for="umName" class="form-label">Ime*</label>
+            <input type="text" class="form-control" id="umName" required>
+          </div>
+          <div class="mb-3">
+            <label for="umType" class="form-label">Tip</label>
+            <select class="form-select" id="umType">
+              <option value="skill">Veščina</option>
+              <option value="knowledge">Znanje</option>
+              <option value="category">Kategorija</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="umDesc" class="form-label">Opis</label>
+            <textarea class="form-control" id="umDesc"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="umUri" class="form-label">URI*</label>
+            <input type="text" class="form-control" id="umUri" required>
+          </div>
+          <input type="hidden" id="editMode" value="">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Prekliči</button>
+        <button type="button" class="btn btn-primary" id="saveBtn">Shrani</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+let umSkills = [];
+let editUri = null;
+
+function fetchUMSkills() {
+    fetch('/um_skills_exposed')
+        .then(res => res.json())
+        .then(data => {
+            umSkills = data.um_skills || [];
+            renderTable();
+        });
+}
+
+function renderTable() {
+    const tbody = document.getElementById('umTableBody');
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    tbody.innerHTML = '';
+    umSkills.filter(skill =>
+        (skill.preferredLabel ? skill.preferredLabel.toLowerCase().includes(search) : false) ||
+        (skill.description ? skill.description.toLowerCase().includes(search) : false) ||
+        (skill.conceptUri ? skill.conceptUri.toLowerCase().includes(search) : false)
+    ).forEach(skill => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><span class="badge um-badge">UM</span></td>
+            <td>${skill.preferredLabel || ''}</td>
+            <td>${skill.skillType || ''}</td>
+            <td>${skill.description || ''}</td>
+            <td><code>${skill.conceptUri || ''}</code></td>
+            <td>
+                <button class="btn btn-sm btn-warning me-1" onclick="editSkill('${(skill.conceptUri || '').replace(/'/g, "\\'")}')">Uredi</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteSkill('${(skill.conceptUri || '').replace(/'/g, "\\'")}')">Izbriši</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+document.getElementById('searchInput').addEventListener('input', renderTable);
+
+document.getElementById('saveBtn').onclick = function() {
+    const name = document.getElementById('umName').value.trim();
+    const type = document.getElementById('umType').value;
+    const desc = document.getElementById('umDesc').value.trim();
+    const uri = document.getElementById('umUri').value.trim();
+    if (!name || !uri) {
+        alert('Ime in URI sta obvezna!');
+        return;
+    }
+    const payload = {
+        preferredLabel: name,
+        skillType: type,
+        description: desc,
+        conceptUri: uri
+    };
+    if (editUri) {
+        fetch(`/um_skills_exposed/${encodeURIComponent(editUri)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        }).then(() => {
+            editUri = null;
+            bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+            fetchUMSkills();
+        });
+    } else {
+        fetch('/um_skills_exposed', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        }).then(() => {
+            bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+            fetchUMSkills();
+        });
+    }
+};
+
+function editSkill(uri) {
+    const skill = umSkills.find(s => s.conceptUri === uri);
+    if (!skill) return;
+    document.getElementById('umName').value = skill.preferredLabel;
+    document.getElementById('umType').value = skill.skillType;
+    document.getElementById('umDesc').value = skill.description || '';
+    document.getElementById('umUri').value = skill.conceptUri;
+    editUri = uri;
+    document.getElementById('addModalLabel').innerText = 'Uredi UM veščino';
+    new bootstrap.Modal(document.getElementById('addModal')).show();
+}
+
+function deleteSkill(uri) {
+    if (!confirm('Res želiš izbrisati to UM veščino?')) return;
+    fetch(`/um_skills_exposed/${encodeURIComponent(uri)}`, { method: 'DELETE' })
+        .then(() => fetchUMSkills());
+}
+
+document.getElementById('addModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('umForm').reset();
+    editUri = null;
+    document.getElementById('addModalLabel').innerText = 'Dodaj UM veščino';
+});
+
+fetchUMSkills();
+</script>
+</body>
+</html> 

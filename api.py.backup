@@ -1,0 +1,109 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+import pandas as pd
+import json
+import os
+from typing import Dict, Any
+
+app = FastAPI()
+
+# Serviranje statičnih datotek
+app.mount("/static", StaticFiles(directory="main/static"), name="static")
+
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    return """
+    <html>
+        <head>
+            <meta http-equiv="refresh" content="0;url=/static/test.html">
+        </head>
+    </html>
+    """
+
+@app.get("/test", response_class=HTMLResponse)
+async def test():
+    with open('main/static/test.html', 'r', encoding='utf-8') as f:
+        return f.read()
+
+@app.post("/append_csv")
+async def append_to_csv(data: Dict[str, Any]):
+    try:
+        filename = data['filename']
+        csv_data = data['data']
+        
+        # Preveri, če je pot veljavna (samo znotraj um_csv mape)
+        if not filename.startswith('um_csv/') or '..' in filename:
+            raise HTTPException(status_code=400, detail="Neveljavna pot do datoteke")
+        
+        # Ustvari mapo če ne obstaja
+        os.makedirs('um_csv', exist_ok=True)
+        
+        # Preveri, če datoteka obstaja
+        if not os.path.exists(filename):
+            # Ustvari novo datoteko z glavo
+            if 'skills.csv' in filename:
+                headers = ['conceptType', 'conceptUri', 'skillType', 'reuseLevel', 'preferredLabel', 
+                         'altLabels', 'hiddenLabels', 'status', 'modifiedDate', 'scopeNote', 
+                         'definition', 'inScheme', 'description']
+                with open(filename, 'w', newline='', encoding='utf-8') as f:
+                    f.write(','.join(headers) + '\n')
+            elif 'SkillSkillRelations.csv' in filename:
+                with open(filename, 'w', newline='', encoding='utf-8') as f:
+                    f.write('parent,child\n')
+        
+        # Dodaj novo vrstico v obstoječo datoteko
+        with open(filename, 'a', newline='', encoding='utf-8') as f:
+            if 'skills.csv' in filename:
+                row = [
+                    csv_data.get('conceptType', ''),
+                    csv_data.get('conceptUri', ''),
+                    csv_data.get('skillType', ''),
+                    csv_data.get('reuseLevel', ''),
+                    csv_data.get('preferredLabel', ''),
+                    csv_data.get('altLabels', ''),
+                    csv_data.get('hiddenLabels', ''),
+                    csv_data.get('status', ''),
+                    csv_data.get('modifiedDate', ''),
+                    csv_data.get('scopeNote', ''),
+                    csv_data.get('definition', ''),
+                    csv_data.get('inScheme', ''),
+                    csv_data.get('description', '')
+                ]
+                f.write(','.join(f'"{str(val)}"' for val in row) + '\n')
+            elif 'SkillSkillRelations.csv' in filename:
+                row = [
+                    csv_data.get('parent', ''),
+                    csv_data.get('child', '')
+                ]
+                f.write(','.join(f'"{str(val)}"' for val in row) + '\n')
+        
+        return JSONResponse(content={"success": True})
+    except Exception as e:
+        print(f"Napaka pri shranjevanju v CSV: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/status")
+async def get_status():
+    return JSONResponse(content={
+        "status": "ok",
+        "database": "esco.db",
+        "tables": 22,
+        "table_counts": {
+            "broader_relations": 20822,
+            "broaderrelationsoccpillar_en": 3652,
+            "broaderrelationsskillpillar_en": 20822,
+            "conceptschemes_en": 19,
+            "digcompskillscollection_en": 25,
+            "digitalskillscollection_en": 1284,
+            "greenskillscollection_en": 591,
+            "iscogroups_en": 619,
+            "languageskillscollection_en": 359,
+            "occupations_en": 3039,
+            "occupationskillrelations_en": 129004,
+            "researchoccupationscollection_en": 122,
+            "researchskillscollection_en": 40,
+            "skill_skill_relations": 5818,
+            "skillgroups_en": 640
+        }
+    }) 

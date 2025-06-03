@@ -1,0 +1,234 @@
+async function saveToCSV() {
+    const skillName = document.getElementById('skillName').value.trim();
+    const skillDescription = document.getElementById('skillDescription').value.trim();
+    
+    if (!skillName || !skillDescription) {
+        alert('Prosim izpolnite vsa obvezna polja!');
+        return;
+    }
+    
+    if (!selectedNodePath || !selectedNodePath.length) {
+        alert('Prosim izberite pot v drevesu!');
+        return;
+    }
+
+    try {
+        // Določi tip glede na izbrano pot
+        const isKnowledge = selectedNodePath.some(part => 
+            part.toLowerCase().includes('knowledge')
+        );
+        const skillType = isKnowledge ? 'knowledge' : 'skill';
+        
+        // Generiraj URI
+        const uri = skillName.toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, ''); // Odstrani pomišljaje na začetku in koncu
+        const conceptUri = `http://data.europa.eu/esco/skill/${uri}`;
+        
+        // Pripravi CSV vrstice
+        const skillsCSV = 'conceptType,conceptUri,skillType,reuseLevel,preferredLabel,altLabels,hiddenLabels,status,modifiedDate,scopeNote,definition,inScheme,description\n' +
+            `skill,${conceptUri},${skillType},local,"${skillName}",,,,released,${new Date().toISOString().split('T')[0]},,,"${skillDescription}"`;
+
+        // Pripravi relacije - vedno dodamo pod language skills and knowledge
+        const parentUri = 'http://data.europa.eu/esco/skill/language-skills-and-knowledge';
+        const relationsCSV = 'parent,child\n' +
+            `${parentUri},${conceptUri}`;
+
+        // Ustvari FormData in dodaj datoteke
+        const formData = new FormData();
+        const skillsBlob = new Blob([skillsCSV], { type: 'text/csv' });
+        const relationsBlob = new Blob([relationsCSV], { type: 'text/csv' });
+        
+        formData.append('skills_file', skillsBlob, 'skills.csv');
+        formData.append('relations_file', relationsBlob, 'relations.csv');
+
+        // Pošlji na strežnik
+        const response = await fetch('/save_um_data', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorData = await response.text();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorData}`);
+        }
+
+        const result = await response.json();
+        console.log('Odgovor strežnika:', result);
+
+        if (result.success) {
+            alert('Podatki uspešno shranjeni!');
+            // Počisti obrazec
+            document.getElementById('skillName').value = '';
+            document.getElementById('skillDescription').value = '';
+            
+            // Počakaj trenutek pred osveževanjem drevesa
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Osveži drevo
+            try {
+                await loadTreeFromDb();
+                console.log('Drevo uspešno osveženo');
+            } catch (error) {
+                console.error('Napaka pri osveževanju drevesa:', error);
+                alert('Podatki so shranjeni, vendar je prišlo do napake pri osveževanju prikaza. Prosim, osvežite stran.');
+            }
+        } else {
+            throw new Error(result.message || 'Napaka pri shranjevanju');
+        }
+        
+    } catch (error) {
+        console.error('Napaka pri shranjevanju:', error);
+        alert('Prišlo je do napake pri shranjevanju: ' + error.message);
+    }
+}
+
+async function loadTreeFromDb() {
+    try {
+        const response = await fetch('/db_tree_data');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        // Počisti trenutno drevo
+        const treeContainer = document.querySelector('.tree');
+        treeContainer.innerHTML = '';
+        
+        // Zgradi drevo
+        const tree = buildTreeFromData(data);
+        treeContainer.appendChild(tree);
+        
+        // Dodaj event listenerje za expandable elemente
+        addExpandListeners();
+        addSelectionListeners();
+        
+        console.log('Drevo uspešno naloženo');
+    } catch (error) {
+        console.error('Napaka pri nalaganju drevesa:', error);
+        alert('Napaka pri nalaganju drevesa. Prosim, osvežite stran.');
+    }
+}
+
+function buildTreeFromData(data) {
+    const ul = document.createElement('ul');
+    
+    for (const [key, value] of Object.entries(data)) {
+        const li = document.createElement('li');
+        
+        // Ustvari span za ime
+        const span = document.createElement('span');
+        span.textContent = key;
+        span.classList.add('node-name');
+        
+        // Če ima podrejene elemente ali je objekt z id-jem (skill), dodaj ustrezne razrede
+        if (typeof value === 'object' && value !== null) {
+            // Če je skill (ima id), dodaj posebne razrede
+            if (value.id) {
+                li.classList.add('skill-node');
+                span.classList.add('skill');
+                if (value.type === 'knowledge') {
+                    span.classList.add('knowledge');
+                }
+            } 
+            // Če ima podrejene elemente, dodaj expandable
+            else if (Object.keys(value).length > 0) {
+                li.classList.add('expandable');
+                const expandBtn = document.createElement('span');
+                expandBtn.classList.add('expand-btn');
+                expandBtn.textContent = '▶';
+                li.appendChild(expandBtn);
+            }
+        }
+        
+        li.appendChild(span);
+        
+        // Rekurzivno dodaj podrejene elemente, če niso skill podatki
+        if (typeof value === 'object' && value !== null && !value.id) {
+            const childUl = buildTreeFromData(value);
+            childUl.style.display = 'none'; // Skrij podrejene elemente
+            li.appendChild(childUl);
+        }
+        
+        ul.appendChild(li);
+    }
+    
+    return ul;
+}
+
+function addExpandListeners() {
+    document.querySelectorAll('.expandable > .expand-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const li = this.parentElement;
+            const ul = li.querySelector('ul');
+            if (ul) {
+                const isExpanded = ul.style.display !== 'none';
+                ul.style.display = isExpanded ? 'none' : 'block';
+                this.textContent = isExpanded ? '▶' : '▼';
+            }
+        });
+    });
+}
+
+function addSelectionListeners() {
+    document.querySelectorAll('.node-name').forEach(node => {
+        node.addEventListener('click', function(e) {
+            e.stopPropagation();
+            // Odstrani prejšnjo selekcijo
+            document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+            // Dodaj novo selekcijo
+            this.classList.add('selected');
+            // Posodobi izbrano pot
+            selectedNodePath = getNodePath(this);
+            // Prikaži podrobnosti
+            showNodeDetails(this.textContent, selectedNodePath);
+            
+            // Izpiši pot v konzolo za debugiranje
+            console.log('Izbrana pot:', selectedNodePath);
+        });
+    });
+}
+
+function getNodePath(element) {
+    const path = [];
+    let current = element;
+    while (current && !current.classList.contains('tree')) {
+        if (current.classList.contains('node-name')) {
+            path.unshift(current.textContent);
+        }
+        current = current.parentElement;
+    }
+    return path;
+}
+
+function showNodeDetails(nodeName, nodePath) {
+    // Prikaži podrobnosti v desnem panelu
+    document.getElementById('skillName').value = nodeName;
+    document.querySelector('.selected-path').textContent = nodePath.join(' > ');
+}
+
+// Dodaj CSS za boljši prikaz
+const style = document.createElement('style');
+style.textContent = `
+    .skill-node > .node-name {
+        color: #0066cc;
+        cursor: pointer;
+    }
+    .skill-node > .node-name.knowledge {
+        color: #009933;
+    }
+    .selected {
+        background-color: #e6f3ff;
+        padding: 2px 5px;
+        border-radius: 3px;
+    }
+    .expand-btn {
+        cursor: pointer;
+        margin-right: 5px;
+        display: inline-block;
+        width: 20px;
+        text-align: center;
+    }
+`;
+document.head.appendChild(style); 

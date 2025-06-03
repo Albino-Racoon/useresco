@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="sl" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hierarhija veščin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .container-fluid {
+            height: 100%;
+            padding: 15px;
+        }
+        
+        .row {
+            height: calc(100% - 60px);
+        }
+        
+        .tree-container {
+            height: 100%;
+            overflow-y: auto;
+            margin-top: 0;
+        }
+        
+        .tree-node {
+            margin-left: 20px;
+            padding: 5px;
+            border-left: 1px solid #ccc;
+        }
+        
+        .node-content {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .node-content:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .node-selected {
+            background-color: #ff9800 !important;
+        }
+        
+        .node-path {
+            background-color: #fff3b0 !important;
+        }
+        
+        .skills-list {
+            margin-left: 30px;
+            margin-top: 5px;
+        }
+        
+        .skill-item {
+            padding: 3px;
+            margin: 2px 0;
+            border-radius: 3px;
+            background-color: #f8f9fa;
+        }
+        
+        .knowledge-item {
+            padding: 3px;
+            margin: 2px 0;
+            border-radius: 3px;
+            background-color: #e7f5e7;
+        }
+        
+        .search-highlight {
+            background-color: #fff3b0;
+            font-weight: bold;
+        }
+        
+        #search-results {
+            height: calc(100% - 60px);
+            overflow-y: auto;
+            margin-top: 10px;
+            padding-right: 5px;
+        }
+        
+        .card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-body {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        .card-header {
+            padding: 10px;
+        }
+        
+        h1 {
+            margin-bottom: 15px;
+        }
+        
+        .alert {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body class="h-100">
+    <div class="container-fluid h-100">
+        <h1>Hierarhija veščin</h1>
+        
+        <!-- Dodan meni -->
+        <div class="mb-3" style="background-color: #1e88e5; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 4px;">
+            <ul class="nav nav-pills" style="padding: 8px;">
+                <li class="nav-item">
+                    <a class="nav-link active" style="color: white; font-weight: bold;" href="/static/index.html">Hierarhija</a>
+                </li>
+                <li class="nav-item" id="uvozLink" style="display: none;">
+                    <a class="nav-link" style="color: white; font-weight: bold;" href="/static/uvoz.html">Uvoz podatkov</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white; font-weight: bold;" href="/static/test.html">Test</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white; font-weight: bold;" href="/static/baza_cache.html">Cached drevo</a>
+                </li>
+                <li class="nav-item ms-auto">
+                    <span id="userInfo" style="color: white; margin-right: 15px;"></span>
+                    <button class="btn btn-outline-light btn-sm" onclick="logout()">Odjava</button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="row h-100">
+            <!-- Drevo -->
+            <div class="col-md-4 h-100">
+                <div class="card h-100">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="skills-tab" data-bs-toggle="tab" href="#skills-tree" role="tab">Veščine</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="knowledge-tab" data-bs-toggle="tab" href="#knowledge-tree" role="tab">Znanja</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="tab-content h-100">
+                            <div class="tab-pane fade show active h-100" id="skills-tree" role="tabpanel">
+                                <div id="skills-tree-container" class="tree-container"></div>
+                            </div>
+                            <div class="tab-pane fade h-100" id="knowledge-tree" role="tabpanel">
+                                <div id="knowledge-tree-container" class="tree-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Iskanje -->
+            <div class="col-md-4 h-100">
+                <div class="card h-100">
+                    <div class="card-header p-2">
+                        <h5 class="mb-0">Iskanje veščin</h5>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="input-group">
+                            <input type="text" id="search-keyword" class="form-control" placeholder="Ključna beseda">
+                            <button class="btn btn-primary" id="search-btn">Išči</button>
+                        </div>
+                        <div id="search-results"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upravljanje -->
+            <div class="col-md-4 h-100">
+                <div class="card h-100">
+                    <div class="card-header p-2">
+                        <h5 class="mb-0">Upravljanje</h5>
+                    </div>
+                    <div class="card-body p-2">
+                        <div id="node-info">
+                            <h5>Izbrano vozlišče: <span id="selected-node-path">Ni izbrano</span></h5>
+                        </div>
+                        
+                        <div class="mt-2" id="skill-details" style="display: none;">
+                            <h6>Podrobnosti veščine</h6>
+                            <div class="card">
+                                <div class="card-body p-2">
+                                    <div class="mb-2">
+                                        <label class="form-label">Ime veščine</label>
+                                        <input type="text" class="form-control" id="edit-skill-name">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Tip</label>
+                                        <select class="form-select" id="edit-skill-type">
+                                            <option value="skill">Veščina</option>
+                                            <option value="knowledge">Znanje</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Opis</label>
+                                        <textarea class="form-control" id="edit-skill-description" rows="3"></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-primary" id="update-skill-btn">Shrani spremembe</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-2" style="display: none;">
+                            <h6>Dodaj novo vozlišče</h6>
+                            <div class="input-group mb-2">
+                                <input type="text" id="new-node-name" class="form-control" placeholder="Ime novega vozlišča">
+                                <button class="btn btn-primary" id="add-node-btn">Dodaj</button>
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+                            <h6>Dodaj novo kompetenco</h6>
+                            <div class="input-group mb-2">
+                                <input type="text" id="new-skill-name" class="form-control" placeholder="Ime nove kompetence">
+                                <select class="form-select" id="skill-type" style="max-width: 120px;">
+                                    <option value="skill">Veščina</option>
+                                    <option value="knowledge">Znanje</option>
+                                </select>
+                                <button class="btn btn-primary" id="add-skill-btn">Dodaj</button>
+                            </div>
+                            <div class="mb-2">
+                                <textarea id="new-skill-description" class="form-control" placeholder="Opis kompetence (neobvezno)"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Dodamo sekcijo za prikaz podrobnosti o izbrani veščini pod dodajanjem kompetence -->
+                        <div class="mt-3" id="selected-skill-details" style="display: none;">
+                            <h6>Podrobnosti izbrane kompetence</h6>
+                            <div class="card">
+                                <div class="card-body p-2">
+                                    <div class="mb-2">
+                                        <label class="form-label">Ime</label>
+                                        <input type="text" class="form-control" id="view-skill-name" readonly>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Tip</label>
+                                        <input type="text" class="form-control" id="view-skill-type" readonly>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Opis</label>
+                                        <textarea class="form-control" id="view-skill-description" rows="3" readonly></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-primary" id="edit-skill-btn">Uredi</button>
+                                        <button class="btn btn-danger" id="delete-skill-btn">Izbriši</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dodamo sekcijo za urejanje podrobnosti o izbrani veščini (prikaže se po kliku na Uredi) -->
+                        <div class="mt-3" id="edit-skill-details" style="display: none;">
+                            <h6>Urejanje kompetence</h6>
+                            <div class="card">
+                                <div class="card-body p-2">
+                                    <div class="mb-2">
+                                        <label class="form-label">Ime</label>
+                                        <input type="text" class="form-control" id="edit-skill-name-field">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Tip</label>
+                                        <select class="form-select" id="edit-skill-type-field">
+                                            <option value="skill">Veščina</option>
+                                            <option value="knowledge">Znanje</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Opis</label>
+                                        <textarea class="form-control" id="edit-skill-description-field" rows="3"></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-success" id="save-skill-btn">Shrani</button>
+                                        <button class="btn btn-secondary" id="cancel-edit-btn">Prekliči</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal za urejanje kompetence -->
+    <div class="modal fade" id="editSkillModal" tabindex="-1" aria-labelledby="editSkillModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSkillModalLabel">Urejanje kompetence</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit-skill-name-field" class="form-label">Ime</label>
+                        <input type="text" class="form-control" id="edit-skill-name-field">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-skill-type-field" class="form-label">Tip</label>
+                        <select class="form-select" id="edit-skill-type-field">
+                            <option value="skill">Veščina</option>
+                            <option value="knowledge">Znanje</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-skill-description-field" class="form-label">Opis</label>
+                        <textarea class="form-control" id="edit-skill-description-field" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Prekliči</button>
+                    <button type="button" class="btn btn-primary" id="save-skill-changes-btn">Shrani</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let skillsTreeData = {};
+        let knowledgeTreeData = {};
+        let selectedNodePath = [];
+        let selectedSkill = null;
+        let currentSelectedSkill = null;
+
+        async function loadTree() {
+            try {
+                console.log("Nalagam drevo...");
+                const response = await fetch('/tree');
+                const data = await response.json();
+                console.log("Prejeti podatki:", data);
+                
+                skillsTreeData = {};
+                knowledgeTreeData = {};
+                
+                Object.entries(data).forEach(([key, node]) => {
+                    if (key.toLowerCase().includes('knowledge')) {
+                        knowledgeTreeData[key] = node;
+                    } else {
+                        skillsTreeData[key] = node;
+                    }
+                });
+                
+                renderBothTrees();
+            } catch (error) {
+                console.error('Error loading tree:', error);
+                document.getElementById('skills-tree-container').innerHTML = 
+                    '<div class="alert alert-danger">Napaka pri nalaganju drevesa</div>';
+                document.getElementById('knowledge-tree-container').innerHTML = 
+                    '<div class="alert alert-danger">Napaka pri nalaganju drevesa</div>';
+            }
+        }
+
+        function renderBothTrees() {
+            const skillsContainer = document.getElementById('skills-tree-container');
+            skillsContainer.innerHTML = '';
+            if (Object.keys(skillsTreeData).length > 0) {
+                Object.entries(skillsTreeData).forEach(([key, node]) => {
+                    skillsContainer.appendChild(renderNode(node, key, [], 'skill'));
+                });
+            } else {
+                skillsContainer.innerHTML = '<div class="alert alert-info">Ni veščin</div>';
+            }
+            
+            const knowledgeContainer = document.getElementById('knowledge-tree-container');
+            knowledgeContainer.innerHTML = '';
+            if (Object.keys(knowledgeTreeData).length > 0) {
+                Object.entries(knowledgeTreeData).forEach(([key, node]) => {
+                    knowledgeContainer.appendChild(renderNode(node, key, [], 'knowledge'));
+                });
+            } else {
+                knowledgeContainer.innerHTML = '<div class="alert alert-info">Ni znanj</div>';
+            }
+        }
+
+        function expandPath(path) {
+            // Najprej določimo, kateri zavihek moramo izbrati
+            const isKnowledge = path[0].toLowerCase().includes('knowledge');
+            if (isKnowledge) {
+                document.getElementById('knowledge-tab').click();
+            } else {
+                document.getElementById('skills-tab').click();
+            }
+            
+            // Počakamo, da se zavihek naloži
+            setTimeout(() => {
+                const container = isKnowledge ? 
+                    document.getElementById('knowledge-tree-container') : 
+                    document.getElementById('skills-tree-container');
+                
+                // Najprej odstranimo vse prejšnje označbe
+                document.querySelectorAll('.node-content.node-selected, .node-content.node-path').forEach(el => {
+                    el.classList.remove('node-selected', 'node-path');
+                });
+                
+                // Razširimo vsa vozlišča na poti
+                let currentPath = [];
+                for (const nodeName of path) {
+                    currentPath.push(nodeName);
+                    
+                    // Poiščemo vse node-content elemente
+                    const allNodes = container.getElementsByClassName('node-content');
+                    for (const node of allNodes) {
+                        const label = node.querySelector('span:last-child');
+                        if (label && label.textContent === nodeName) {
+                            // Razširimo vozlišče
+                            const toggle = node.querySelector('.toggle');
+                            const childrenContainer = node.parentElement.querySelector('.children-container');
+                            if (toggle && childrenContainer && childrenContainer.style.display === 'none') {
+                                childrenContainer.style.display = 'block';
+                                toggle.textContent = '▼';
+                            }
+                            
+                            // Označimo vozlišče kot del poti ali kot izbrano
+                            if (currentPath.length === path.length) {
+                                node.classList.add('node-selected');
+                                node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            } else {
+                                node.classList.add('node-path');
+                            }
+                            break;
+                        }
+                    }
+                }
+                
+                // Nastavimo izbrano pot in posodobimo prikaz
+                selectedNodePath = path;
+                document.getElementById('selected-node-path').textContent = path.join(' > ');
+                
+            }, 100); // Počakamo 100ms, da se zavihek zagotovo naloži
+        }
+
+        function renderNode(node, name, path, type) {
+            const nodeDiv = document.createElement('div');
+            nodeDiv.className = 'tree-node';
+            
+            const nodeContent = document.createElement('div');
+            nodeContent.className = 'node-content';
+            
+            // Preveri, če je to izbrano vozlišče ali del poti
+            const currentPath = [...path, name];
+            const isSelected = JSON.stringify(currentPath) === JSON.stringify(selectedNodePath);
+            const isPartOfSelectedPath = isPartOfPath(currentPath, selectedNodePath);
+            
+            if (isSelected) {
+                nodeContent.classList.add('node-selected');
+            } else if (isPartOfSelectedPath) {
+                nodeContent.classList.add('node-path');
+            }
+            
+            const children = Object.entries(node).filter(([key, _]) => key !== 'skills');
+            const hasChildren = children.length > 0;
+            
+            if (hasChildren) {
+                const toggle = document.createElement('span');
+                toggle.className = 'toggle';
+                toggle.textContent = '▶';
+                toggle.style.marginRight = '5px';
+                toggle.style.cursor = 'pointer';
+                nodeContent.appendChild(toggle);
+                
+                // Ustvarimo container za otroke, ampak ga še ne napolnimo
+                const childrenContainer = document.createElement('div');
+                childrenContainer.className = 'children-container';
+                childrenContainer.style.display = 'none';
+                
+                // Dodamo zastavico za sledenje, ali so otroci že naloženi
+                let childrenLoaded = false;
+                
+                // Dodamo poslušalec samo na toggle gumb za razširjanje/stiskanje
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    if (!childrenLoaded) {
+                        // Naložimo otroke samo prvič, ko uporabnik klikne
+                        children.forEach(([childName, childNode]) => {
+                            const childElement = renderNode(childNode, childName, [...path, name], type);
+                            childrenContainer.appendChild(childElement);
+                        });
+                        childrenLoaded = true;
+                    }
+                    
+                    const isVisible = childrenContainer.style.display !== 'none';
+                    childrenContainer.style.display = isVisible ? 'none' : 'block';
+                    toggle.textContent = isVisible ? '▶' : '▼';
+                });
+                
+                nodeDiv.appendChild(childrenContainer);
+            }
+            
+            const label = document.createElement('span');
+            label.textContent = name;
+            label.style.cursor = 'pointer';
+            nodeContent.appendChild(label);
+            
+            // Dodamo dogodek za izbiro vozlišča samo na labelo
+            label.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Samo izberemo vozlišče, brez odpiranja podvozlišč
+                selectNode(currentPath);
+            });
+            
+            // Dodamo tudi poslušalec na celotno nodeContent za izbiro, a samo če ni bil klik na toggle
+            nodeContent.addEventListener('click', (e) => {
+                // Preverimo, da klik ni bil na toggle gumbu
+                if (!e.target.classList.contains('toggle')) {
+                    // Izberemo vozlišče
+                    selectNode(currentPath);
+                }
+            });
+            
+            nodeDiv.appendChild(nodeContent);
+            
+            // Dodamo veščine, če obstajajo
+            if (node.skills && node.skills.length > 0) {
+                const skillsList = document.createElement('div');
+                skillsList.className = 'skills-list';
+                
+                node.skills.forEach(skill => {
+                    const skillItem = document.createElement('div');
+                    skillItem.className = skill.type === 'knowledge' ? 'knowledge-item' : 'skill-item';
+                    skillItem.textContent = skill.name;
+                    skillItem.style.cursor = 'pointer';
+                    
+                    skillItem.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showSelectedSkillDetails(skill);
+                    });
+                    
+                    skillsList.appendChild(skillItem);
+                });
+                
+                nodeDiv.appendChild(skillsList);
+            }
+            
+            return nodeDiv;
+        }
+
+        function isPartOfPath(currentPath, selectedPath) {
+            if (currentPath.length >= selectedPath.length) return false;
+            return selectedPath.every((item, index) => currentPath[index] === item);
+        }
+
+        function selectNode(path) {
+            selectedNodePath = path;
+            document.getElementById('selected-node-path').textContent = path.join(' > ');
+            
+            // Odstranimo prejšnje označbe
+            document.querySelectorAll('.node-content.node-selected, .node-content.node-path').forEach(el => {
+                el.classList.remove('node-selected', 'node-path');
+            });
+            
+            // Poiščemo vse node-content elemente
+            const container = path[0].toLowerCase().includes('knowledge') ? 
+                document.getElementById('knowledge-tree-container') : 
+                document.getElementById('skills-tree-container');
+            
+            const allNodes = container.getElementsByClassName('node-content');
+            
+            // Označimo vozlišča na poti
+            let currentPath = [];
+            for (const nodeName of path) {
+                currentPath.push(nodeName);
+                for (const node of allNodes) {
+                    const label = node.querySelector('span:last-child');
+                    if (label && label.textContent === nodeName) {
+                        if (currentPath.length === path.length) {
+                            // Zadnje vozlišče v poti označimo kot izbrano (oranžno)
+                            node.classList.add('node-selected');
+                            
+                            // Prikažemo podrobnosti o izbranem vozlišču
+                            document.getElementById('skill-details').style.display = 'block';
+                            document.getElementById('edit-skill-name').value = nodeName;
+                            document.getElementById('edit-skill-type').value = path[0].toLowerCase().includes('knowledge') ? 'knowledge' : 'skill';
+                            
+                            // Pridobimo podrobnosti o vozlišču iz API-ja
+                            fetch(`/skill/${encodeURIComponent(nodeName)}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    document.getElementById('edit-skill-description').value = data.description || '';
+                                })
+                                .catch(error => {
+                                    console.error('Napaka pri pridobivanju podrobnosti:', error);
+                                    document.getElementById('edit-skill-description').value = '';
+                                });
+                            
+                        } else {
+                            // Ostala vozlišča na poti označimo kot del poti (rumeno)
+                            node.classList.add('node-path');
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            // Poskrbimo, da je izbrano vozlišče vidno
+            const selectedNode = container.querySelector('.node-content.node-selected');
+            if (selectedNode) {
+                selectedNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function arraysEqual(a, b) {
+            if (a.length !== b.length) return false;
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        }
+
+        // Nova funkcija za čiščenje vseh označb v drevesu
+        function clearAllHighlights() {
+            // Odstranimo vse možne označbe
+            document.querySelectorAll('.node-content.node-selected, .node-content.node-path, .search-highlight').forEach(el => {
+                el.classList.remove('node-selected');
+                el.classList.remove('node-path');
+                el.classList.remove('search-highlight');
+            });
+        }
+        
+        // Nova funkcija za zanesljivo odpiranje poti od korena navzdol
+        function openPathDirectly(path, currentIndex = 0, callback) {
+            if (!path || path.length === 0) {
+                if (callback) callback();
+                return;
+            }
+            
+            if (currentIndex >= path.length) {
+                if (callback) callback();
+                return;
+            }
+            
+            // Določimo, v katerem zavihku smo
+            const isKnowledge = path[0].toLowerCase().includes('knowledge');
+            const container = isKnowledge ? 
+                document.getElementById('knowledge-tree-container') : 
+                document.getElementById('skills-tree-container');
+            
+            // Zagotovimo, da je izbran pravilen zavihek
+            if (isKnowledge) {
+                if (!document.getElementById('knowledge-tree').classList.contains('active')) {
+                    document.getElementById('knowledge-tab').click();
+                }
+            } else {
+                if (!document.getElementById('skills-tree').classList.contains('active')) {
+                    document.getElementById('skills-tab').click();
+                }
+            }
+            
+            // Počakamo, da se zavihek naloži
+            setTimeout(() => {
+                // Sestavimo trenutno delno pot
+                const partialPath = path.slice(0, currentIndex + 1);
+                console.log(`Odpiranje poti na indeksu ${currentIndex}: ${partialPath.join(' > ')}`);
+                
+                // Poiščemo vse node-content elemente
+                const allNodes = container.querySelectorAll('.node-content');
+                let foundNode = false;
+                
+                for (const node of allNodes) {
+                    const label = node.querySelector('span:last-child');
+                    if (label && label.textContent === path[currentIndex]) {
+                        // Našli smo ustrezno vozlišče na tej ravni
+                        foundNode = true;
+                        console.log(`Našel vozlišče: ${label.textContent}`);
+                        
+                        // Razširimo vozlišče, če ima otroke in ni zadnje v poti
+                        if (currentIndex < path.length - 1) {
+                            const toggle = node.querySelector('.toggle');
+                            const childrenContainer = node.parentElement.querySelector('.children-container');
+                            
+                            if (toggle && childrenContainer && childrenContainer.style.display === 'none') {
+                                console.log(`Razširjam vozlišče: ${label.textContent}`);
+                                childrenContainer.style.display = 'block';
+                                toggle.textContent = '▼';
+                                
+                                // Po razširitvi nadaljujemo z naslednjim delom poti
+                                setTimeout(() => {
+                                    openPathDirectly(path, currentIndex + 1, callback);
+                                }, 100);
+                            } else {
+                                // Vozlišče je že razširjeno ali nima otrok, nadaljujemo z naslednjim
+                                openPathDirectly(path, currentIndex + 1, callback);
+                            }
+                        } else {
+                            // Smo na koncu poti, pokličemo callback
+                            if (callback) callback();
+                        }
+                        
+                        break;
+                    }
+                }
+                
+                if (!foundNode) {
+                    console.warn(`Ne najdem vozlišča na indeksu ${currentIndex}: ${path[currentIndex]}`);
+                    
+                    // Poskusimo razširiti vsa vozlišča na tej ravni, morda se pokaže naše iskano vozlišče
+                    let expandedAny = false;
+                    for (const node of allNodes) {
+                        const toggle = node.querySelector('.toggle');
+                        const childrenContainer = node.parentElement.querySelector('.children-container');
+                        
+                        if (toggle && childrenContainer && childrenContainer.style.display === 'none') {
+                            childrenContainer.style.display = 'block';
+                            toggle.textContent = '▼';
+                            expandedAny = true;
+                        }
+                    }
+                    
+                    if (expandedAny) {
+                        console.log("Razširil sem vozlišča, poskušam znova");
+                        // Počakamo, da se DOM posodobi, in poskusimo znova
+                        setTimeout(() => {
+                            openPathDirectly(path, currentIndex, callback);
+                        }, 100);
+                    } else {
+                        // Ni več vozlišč za razširiti, poskusimo z naslednjim delom poti
+                        if (currentIndex < path.length - 1) {
+                            openPathDirectly(path, currentIndex + 1, callback);
+                        } else {
+                            if (callback) callback();
+                        }
+                    }
+                }
+            }, 100);
+        }
+        
+        // Nova funkcija za izbiro in označevanje vozlišča
+        function tryToSelectNode(path) {
+            return new Promise((resolve) => {
+                if (!path || path.length === 0) {
+                    resolve(false);
+                    return;
+                }
+                
+                console.log("Poskušam izbrati vozlišče:", path.join(' > '));
+                
+                // Določimo, v katerem zavihku smo
+                const isKnowledge = path[0].toLowerCase().includes('knowledge');
+                const container = isKnowledge ? 
+                    document.getElementById('knowledge-tree-container') : 
+                    document.getElementById('skills-tree-container');
+                
+                // Zagotovimo, da je izbran pravilen zavihek
+                if (isKnowledge) {
+                    if (!document.getElementById('knowledge-tree').classList.contains('active')) {
+                        document.getElementById('knowledge-tab').click();
+                    }
+                } else {
+                    if (!document.getElementById('skills-tree').classList.contains('active')) {
+                        document.getElementById('skills-tab').click();
+                    }
+                }
+                
+                // Uporabimo setTimeout za zakasnitev, da se zavihek naloži
+                setTimeout(() => {
+                    // Najprej odstranimo vse prejšnje označbe
+                    clearAllHighlights();
+                    
+                    // Poiščemo ciljno vozlišče
+                    const targetName = path[path.length - 1];
+                    const allNodes = container.querySelectorAll('.node-content');
+                    let foundNode = false;
+                    
+                    // Najprej poskusimo poiskati točno vozlišče po poti
+                    let currentPath = [];
+                    let currentNodes = [];
+                    
+                    for (const nodeName of path) {
+                        currentPath.push(nodeName);
+                        let foundCurrentNode = false;
+                        
+                        for (const node of allNodes) {
+                            const label = node.querySelector('span:last-child');
+                            if (label && label.textContent === nodeName) {
+                                // Shranimo najdeno vozlišče
+                                currentNodes.push(node);
+                                foundCurrentNode = true;
+                                
+                                if (currentPath.length === path.length) {
+                                    // Označimo samo zadnje vozlišče v poti
+                                    node.classList.add('node-selected');
+                                    node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    
+                                    // Nastavimo izbrano vozlišče in prikažemo podrobnosti
+                                    selectedNodePath = path;
+                                    document.getElementById('selected-node-path').textContent = path.join(' > ');
+                                    document.getElementById('skill-details').style.display = 'block';
+                                    document.getElementById('edit-skill-name').value = nodeName;
+                                    document.getElementById('edit-skill-type').value = path[0].toLowerCase().includes('knowledge') ? 'knowledge' : 'skill';
+                                    
+                                    // Pridobimo podrobnosti o vozlišču iz API-ja
+                                    fetch(`/skill/${encodeURIComponent(nodeName)}`)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            document.getElementById('edit-skill-description').value = data.description || '';
+                                        })
+                                        .catch(error => {
+                                            console.error('Napaka pri pridobivanju podrobnosti:', error);
+                                            document.getElementById('edit-skill-description').value = '';
+                                        });
+                                    
+                                    foundNode = true;
+                                }
+                                
+                                break;
+                            }
+                        }
+                        
+                        if (!foundCurrentNode) break;
+                    }
+                    
+                    // Če nismo našli celotne poti, poskusimo poiskati samo po imenu
+                    if (!foundNode) {
+                        console.log("Ne najdem celotne poti, iščem samo po imenu:", targetName);
+                        
+                        for (const node of allNodes) {
+                            const label = node.querySelector('span:last-child');
+                            if (label && label.textContent === targetName) {
+                                // Označimo vozlišče z rumeno barvo
+                                node.classList.add('node-selected');
+                                node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                
+                                // Nastavimo izbrano vozlišče
+                                let newPath = [path[0]]; // Ohranimo prvi element (Skills ali Knowledge)
+                                newPath.push(targetName);
+                                selectedNodePath = newPath;
+                                document.getElementById('selected-node-path').textContent = newPath.join(' > ');
+                                
+                                foundNode = true;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    resolve(foundNode);
+                }, 100);
+            });
+        }
+
+        async function searchSkills(keyword) {
+            try {
+                let results = [];
+                
+                function searchInTree(tree, currentPath = []) {
+                    for (const [key, value] of Object.entries(tree)) {
+                        const newPath = [...currentPath, key];
+                        
+                        if (key.toLowerCase().includes(keyword.toLowerCase())) {
+                            results.push({path: newPath, matchIndex: key.toLowerCase().indexOf(keyword.toLowerCase())});
+                        }
+                        
+                        if (value.skills) {
+                            value.skills.forEach(skill => {
+                                if (skill.name.toLowerCase().includes(keyword.toLowerCase())) {
+                                    results.push({
+                                        path: [...newPath],
+                                        skill: skill,
+                                        matchIndex: skill.name.toLowerCase().indexOf(keyword.toLowerCase())
+                                    });
+                                }
+                            });
+                        }
+                        
+                        for (const [childKey, childValue] of Object.entries(value)) {
+                            if (childKey !== 'skills' && typeof childValue === 'object') {
+                                searchInTree({ [childKey]: childValue }, newPath);
+                            }
+                        }
+                    }
+                }
+                
+                searchInTree(skillsTreeData);
+                searchInTree(knowledgeTreeData);
+                
+                const resultsDiv = document.getElementById('search-results');
+                resultsDiv.innerHTML = '';
+                
+                if (results.length > 0) {
+                    results.forEach(result => {
+                        const div = document.createElement('div');
+                        div.className = 'alert alert-info mb-2';
+                        div.style.cursor = 'pointer';
+                        
+                        const text = result.skill ? result.skill.name : result.path[result.path.length - 1];
+                        const pathText = result.path.join(' > ');
+                        const matchIndex = text.toLowerCase().indexOf(keyword.toLowerCase());
+                        
+                        const beforeMatch = text.substring(0, matchIndex);
+                        const match = text.substring(matchIndex, matchIndex + keyword.length);
+                        const afterMatch = text.substring(matchIndex + keyword.length);
+                        
+                        div.innerHTML = `${pathText} > ${beforeMatch}<span class="search-highlight">${match}</span>${afterMatch}`;
+                        
+                        div.onmouseover = () => div.style.backgroundColor = '#e3f2fd';
+                        div.onmouseout = () => div.style.backgroundColor = '';
+                        
+                        div.onclick = async function() {
+                            // Dodamo indikator, da se dogaja nalaganje
+                            this.style.opacity = '0.7';
+                            this.style.pointerEvents = 'none';
+                            
+                            // Dodamo spinner za boljšo povratno informacijo uporabniku
+                            const loadingSpinner = document.createElement('span');
+                            loadingSpinner.className = 'spinner-border spinner-border-sm ms-2';
+                            loadingSpinner.setAttribute('role', 'status');
+                            loadingSpinner.innerHTML = '<span class="visually-hidden">Nalagam...</span>';
+                            this.appendChild(loadingSpinner);
+                            
+                            try {
+                                // Določimo, v katerem zavihku smo in ciljno vozlišče
+                            const isKnowledge = result.path[0].toLowerCase().includes('knowledge');
+                                const targetName = result.path[result.path.length - 1];
+                                
+                                console.log(`Klik na rezultat iskanja: ${targetName} (${isKnowledge ? 'Znanje' : 'Veščina'})`);
+                                
+                                // 1. Poskusimo najprej z direktno metodo forceFocusNodeByName
+                                console.log('Poskušam najprej z direktnim pristopom forceFocusNodeByName');
+                                const focusSuccess = await forceFocusNodeByName(targetName, isKnowledge);
+                                
+                                // 2. Če prva metoda ni uspešna, poskusimo še druge pristope
+                                if (!focusSuccess) {
+                                    console.log('Direktni pristop ni uspel, poskušam z drugimi metodami');
+                                    
+                                    // Poskusimo s klasičnim pristopom openPathDirectly
+                                    await new Promise(resolve => {
+                                        openPathDirectly(result.path, 0, resolve);
+                                    });
+                            
+                                    // Po odpiranju poti poskusimo izbrati vozlišče
+                                    await tryToSelectNode(result.path);
+                                }
+                                
+                                // 3. Prikažemo podrobnosti, če je rezultat veščina
+                            if (result.skill) {
+                                document.getElementById('skill-details').style.display = 'block';
+                                document.getElementById('edit-skill-name').value = result.skill.name;
+                                document.getElementById('edit-skill-type').value = result.skill.type;
+                                document.getElementById('edit-skill-description').value = result.skill.description || '';
+                                selectedSkill = result.skill;
+                                }
+                                
+                            } catch (error) {
+                                console.error('Napaka pri navigaciji:', error);
+                                alert('Napaka pri navigaciji: ' + error.message);
+                            } finally {
+                                // Odstranimo spinner in normaliziramo element
+                                if (loadingSpinner && loadingSpinner.parentNode) {
+                                    loadingSpinner.parentNode.removeChild(loadingSpinner);
+                                }
+                                this.style.opacity = '1';
+                                this.style.pointerEvents = 'auto';
+                            }
+                        };
+                        
+                        resultsDiv.appendChild(div);
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<div class="alert alert-warning">Ni najdenih rezultatov</div>';
+                }
+            } catch (error) {
+                console.error('Napaka pri iskanju:', error);
+                document.getElementById('search-results').innerHTML = 
+                    '<div class="alert alert-danger">Napaka pri iskanju</div>';
+            }
+        }
+
+        async function addSkill(nodePath, skillName, skillType, description) {
+            try {
+                if (nodePath.length === 0) {
+                    alert(skillType === 'knowledge' ? 
+                        'Izberite vozlišče, kamor želite dodati znanje!' : 
+                        'Izberite vozlišče, kamor želite dodati veščino!');
+                    return;
+                }
+                
+                const response = await fetch('/skill', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        path: nodePath,
+                        name: skillName,
+                        type: skillType,
+                        description: description
+                    })
+                });
+                
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.error || 'Napaka pri dodajanju');
+                }
+                
+                await loadTree();
+                
+                document.getElementById('new-skill-name').value = '';
+                document.getElementById('new-skill-description').value = '';
+                
+                expandPath(nodePath);
+                
+                alert(skillType === 'knowledge' ? 'Znanje uspešno dodano!' : 'Veščina uspešno dodana!');
+                
+            } catch (error) {
+                console.error('Napaka:', error);
+                alert('Napaka pri dodajanju: ' + error.message);
+            }
+        }
+
+        async function getSkillDetails(skillName) {
+            try {
+                const response = await fetch(`/skill/${encodeURIComponent(skillName)}`);
+                if (!response.ok) throw new Error('Napaka pri pridobivanju podrobnosti');
+                return await response.json();
+            } catch (error) {
+                console.error('Napaka:', error);
+                return null;
+            }
+        }
+
+        async function updateSkillDetails(skillName, details) {
+            try {
+                const response = await fetch(`/skill/${encodeURIComponent(skillName)}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(details)
+                });
+                
+                if (!response.ok) throw new Error('Napaka pri posodabljanju');
+                
+                await loadTree();
+                alert('Veščina uspešno posodobljena!');
+            } catch (error) {
+                console.error('Napaka:', error);
+                alert('Napaka pri posodabljanju veščine: ' + error.message);
+            }
+        }
+
+        function showSkillDetails(skill) {
+            selectedSkill = skill;
+            const detailsDiv = document.getElementById('skill-details');
+            detailsDiv.style.display = 'block';
+            
+            document.getElementById('edit-skill-name').value = skill.name;
+            document.getElementById('edit-skill-type').value = 
+                skill.name.toLowerCase().includes('knowledge') ? 'knowledge' : 'skill';
+            document.getElementById('edit-skill-description').value = skill.description || '';
+        }
+
+        function hideSkillDetails() {
+            selectedSkill = null;
+            document.getElementById('skill-details').style.display = 'none';
+        }
+
+        async function addNode(nodePath, nodeName) {
+            try {
+                const response = await fetch('/node', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        path: nodePath,
+                        name: nodeName
+                    })
+                });
+                
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.error || 'Napaka pri dodajanju vozlišča');
+                }
+                
+                await loadTree();
+                document.getElementById('new-node-name').value = '';
+                alert('Vozlišče uspešno dodano!');
+                
+            } catch (error) {
+                console.error('Napaka:', error);
+                alert('Napaka pri dodajanju vozlišča: ' + error.message);
+            }
+        }
+
+        function showSelectedSkillDetails(skill) {
+            console.log("Prikazujem podrobnosti za veščino:", skill);
+            
+            // Najprej preverimo, če elementi obstajajo
+            const detailsDiv = document.getElementById('selected-skill-details');
+            const nameInput = document.getElementById('view-skill-name');
+            const typeInput = document.getElementById('view-skill-type');
+            const descInput = document.getElementById('view-skill-description');
+            
+            if (!detailsDiv || !nameInput || !typeInput || !descInput) {
+                console.error("Manjkajo potrebni elementi za prikaz podrobnosti!");
+                return;
+            }
+            
+            // Nastavimo vrednosti
+            currentSelectedSkill = skill;
+            nameInput.value = skill.name;
+            typeInput.value = skill.type === 'knowledge' ? 'Znanje' : 'Veščina';
+            descInput.value = skill.description || '';
+            
+            // Prikažemo sekcijo s podrobnostmi
+            detailsDiv.style.display = 'block';
+            
+            // Skrijemo sekcijo za urejanje
+            const editDiv = document.getElementById('edit-skill-details');
+            if (editDiv) {
+                editDiv.style.display = 'none';
+            }
+        }
+
+        function showEditSkillForm() {
+            if (!currentSelectedSkill) {
+                console.error("Ni izbrane veščine za urejanje!");
+                return;
+            }
+            
+            console.log("Prikazujem obrazec za urejanje veščine:", currentSelectedSkill);
+            
+            // Skrijemo prikaz podrobnosti in prikažemo obrazec za urejanje
+            const detailsDiv = document.getElementById('selected-skill-details');
+            const editDiv = document.getElementById('edit-skill-details');
+            
+            if (detailsDiv && editDiv) {
+                detailsDiv.style.display = 'none';
+                editDiv.style.display = 'block';
+                
+                // Nastavimo vrednosti polj
+                document.getElementById('edit-skill-name-field').value = currentSelectedSkill.name;
+                document.getElementById('edit-skill-type-field').value = currentSelectedSkill.type;
+                document.getElementById('edit-skill-description-field').value = currentSelectedSkill.description || '';
+            } else {
+                console.error("Elementi za urejanje niso bili najdeni!");
+            }
+        }
+
+        function hideSkillForms() {
+            document.getElementById('selected-skill-details').style.display = 'none';
+            document.getElementById('edit-skill-details').style.display = 'none';
+            currentSelectedSkill = null;
+        }
+
+        async function saveSkillChanges() {
+            if (!currentSelectedSkill) return;
+            
+            const updatedSkill = {
+                name: document.getElementById('edit-skill-name-field').value.trim(),
+                type: document.getElementById('edit-skill-type-field').value,
+                description: document.getElementById('edit-skill-description-field').value.trim()
+            };
+            
+            try {
+                const response = await fetch(`/skill/${encodeURIComponent(currentSelectedSkill.name)}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedSkill)
+                });
+                
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.error || 'Napaka pri posodabljanju');
+                }
+                
+                await loadTree();
+                hideSkillForms();
+                alert('Kompetenca uspešno posodobljena!');
+                
+            } catch (error) {
+                console.error('Napaka:', error);
+                alert('Napaka pri posodabljanju: ' + error.message);
+            }
+        }
+
+        async function deleteSkill() {
+            if (!currentSelectedSkill || !confirm('Ali ste prepričani, da želite izbrisati to kompetenco?')) return;
+            
+            try {
+                const response = await fetch(`/skill/${encodeURIComponent(currentSelectedSkill.name)}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.error || 'Napaka pri brisanju');
+                }
+                
+                await loadTree();
+                hideSkillForms();
+                alert('Kompetenca uspešno izbrisana!');
+                
+            } catch (error) {
+                console.error('Napaka:', error);
+                alert('Napaka pri brisanju: ' + error.message);
+            }
+        }
+
+        // Dodamo funkcijo za preverjanje, če je element v DOM-u
+        function checkElementsExist() {
+            const elements = [
+                'selected-skill-details',
+                'edit-skill-details',
+                'view-skill-name',
+                'view-skill-type',
+                'view-skill-description',
+                'edit-skill-btn',
+                'delete-skill-btn'
+            ];
+            
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                console.log(`Element '${id}' ${element ? 'obstaja' : 'NE OBSTAJA'}`);
+            });
+        }
+
+        // Dodamo funkcije za upravljanje z uporabnikom
+        function checkAuth() {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                window.location.href = '/static/login.html';
+                return;
+            }
+            
+            const userData = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `Prijavljen kot: ${userData.username}`;
+            
+            // Prikaži/skrij elemente glede na pravice
+            const uvozLink = document.getElementById('uvozLink');
+            if (userData.role === 'admin') {
+                uvozLink.style.display = 'block';
+            } else {
+                uvozLink.style.display = 'none';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '/static/login.html';
+        }
+
+        // Nova funkcija za prisilno odpiranje in fokusiranje vozlišča po imenu
+        async function forceFocusNodeByName(nodeName, isKnowledge = false) {
+            console.log(`Prisilno fokusiranje vozlišča: ${nodeName} (${isKnowledge ? 'Znanje' : 'Veščina'})`);
+            
+            // 1. Izberemo pravilen zavihek
+            if (isKnowledge) {
+                document.getElementById('knowledge-tab').click();
+            } else {
+                document.getElementById('skills-tab').click();
+            }
+            
+            // Počakamo, da se zavihek naloži
+            await new Promise(resolve => setTimeout(resolve, 150));
+            
+            // 2. Pridobimo referenco na kontejner
+            const container = isKnowledge ? 
+                document.getElementById('knowledge-tree-container') : 
+                document.getElementById('skills-tree-container');
+            
+            // 3. Počistimo obstoječe označbe
+            clearAllHighlights();
+            
+            // 4. Prvi poskus - direktno iskanje vozlišča po imenu
+            let found = false;
+            let allNodes = container.querySelectorAll('.node-content');
+            
+            // Funkcija za rekurzivno odpiranje vseh vozlišč v drevesu
+            async function expandAllNodes() {
+                // Označi vse aktualne zaprte toggleje
+                const closedToggles = container.querySelectorAll('.toggle:not(:empty)');
+                let expandedCount = 0;
+                
+                for (const toggle of closedToggles) {
+                    if (toggle.textContent === '▶') {
+                        toggle.click();
+                        expandedCount++;
+                        // Kratka zakasnitev med kliki
+                        await new Promise(resolve => setTimeout(resolve, 10));
+                    }
+                }
+                
+                // Če smo odprli vsaj eno vozlišče, počakamo in ponovno poskusimo
+                if (expandedCount > 0) {
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                    // Rekurzivno nadaljujemo z odpiranjem
+                    await expandAllNodes();
+                }
+                
+                return expandedCount;
+            }
+            
+            // Najprej odpremo vse vozlišče v drevesu
+            const expandedAny = await expandAllNodes();
+            console.log(`Odprto ${expandedAny} vozlišč v drevesu`);
+            
+            // Ponovno poiščemo vse vozlišča po odpiranju
+            allNodes = container.querySelectorAll('.node-content');
+            
+            // Sedaj poskusimo najti ciljno vozlišče
+            for (const node of allNodes) {
+                const label = node.querySelector('span:last-child');
+                if (label && label.textContent === nodeName) {
+                    // Našli smo vozlišče, ga označimo in prikažemo
+                    node.classList.add('node-selected');
+                    node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Nastavimo izbrano vozlišče v globalnem stanju
+                    let newPath = [isKnowledge ? 'Knowledge' : 'Skills']; // Prvi element je tip drevesa
+                    newPath.push(nodeName);
+                    selectedNodePath = newPath;
+                    document.getElementById('selected-node-path').textContent = newPath.join(' > ');
+                    
+                    found = true;
+                    break;
+                }
+            }
+            
+            // Če še vedno nismo našli vozlišča, poskusimo s približnim iskanjem
+            if (!found) {
+                // Poskusimo s približnim iskanjem - delno ujemanje imen
+                const allTextNodes = container.querySelectorAll('.node-content span:last-child');
+                let bestMatch = null;
+                let bestScore = 0;
+                
+                for (const textNode of allTextNodes) {
+                    const name1 = textNode.textContent.toLowerCase();
+                    const name2 = nodeName.toLowerCase();
+                    
+                    // Preveri delno ujemanje
+                    if (name1.includes(name2) || name2.includes(name1)) {
+                        const matchLength = Math.min(name1.length, name2.length);
+                        const score = matchLength / Math.max(name1.length, name2.length);
+                        
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMatch = textNode;
+                        }
+                    }
+                }
+                
+                // Če smo našli dovolj dobro ujemanje (vsaj 50%)
+                if (bestMatch && bestScore > 0.5) {
+                    const nodeContent = bestMatch.closest('.node-content');
+                    if (nodeContent) {
+                        nodeContent.classList.add('node-selected');
+                        nodeContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        found = true;
+                        
+                        // Nastavimo izbrano vozlišče
+                        let newPath = [isKnowledge ? 'Knowledge' : 'Skills']; // Prvi element je tip drevesa
+                        newPath.push(bestMatch.textContent);
+                        selectedNodePath = newPath;
+                        document.getElementById('selected-node-path').textContent = newPath.join(' > ');
+                    }
+                }
+            }
+            
+            return found;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Stran naložena, začenjam nalaganje drevesa...");
+            checkAuth();
+            loadTree();
+
+            document.getElementById('search-btn').addEventListener('click', () => {
+                const keyword = document.getElementById('search-keyword').value.trim();
+                if (keyword) {
+                    searchSkills(keyword);
+                }
+            });
+
+            document.getElementById('add-node-btn').addEventListener('click', () => {
+                const nodeName = document.getElementById('new-node-name').value.trim();
+                if (!nodeName) {
+                    alert('Vnesite ime vozlišča!');
+                    return;
+                }
+                
+                if (selectedNodePath.length === 0) {
+                    alert('Izberite vozlišče, kamor želite dodati novo vozlišče!');
+                    return;
+                }
+                
+                addNode(selectedNodePath, nodeName);
+            });
+
+            document.getElementById('add-skill-btn').addEventListener('click', () => {
+                const skillName = document.getElementById('new-skill-name').value.trim();
+                const skillType = document.getElementById('skill-type').value;
+                const description = document.getElementById('new-skill-description').value.trim();
+                
+                if (!skillName) {
+                    alert(skillType === 'knowledge' ? 'Vnesite ime znanja!' : 'Vnesite ime veščine!');
+                    return;
+                }
+                
+                addSkill(selectedNodePath, skillName, skillType, description);
+            });
+
+            document.getElementById('update-skill-btn').addEventListener('click', async () => {
+                if (!selectedSkill) return;
+                
+                const updatedSkill = {
+                    name: document.getElementById('edit-skill-name').value.trim(),
+                    type: document.getElementById('edit-skill-type').value,
+                    description: document.getElementById('edit-skill-description').value.trim()
+                };
+                
+                await updateSkillDetails(selectedSkill.name, updatedSkill);
+            });
+            
+            document.getElementById('skills-tab').addEventListener('click', () => {
+                document.getElementById('skills-tree').classList.add('active', 'show');
+                document.getElementById('knowledge-tree').classList.remove('active', 'show');
+            });
+            
+            document.getElementById('knowledge-tab').addEventListener('click', () => {
+                document.getElementById('knowledge-tree').classList.add('active', 'show');
+                document.getElementById('skills-tree').classList.remove('active', 'show');
+            });
+
+            document.getElementById('edit-skill-btn').addEventListener('click', showEditSkillForm);
+            document.getElementById('delete-skill-btn').addEventListener('click', deleteSkill);
+            document.getElementById('save-skill-btn').addEventListener('click', saveSkillChanges);
+            document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+                document.getElementById('edit-skill-details').style.display = 'none';
+                document.getElementById('selected-skill-details').style.display = 'block';
+            });
+
+            console.log("Preverjam obstoj elementov...");
+            checkElementsExist();
+        });
+    </script>
+</body>
+</html> 

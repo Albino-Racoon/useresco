@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: esco
+      MYSQL_USER: esco
+      MYSQL_PASSWORD: esco123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: esco
+      DB_PASSWORD: esco123
+      DB_NAME: esco
+      DB_PORT: 3306
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+volumes:
+  db_data: 

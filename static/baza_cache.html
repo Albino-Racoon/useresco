@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drevo veščin (Cached)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .tree-container {
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 800px;
+            overflow-y: auto;
+        }
+        .tree-node {
+            margin-left: 20px;
+            padding: 5px;
+            border-left: 1px solid #ccc;
+        }
+        .node-content {
+            padding: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .node-content:hover {
+            background-color: #f0f0f0;
+        }
+        .node-selected {
+            background-color: #e3f2fd;
+        }
+        .toggle {
+            margin-right: 5px;
+            cursor: pointer;
+            user-select: none;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .children-container {
+            margin-left: 20px;
+        }
+        #loadingSpinner {
+            display: none;
+        }
+        .cache-indicator {
+            font-size: 0.8em;
+            color: #666;
+            margin-left: 10px;
+        }
+        .skills-list {
+            margin-left: 30px;
+            margin-top: 5px;
+        }
+        .skill-item {
+            padding: 3px;
+            margin: 2px 0;
+            border-radius: 3px;
+            background-color: #f8f9fa;
+        }
+        .knowledge-item {
+            padding: 3px;
+            margin: 2px 0;
+            border-radius: 3px;
+            background-color: #e7f5e7;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ESCO Skills</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Hierarhija</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/uvoz">Uvoz podatkov</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/test">Test</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/cached">Cached drevo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="tree-container">
+                    <h3>Drevo veščin <span id="cacheStatus" class="cache-indicator"></span></h3>
+                    <div id="loadingSpinner" class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Nalaganje...</span>
+                    </div>
+                    <div id="treeContainer"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div id="nodeDetails" class="card mt-3" style="display: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Podrobnosti vozlišča</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Ime:</label>
+                            <input type="text" class="form-control" id="selectedNodeName" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pot:</label>
+                            <input type="text" class="form-control" id="selectedNodePath" readonly>
+                        </div>
+                        <div id="nodeSkills"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedNode = null;
+        const CACHE_DURATION = 5 * 60 * 1000; // 5 minut
+
+        class TreeCache {
+            constructor() {
+                this.storageKey = 'treeData';
+            }
+
+            get() {
+                const cached = localStorage.getItem(this.storageKey);
+                if (!cached) return null;
+
+                const { data, timestamp } = JSON.parse(cached);
+                if (Date.now() - timestamp > CACHE_DURATION) {
+                    this.clear();
+                    return null;
+                }
+
+                return data;
+            }
+
+            set(data) {
+                localStorage.setItem(this.storageKey, JSON.stringify({
+                    data,
+                    timestamp: Date.now()
+                }));
+            }
+
+            clear() {
+                localStorage.removeItem(this.storageKey);
+            }
+        }
+
+        const cache = new TreeCache();
+
+        async function loadTreeFromDb() {
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const cacheStatus = document.getElementById('cacheStatus');
+            loadingSpinner.style.display = 'inline-block';
+
+            try {
+                let treeData;
+                const cachedData = cache.get();
+
+                if (cachedData) {
+                    treeData = cachedData;
+                    cacheStatus.textContent = '(naloženo iz predpomnilnika)';
+                } else {
+                    const response = await fetch('/data');
+                    treeData = await response.json();
+                    cache.set(treeData);
+                    cacheStatus.textContent = '(sveži podatki)';
+                }
+
+                const treeContainer = document.getElementById('treeContainer');
+                treeContainer.innerHTML = '';
+                renderTree(treeData, treeContainer);
+
+            } catch (error) {
+                console.error('Napaka pri nalaganju:', error);
+                alert('Napaka pri nalaganju podatkov');
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        function renderTree(nodes, container) {
+            nodes.forEach(node => {
+                const nodeDiv = document.createElement('div');
+                nodeDiv.className = 'tree-node';
+                
+                const nodeContent = document.createElement('div');
+                nodeContent.className = 'node-content';
+                
+                if (node.children && node.children.length > 0) {
+                    const toggle = document.createElement('span');
+                    toggle.className = 'toggle';
+                    toggle.textContent = '▶';
+                    nodeContent.appendChild(toggle);
+                    
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.className = 'children-container';
+                    childrenContainer.style.display = 'none';
+                    
+                    toggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const isVisible = childrenContainer.style.display !== 'none';
+                        childrenContainer.style.display = isVisible ? 'none' : 'block';
+                        toggle.textContent = isVisible ? '▶' : '▼';
+                    });
+                    
+                    renderTree(node.children, childrenContainer);
+                    nodeDiv.appendChild(childrenContainer);
+                }
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = node.ime || node.naziv;
+                nodeContent.appendChild(nameSpan);
+                
+                nodeContent.addEventListener('click', () => {
+                    selectNode(node, nodeContent);
+                });
+                
+                nodeDiv.insertBefore(nodeContent, nodeDiv.firstChild);
+                container.appendChild(nodeDiv);
+            });
+        }
+
+        function selectNode(node, element) {
+            if (selectedNode) {
+                selectedNode.classList.remove('node-selected');
+            }
+            element.classList.add('node-selected');
+            selectedNode = element;
+            
+            const detailsDiv = document.getElementById('nodeDetails');
+            detailsDiv.style.display = 'block';
+            
+            document.getElementById('selectedNodeName').value = node.ime || node.naziv;
+            document.getElementById('selectedNodePath').value = node.uri || '';
+            
+            const skillsDiv = document.getElementById('nodeSkills');
+            skillsDiv.innerHTML = `
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h6>Podrobnosti</h6>
+                        <p><strong>URI:</strong> ${node.uri || '-'}</p>
+                        <p><strong>Nivo:</strong> ${node.nivo_indentacije || '0'}</p>
+                        ${node.opis ? `<p><strong>Opis:</strong> ${node.opis}</p>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Naloži drevo ob zagonu
+        document.addEventListener('DOMContentLoaded', loadTreeFromDb);
+    </script>
+</body>
+</html>

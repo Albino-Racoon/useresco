@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESCO Primerjava Veščin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .skill-card {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .skill-card.selected {
+            border: 2px solid #007bff;
+        }
+        .checkbox-container {
+            display: inline-block;
+            width: 20px;
+        }
+        .info-btn {
+            cursor: pointer;
+            color: #007bff;
+            margin-left: 5px;
+        }
+        .match-row {
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .skill-panel {
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+        }
+        .difference-row {
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .difference-row.added {
+            background-color: #d4edda;
+        }
+        .difference-row.removed {
+            background-color: #f8d7da;
+        }
+        .difference-row.changed {
+            background-color: #cce5ff;
+        }
+        .radio-container {
+            display: inline-block;
+            width: 20px;
+        }
+        .stats {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        #searchContainer {
+            margin-bottom: 15px;
+        }
+        #searchResults {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .tab-content {
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigacija -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ESCO Primerjava Veščin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#comparatorTab">Primerjava</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#confirmTab">Potrjevanje</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#searchTab">Iskanje</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#changesOverviewTab">Pregled sprememb</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Zavihki -->
+    <div class="tab-content">
+        <!-- Glavni zavihek za primerjavo -->
+        <div class="tab-pane fade show active" id="comparatorTab">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- UM veščine -->
+                    <div class="col-md-3 d-flex flex-column" style="height: 80vh;">
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <h5>UM Veščine</h5>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <button class="btn btn-primary btn-sm mb-3" id="loadUmSkillsBtn">Naloži testni_um.csv</button>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text">Išči UM:</span>
+                                    <input type="text" class="form-control" id="umSearchInput" placeholder="Išči po UM veščinah">
+                                </div>
+                                <div id="umSkillsContainer" class="skill-panel flex-fill" style="min-height:0;">
+                                    <div id="umLoading" class="d-flex justify-content-center align-items-center" style="height: 80px;">
+                                        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje ...</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ujemanja -->
+                    <div class="col-md-5 d-flex flex-column" style="height: 80vh;">
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <h5>Nastavitve in ujemajoče veščine</h5>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Prvi direktorij:</span>
+                                            <input type="text" class="form-control" id="dir1Input" value="ESCO dataset - v1.0.7 - classification - en - csv">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Drugi direktorij:</span>
+                                            <input type="text" class="form-control" id="dir2Input" value="ESCO dataset - v1.2.0 - classification - en - csv (3)">
+                                            <button class="btn btn-primary ms-2" id="compareBtn">Primerjaj</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-2" id="searchInputGroup" style="display:none;">
+                                    <span class="input-group-text">Išči ujemanja:</span>
+                                    <input type="text" class="form-control" id="searchInput" placeholder="Išči po ujemanjih">
+                                </div>
+                                <div class="mb-2">
+                                    <button class="btn btn-success" id="mergeBtn">Združi izbrane</button>
+                                </div>
+                                <div class="mb-2">
+                                    <span>Razvrsti po:</span>
+                                    <button class="btn btn-outline-secondary btn-sm" id="sortSimilarityDesc">% Ujemanja ↓</button>
+                                    <button class="btn btn-outline-secondary btn-sm" id="sortSimilarityAsc">% Ujemanja ↑</button>
+                                    <button class="btn btn-outline-secondary btn-sm" id="sortUmNameDesc">UM Veščini ↓</button>
+                                    <button class="btn btn-outline-secondary btn-sm" id="sortUmNameAsc">UM Veščini ↑</button>
+                                </div>
+                                <div id="matchesContainer" class="skill-panel flex-fill" style="min-height:0;">
+                                    <div id="matchesLoading" class="d-flex justify-content-center align-items-center" style="height: 80px;">
+                                        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje ...</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Spremembe med verzijami -->
+                    <div class="col-md-4 d-flex flex-column" style="height: 80vh;">
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <h5>Spremembe med verzijami</h5>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <div class="mb-2">
+                                    <div><strong>Skupno število razlik:</strong> <span id="statsTotal"></span></div>
+                                    <div><strong>Dodanih:</strong> <span id="statsAdded"></span> | <strong>Odstranjenih:</strong> <span id="statsRemoved"></span> | <strong>Spremenjenih:</strong> <span id="statsChanged"></span></div>
+                                </div>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text">Išči spremembe:</span>
+                                    <input type="text" class="form-control" id="diffSearchInput" placeholder="Išči po spremembah">
+                                </div>
+                                <div id="differencesContainer" class="skill-panel flex-fill" style="min-height:0;">
+                                    <div id="diffLoading" class="d-flex justify-content-center align-items-center" style="height: 80px;">
+                                        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje ...</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zavihek za potrjevanje -->
+        <div class="tab-pane fade" id="confirmTab">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Potrdi in dodaj UM veščine v skills_en.csv</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Ta funkcija bo dodala vsa imena UM veščin v ustrezen stolpec v skills_en.csv. 
+                           To bo omogočilo iskanje po originalnih in UM imenih veščin.</p>
+                        <div id="pendingLinksContainer" class="mb-3"></div>
+                        <button id="confirmBtn" class="btn btn-success">Potrdi in dodaj UM veščine</button>
+                        <div id="confirmResultContainer" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zavihek za iskanje -->
+        <div class="tab-pane fade" id="searchTab">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Iskanje po ESCO in UM veščinah</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="searchContainer">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Iskalni niz:</span>
+                                <input type="text" class="form-control" id="searchQueryInput" placeholder="Vnesite iskalni niz...">
+                                <button class="btn btn-primary" id="searchExecuteBtn">Išči</button>
+                            </div>
+                            <div class="form-text">Iskanje bo potekalo po originalnih imenih ESCO veščin in po povezanih UM imenih.</div>
+                        </div>
+                        <div id="searchResults" class="list-group">
+                            <!-- Rezultati iskanja bodo tukaj -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zavihek za pregled sprememb -->
+        <div class="tab-pane fade" id="changesOverviewTab">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Pregled vseh sprememb</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">Išči po vseh spremembah:</span>
+                                    <input type="text" class="form-control" id="allDiffSearchInputTop" placeholder="Išči po vseh spremembah">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="changeTypeFilter" class="form-label">Filtriraj po tipu spremembe:</label>
+                            <select id="changeTypeFilter" class="form-select" style="max-width: 300px; display: inline-block; width: auto;">
+                                <option value="all">Vse</option>
+                                <option value="added">Dodano</option>
+                                <option value="changed">Spremenjeno</option>
+                                <option value="removed">Odstranjeno</option>
+                            </select>
+                        </div>
+                        <div id="allDifferencesContainer" class="skill-panel"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal za prikaz podrobnosti o veščini -->
+    <div class="modal fade" id="skillInfoModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="skillInfoTitle">Podrobnosti o veščini</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zapri"></button>
+                </div>
+                <div class="modal-body" id="skillInfoBody">
+                    <!-- Podrobnosti o veščini bodo tukaj -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zapri</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal za potrjevanje združevanja -->
+    <div class="modal fade" id="mergeConfirmModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Potrditev združevanja</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zapri"></button>
+                </div>
+                <div class="modal-body" id="mergeConfirmBody">
+                    <!-- Prikaz združevanja -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Prekliči</button>
+                    <button type="button" class="btn btn-success" id="confirmMergeBtn">Potrdi združevanje</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Globalne spremenljivke
+        let umSkills = [];
+        let escoSkills = [];
+        let differences = [];
+        let matches = [];
+        let selectedUmSkills = new Set();
+        let selectedEscoSkill = null;
+        
+        // DOM elementi
+        const umSkillsContainer = document.getElementById('umSkillsContainer');
+        const matchesContainer = document.getElementById('matchesContainer');
+        const differencesContainer = document.getElementById('differencesContainer');
+        const statsContainer = document.getElementById('statsContainer');
+        const searchInput = document.getElementById('searchInput');
+        const searchQueryInput = document.getElementById('searchQueryInput');
+        const searchResultsContainer = document.getElementById('searchResults');
+        const confirmResultContainer = document.getElementById('confirmResultContainer');
+        const umSearchInput = document.getElementById('umSearchInput');
+        const diffSearchInput = document.getElementById('diffSearchInput');
+        const allDiffSearchInput = document.getElementById('allDiffSearchInput');
+        const allDiffSearchInputTop = document.getElementById('allDiffSearchInputTop');
+
+        // API URL
+        const API_BASE_URL = window.location.origin + '/api';
+
+        // Event Listeners
+        document.getElementById('loadUmSkillsBtn').addEventListener('click', loadUmSkills);
+        document.getElementById('compareBtn').addEventListener('click', compareDirectories);
+        document.getElementById('mergeBtn').addEventListener('click', mergeSelectedSkills);
+        document.getElementById('confirmBtn').addEventListener('click', confirmUmMappings);
+        document.getElementById('searchExecuteBtn').addEventListener('click', executeSearch);
+        document.getElementById('sortSimilarityDesc').addEventListener('click', () => sortMatches('similarity', true));
+        document.getElementById('sortSimilarityAsc').addEventListener('click', () => sortMatches('similarity', false));
+        document.getElementById('sortUmNameDesc').addEventListener('click', () => sortMatches('um_name', true));
+        document.getElementById('sortUmNameAsc').addEventListener('click', () => sortMatches('um_name', false));
+        
+        searchInput.addEventListener('input', filterBySearch);
+        searchQueryInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                executeSearch();
+            }
+        });
+
+        // Funkcije
+        async function loadUmSkills() {
+            showLoading('um');
+            try {
+                const response = await fetch(`${API_BASE_URL}/um-skills`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: 'testni_um.csv' })
+                });
+                const data = await response.json();
+                
+                if (data.error) {
+                    alert(`Napaka pri nalaganju UM veščin: ${data.error}`);
+                    return;
+                }
+                
+                // Naložimo seznam UM veščin
+                const umResponse = await fetch(`${API_BASE_URL}/um-skills`);
+                umSkills = await umResponse.json();
+                
+                renderUmSkills();
+                
+                // Po nalaganju UM veščin lahko takoj naložimo spremembe (razlike)
+                autoLoadDifferences();
+                
+                alert(`Uspešno naloženih ${data.count} UM veščin.`);
+            } catch (error) {
+                console.error('Napaka:', error);
+                alert(`Napaka pri nalaganju UM veščin: ${error.message}`);
+            }
+        }
+
+        function renderUmSkills() {
+            umSkillsContainer.innerHTML = '';
+            selectedUmSkills = new Set(); // Počistimo izbrane veščine
+            
+            umSkills.forEach(skill => {
+                const skillCard = document.createElement('div');
+                skillCard.className = 'skill-card';
+                skillCard.style.backgroundColor = '#f8f9fa';
+                
+                skillCard.innerHTML = `
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="form-check-input" data-uri="${skill.uri}">
+                    </div>
+                    <span class="info-btn" data-uri="${skill.uri}">ℹ️</span>
+                    <span>${skill.name}</span>
+                `;
+                
+                // Event listener za checkbox
+                const checkbox = skillCard.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedUmSkills.add(skill.uri);
+                        skillCard.classList.add('selected');
+                    } else {
+                        selectedUmSkills.delete(skill.uri);
+                        skillCard.classList.remove('selected');
+                    }
+                    
+                    // Posodobimo gumb za združevanje
+                    updateMergeButton();
+                });
+                
+                // Event listener za info gumb
+                const infoBtn = skillCard.querySelector('.info-btn');
+                infoBtn.addEventListener('click', () => showSkillInfo(skill.uri));
+                
+                umSkillsContainer.appendChild(skillCard);
+            });
+        }
+
+        async function compareDirectories() {
+            try {
+                const dir1 = document.getElementById('dir1Input').value;
+                const dir2 = document.getElementById('dir2Input').value;
+                
+                if (!dir1 || !dir2) {
+                    alert('Prosim izberite oba direktorija');
+                    return;
+                }
+                
+                const response = await fetch(`${API_BASE_URL}/compare`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dir1, dir2 })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    alert(`Napaka pri primerjavi: ${data.error}`);
+                    return;
+                }
+                
+                // Shranimo rezultate
+                differences = data.differences;
+                matches = data.matches;
+                
+                // Prikažemo rezultate
+                renderStats(data.stats);
+                renderDifferences(differences);
+                renderMatches(matches);
+                
+            } catch (error) {
+                console.error('Napaka:', error);
+                alert(`Napaka pri primerjavi: ${error.message}`);
+            }
+        }
+
+        function renderStats(stats) {
+            document.getElementById('statsTotal').textContent = stats.total;
+            document.getElementById('statsAdded').textContent = stats.added;
+            document.getElementById('statsRemoved').textContent = stats.removed;
+            document.getElementById('statsChanged').textContent = stats.changed;
+        }
+
+        function renderDifferences(differences) {
+            differencesContainer.innerHTML = '';
+            // Prikažemo samo dodane in spremenjene
+            differences.filter(diff => diff.type !== 'removed').forEach(diff => {
+                const diffRow = document.createElement('div');
+                diffRow.className = `difference-row ${diff.type}`;
+                let diffDetails = diff.details;
+                if (diff.type === 'added') {
+                    diffDetails = diffDetails.replace("+ Dodano:", "● DODANO:");
+                } else {
+                    diffDetails = "● SPREMENJENO:\n" + diffDetails
+                        .replace("- Staro:", "Staro:")
+                        .replace("+ Novo:", "Novo:");
+                }
+                diffRow.innerHTML = `
+                    <div class="radio-container">
+                        <input type="radio" name="diffRadio" class="form-check-input esco-radio" data-uri="${diff.uri}">
+                    </div>
+                    <span class="info-btn" data-uri="${diff.uri}">ℹ️</span>
+                    <div>
+                        <div><strong>URI:</strong> ${diff.uri}</div>
+                        <div><pre>${diffDetails}</pre></div>
+                    </div>
+                `;
+                // Event listener za radio button
+                const radioBtn = diffRow.querySelector('input[type="radio"]');
+                radioBtn.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedEscoSkill = diff.uri;
+                        updateMergeButton();
+                    }
+                });
+                // Event listener za info gumb
+                const infoBtn = diffRow.querySelector('.info-btn');
+                infoBtn.addEventListener('click', () => showSkillInfo(diff.uri));
+                differencesContainer.appendChild(diffRow);
+            });
+        }
+
+        function renderMatches(matches) {
+            matchesContainer.innerHTML = '';
+            selectedEscoSkill = null; // Počistimo izbrano veščino
+            
+            matches.forEach(match => {
+                const matchRow = document.createElement('div');
+                matchRow.className = 'match-row';
+                matchRow.style.backgroundColor = match.color;
+                
+                matchRow.innerHTML = `
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="form-check-input esco-checkbox" data-uri="${match.esco_uri}">
+                    </div>
+                    <span class="info-btn" data-uri="${match.esco_uri}">ℹ️</span>
+                    <div style="flex: 1;">
+                        <div><strong>ESCO:</strong> ${match.esco_label}</div>
+                        <div><strong>Ujemanje:</strong> ${match.similarity}</div>
+                        <div><strong>UM:</strong> ${match.um_label}</div>
+                    </div>
+                `;
+                
+                // Event listener za checkbox
+                const checkbox = matchRow.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function() {
+                    // Dovoli samo en izbran ESCO skill
+                    if (this.checked) {
+                        // Najprej počistimo vse druge checkboxe
+                        document.querySelectorAll('.esco-checkbox').forEach(cb => {
+                            if (cb !== this) {
+                                cb.checked = false;
+                                cb.closest('.match-row').classList.remove('selected');
+                            }
+                        });
+                        selectedEscoSkill = match.esco_uri;
+                        matchRow.classList.add('selected');
+                    } else {
+                        selectedEscoSkill = null;
+                        matchRow.classList.remove('selected');
+                    }
+                });
+                
+                // Event listener za info gumb
+                const infoBtn = matchRow.querySelector('.info-btn');
+                infoBtn.addEventListener('click', () => showSkillInfo(match.esco_uri));
+                
+                matchesContainer.appendChild(matchRow);
+            });
+        }
+
+        function sortMatches(key, reverse) {
+            const sortedMatches = [...matches];
+            
+            if (key === 'similarity') {
+                sortedMatches.sort((a, b) => {
+                    const aVal = parseFloat(a.similarity) || 0;
+                    const bVal = parseFloat(b.similarity) || 0;
+                    return reverse ? bVal - aVal : aVal - bVal;
+                });
+            } else if (key === 'um_name') {
+                sortedMatches.sort((a, b) => {
+                    const aVal = a.um_label.toLowerCase();
+                    const bVal = b.um_label.toLowerCase();
+                    return reverse ? 
+                        bVal.localeCompare(aVal, 'sl') : 
+                        aVal.localeCompare(bVal, 'sl');
+                });
+            }
+            
+            matches = sortedMatches;
+            renderMatches(matches);
+        }
+
+        function filterBySearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            // Filtriramo UM veščine
+            const umCards = umSkillsContainer.querySelectorAll('.skill-card');
+            umCards.forEach(card => {
+                const skillName = card.querySelector('span:last-child').textContent.toLowerCase();
+                card.style.display = skillName.includes(searchTerm) ? 'block' : 'none';
+            });
+            
+            // Filtriramo ujemanja
+            const matchRows = matchesContainer.querySelectorAll('.match-row');
+            matchRows.forEach(row => {
+                const escoName = row.querySelector('div:nth-child(1)').textContent.toLowerCase();
+                const umName = row.querySelector('div:nth-child(3)').textContent.toLowerCase();
+                row.style.display = (escoName.includes(searchTerm) || umName.includes(searchTerm)) ? 'flex' : 'none';
+            });
+            
+            // Filtriramo razlike
+            const diffRows = differencesContainer.querySelectorAll('.difference-row');
+            diffRows.forEach(row => {
+                const content = row.textContent.toLowerCase();
+                row.style.display = content.includes(searchTerm) ? 'block' : 'none';
+            });
+        }
+
+        async function showSkillInfo(skillId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/skill-info/${encodeURIComponent(skillId)}`);
+                const skill = await response.json();
+                
+                if (skill.error) {
+                    alert(`Napaka pri pridobivanju informacij: ${skill.error}`);
+                    return;
+                }
+                
+                // Prikažemo modal
+                const modal = new bootstrap.Modal(document.getElementById('skillInfoModal'));
+                const title = document.getElementById('skillInfoTitle');
+                const body = document.getElementById('skillInfoBody');
+                
+                // Naslov
+                title.textContent = skill.label || skill.name || 'Podrobnosti o veščini';
+                
+                // Vsebina
+                let content = `
+                    <div class="row mb-3">
+                        <div class="col-md-3"><strong>URI:</strong></div>
+                        <div class="col-md-9">${skill.uri || 'Ni URI'}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3"><strong>Tip:</strong></div>
+                        <div class="col-md-9">${skill.skillType || 'Ni tipa'}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3"><strong>Status:</strong></div>
+                        <div class="col-md-9">${skill.status || 'Ni statusa'}</div>
+                    </div>
+                `;
+                
+                // Dodamo povezane UM veščine, če obstajajo
+                if (skill.um_skills && skill.um_skills.length > 0) {
+                    content += `
+                        <div class="row mb-3">
+                            <div class="col-md-3"><strong>Povezane UM veščine:</strong></div>
+                            <div class="col-md-9">${skill.um_skills.join(', ')}</div>
+                        </div>
+                    `;
+                }
+                
+                // Dodamo opis
+                content += `
+                    <div class="row mb-3">
+                        <div class="col-md-3"><strong>Opis:</strong></div>
+                        <div class="col-md-9">
+                            <div class="border p-2 bg-light" style="max-height: 200px; overflow-y: auto;">
+                                ${skill.description || 'Ni opisa'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                body.innerHTML = content;
+                modal.show();
+                
+            } catch (error) {
+                console.error('Napaka:', error);
+                alert(`Napaka pri pridobivanju informacij: ${error.message}`);
+            }
+        }
+
+        // Prikaz modala za potrjevanje združevanja
+        let pendingMerge = null;
+        function renderMergeConfirmModal() {
+            const escoSkill = matches.find(m => m.esco_uri === pendingMerge.esco_uri) || differences.find(d => d.uri === pendingMerge.esco_uri);
+            const umSkillsList = umSkills.filter(skill => pendingMerge.um_uris.includes(skill.uri));
+            let html = `<div><strong>ESCO veščina:</strong> ${escoSkill ? escoSkill.esco_label || escoSkill.details : pendingMerge.esco_uri}</div>`;
+            html += `<div><strong>UM veščine:</strong><ul id='mergeUmList'>`;
+            umSkillsList.forEach(um => {
+                html += `<li data-uri='${um.uri}'>${um.name} <button type='button' class='btn btn-sm btn-outline-danger ms-2 remove-um-btn' data-uri='${um.uri}' title='Odstrani'>✕</button></li>`;
+            });
+            html += `</ul></div>`;
+            document.getElementById('mergeConfirmBody').innerHTML = html;
+            // Dogodki za odstranjevanje
+            document.querySelectorAll('.remove-um-btn').forEach(btn => {
+                btn.onclick = function() {
+                    const uri = this.getAttribute('data-uri');
+                    pendingMerge.um_uris = pendingMerge.um_uris.filter(u => u !== uri);
+                    renderMergeConfirmModal();
+                };
+            });
+            const confirmBtn = document.getElementById('confirmMergeBtn');
+            confirmBtn.disabled = pendingMerge.um_uris.length === 0;
+            // Vedno znova nastavi klik handler, da ne izgubi povezave po rerenderju
+            confirmBtn.onclick = async function() {
+                if (!pendingMerge || pendingMerge.um_uris.length === 0) return;
+                try {
+                    const response = await fetch(`${API_BASE_URL}/merge`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(pendingMerge)
+                    });
+                    const data = await response.json();
+                    if (data.error) {
+                        alert(`Napaka pri združevanju: ${data.error}`);
+                        return;
+                    }
+                    // Zapri modal
+                    bootstrap.Modal.getInstance(document.getElementById('mergeConfirmModal')).hide();
+                    alert(data.message);
+                    // Ponovno naloži UM veščine in spremembe
+                    await loadUmSkills();
+                    await autoLoadDifferences();
+                } catch (error) {
+                    alert('Napaka pri združevanju: ' + error.message);
+                }
+            };
+        }
+        async function mergeSelectedSkills() {
+            if (!selectedEscoSkill || selectedUmSkills.size === 0) {
+                alert('Prosim, izberite eno ESCO veščino in vsaj eno UM veščino.');
+                return;
+            }
+            pendingMerge = {esco_uri: selectedEscoSkill, um_uris: [...selectedUmSkills]};
+            renderMergeConfirmModal();
+            const modal = new bootstrap.Modal(document.getElementById('mergeConfirmModal'));
+            modal.show();
+        }
+        // Ob prikazu zavihka Potrjevanje prikaži pending povezave
+        if (document.querySelector('a[href="#confirmTab"]')) {
+            document.querySelector('a[href="#confirmTab"]').addEventListener('click', function() {
+                renderPendingLinks();
+            });
+        }
+
+        async function confirmUmMappings() {
+            try {
+                // Prikažemo sporočilo o obdelavi
+                confirmResultContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        Potrjevanje in dodajanje UM veščin v teku...
+                    </div>
+                `;
+                
+                const response = await fetch(`${API_BASE_URL}/confirm`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Napaka pri potrjevanju: ${response.status} ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                confirmResultContainer.innerHTML = `
+                    <div class="alert ${data.success ? 'alert-success' : 'alert-warning'}">
+                        ${data.message}
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Napaka:', error);
+                confirmResultContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        Napaka pri potrjevanju: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function renderSearchResults(results) {
+            searchResultsContainer.innerHTML = '';
+            
+            if (results.length === 0) {
+                searchResultsContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        Ni najdenih rezultatov za iskalni niz.
+                    </div>
+                `;
+                return;
+            }
+            
+            // Pred izpisom unikatnih rezultatov odstranimo duplikate
+            const uniqueResults = [];
+            const seenUris = new Set();
+            
+            results.forEach(result => {
+                if (!seenUris.has(result.uri)) {
+                    seenUris.add(result.uri);
+                    uniqueResults.push(result);
+                }
+            });
+            
+            uniqueResults.forEach(result => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'list-group-item';
+                
+                let matchBadge = '';
+                if (result.match_type === 'um_name') {
+                    matchBadge = `<span class="badge bg-info">UM Ime: ${result.um_name}</span>`;
+                } else {
+                    matchBadge = `<span class="badge bg-primary">Originalno ime</span>`;
+                }
+                
+                resultItem.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6>${result.label}</h6>
+                            <small>${result.uri}</small>
+                        </div>
+                        <div>
+                            ${matchBadge}
+                            <span class="info-btn ms-2" data-uri="${result.uri}">ℹ️</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Event listener za info gumb
+                const infoBtn = resultItem.querySelector('.info-btn');
+                infoBtn.addEventListener('click', () => showSkillInfo(result.uri));
+                
+                searchResultsContainer.appendChild(resultItem);
+            });
+            
+            console.log(`Najdenih ${uniqueResults.length} rezultatov za iskalni niz.`);
+        }
+
+        async function executeSearch() {
+            const searchTerm = searchQueryInput.value.trim();
+            
+            if (!searchTerm) {
+                alert('Prosim, vnesite iskalni niz.');
+                return;
+            }
+            
+            try {
+                searchResultsContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        Iskanje v teku...
+                    </div>
+                `;
+                
+                const response = await fetch(`${API_BASE_URL}/search?q=${encodeURIComponent(searchTerm)}`);
+                if (!response.ok) {
+                    throw new Error(`Napaka pri iskanju: ${response.status} ${response.statusText}`);
+                }
+                
+                const results = await response.json();
+                renderSearchResults(results);
+                
+            } catch (error) {
+                console.error('Napaka:', error);
+                searchResultsContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        Napaka pri iskanju: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function updateMergeButton() {
+            const mergeBtn = document.getElementById('mergeBtn');
+            
+            // Omogočimo gumb le, če je izbrana vsaj ena UM veščina in ena ESCO veščina
+            if (selectedUmSkills.size > 0 && selectedEscoSkill) {
+                mergeBtn.disabled = false;
+                mergeBtn.classList.remove('btn-secondary');
+                mergeBtn.classList.add('btn-success');
+            } else {
+                mergeBtn.disabled = true;
+                mergeBtn.classList.remove('btn-success');
+                mergeBtn.classList.add('btn-secondary');
+            }
+        }
+
+        async function autoCompareDirectories() {
+            // Prikažemo loading indikatorje
+            statsContainer.innerHTML = `<div class="alert alert-info">Nalaganje ...</div>`;
+            matchesContainer.innerHTML = `<div class="d-flex justify-content-center align-items-center" style="height: 80px;"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje ...</span></div></div>`;
+            differencesContainer.innerHTML = `<div class="d-flex justify-content-center align-items-center" style="height: 80px;"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje ...</span></div></div>`;
+            await compareDirectories();
+        }
+
+        // Funkcija za prikaz vseh sprememb v novem zavihku
+        function renderAllDifferencesFiltered(differences, filterType = 'all', searchTerm = '') {
+            const container = document.getElementById('allDifferencesContainer');
+            if (!differences || differences.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">Ni sprememb za prikaz.</div>';
+                return;
+            }
+            container.innerHTML = '';
+            let filtered = differences;
+            if (filterType !== 'all') {
+                filtered = differences.filter(diff => diff.type === filterType);
+            }
+            if (searchTerm) {
+                filtered = filtered.filter(diff => {
+                    const content = (diff.details + ' ' + diff.uri).toLowerCase();
+                    return content.includes(searchTerm.toLowerCase());
+                });
+            }
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">Ni sprememb za izbrani filter ali iskalni niz.</div>';
+                return;
+            }
+            filtered.forEach(diff => {
+                const diffRow = document.createElement('div');
+                diffRow.className = `difference-row ${diff.type}`;
+                let diffDetails = diff.details;
+                if (diff.type === 'added') {
+                    diffDetails = diffDetails.replace("+ Dodano:", "● DODANO:");
+                } else if (diff.type === 'removed') {
+                    diffDetails = diffDetails.replace("- Odstranjeno:", "● ODSTRANJENO:");
+                } else {
+                    diffDetails = "● SPREMENJENO:\n" + diffDetails
+                        .replace("- Staro:", "Staro:")
+                        .replace("+ Novo:", "Novo:");
+                }
+                diffRow.innerHTML = `
+                    <span class="info-btn" data-uri="${diff.uri}">ℹ️</span>
+                    <div>
+                        <div><strong>URI:</strong> ${diff.uri}</div>
+                        <div><pre>${diffDetails}</pre></div>
+                    </div>
+                `;
+                const infoBtn = diffRow.querySelector('.info-btn');
+                infoBtn.addEventListener('click', () => showSkillInfo(diff.uri));
+                container.appendChild(diffRow);
+            });
+        }
+
+        // UM search bar filtracija
+        if (umSearchInput) {
+            umSearchInput.addEventListener('input', function() {
+                const searchTerm = umSearchInput.value.toLowerCase();
+                const umCards = umSkillsContainer.querySelectorAll('.skill-card');
+                umCards.forEach(card => {
+                    const skillName = card.querySelector('span:last-child').textContent.toLowerCase();
+                    card.style.display = skillName.includes(searchTerm) ? 'block' : 'none';
+                });
+            });
+        }
+
+        // Matches search bar filtracija
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const matchRows = matchesContainer.querySelectorAll('.match-row');
+                matchRows.forEach(row => {
+                    const escoLabel = row.querySelector('div[style] > div:nth-child(1)')?.textContent?.toLowerCase() || '';
+                    const umLabel = row.querySelector('div[style] > div:nth-child(3)')?.textContent?.toLowerCase() || '';
+                    row.style.display = (escoLabel.includes(searchTerm) || umLabel.includes(searchTerm)) ? 'flex' : 'none';
+                });
+            });
+        }
+
+        // Spremembe med verzijami search bar filtracija
+        if (diffSearchInput) {
+            diffSearchInput.addEventListener('input', function() {
+                const searchTerm = diffSearchInput.value.toLowerCase();
+                const diffRows = differencesContainer.querySelectorAll('.difference-row');
+                diffRows.forEach(row => {
+                    const content = row.textContent.toLowerCase();
+                    row.style.display = content.includes(searchTerm) ? 'block' : 'none';
+                });
+            });
+        }
+
+        // Pregled vseh sprememb search bar filtracija (zgoraj in spodaj sta sinhronizirana)
+        function getAllDiffSearchTerm() {
+            // Če obstaja zgornji search bar, uporabi njega, sicer spodnjega
+            if (allDiffSearchInputTop && allDiffSearchInputTop.value) return allDiffSearchInputTop.value;
+            if (allDiffSearchInput) return allDiffSearchInput.value;
+            return '';
+        }
+        if (allDiffSearchInputTop) {
+            allDiffSearchInputTop.addEventListener('input', function() {
+                const filterType = document.getElementById('changeTypeFilter').value;
+                renderAllDifferencesFiltered(differences, filterType, getAllDiffSearchTerm());
+            });
+        }
+        if (allDiffSearchInput) {
+            allDiffSearchInput.addEventListener('input', function() {
+                const filterType = document.getElementById('changeTypeFilter').value;
+                renderAllDifferencesFiltered(differences, filterType, getAllDiffSearchTerm());
+            });
+        }
+        if (document.getElementById('changeTypeFilter')) {
+            document.getElementById('changeTypeFilter').addEventListener('change', function() {
+                renderAllDifferencesFiltered(differences, this.value, getAllDiffSearchTerm());
+            });
+        }
+        if (document.querySelector('a[href="#changesOverviewTab"]')) {
+            document.querySelector('a[href="#changesOverviewTab"]').addEventListener('click', function() {
+                showAllChangesTab();
+            });
+        }
+        // Ob nalaganju strani prikaži vse spremembe, če je zavihek aktiven
+        if (window.location.hash === '#changesOverviewTab' || document.querySelector('.tab-pane#changesOverviewTab.show')) {
+            setTimeout(showAllChangesTab, 300);
+        }
+
+        // Inicializacija
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Naložimo UM veščine ob zagonu
+            await loadUmSkills();
+            // Samodejno sprožimo primerjavo po nalaganju UM veščin
+            autoCompareDirectories();
+            // Inicializacija zavihkov
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Odstranimo aktivne razrede z vseh povezav
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    // Dodamo aktivni razred na kliknjeno povezavo
+                    this.classList.add('active');
+                    // Pridobimo ID ciljnega zavihka
+                    const targetId = this.getAttribute('href');
+                    // Skrijemo vse zavihke
+                    document.querySelectorAll('.tab-pane').forEach(pane => {
+                        pane.classList.remove('show', 'active');
+                    });
+                    // Prikažemo ciljan zavihek
+                    const targetPane = document.querySelector(targetId);
+                    targetPane.classList.add('show', 'active');
+                    // Preventivno še ročno inicializiramo Bootstrap tab, če bi bil to problem
+                    try {
+                        let bsTab = new bootstrap.Tab(link);
+                        bsTab.show();
+                    } catch (e) {
+                        console.log("Bootstrap Tab ni na voljo:", e);
+                    }
+                });
+            });
+        });
+
+        // Ob zagonu prikažem loading indikatorje in jih odstranim, ko so podatki naloženi
+        function showLoading(section) {
+            if (section === 'um') {
+                umSkillsContainer.innerHTML = `<div id='umLoading' class='d-flex justify-content-center align-items-center' style='height: 80px;'><div class='spinner-border text-primary' role='status'><span class='visually-hidden'>Nalaganje ...</span></div></div>`;
+            } else if (section === 'matches') {
+                matchesContainer.innerHTML = `<div id='matchesLoading' class='d-flex justify-content-center align-items-center' style='height: 80px;'><div class='spinner-border text-primary' role='status'><span class='visually-hidden'>Nalaganje ...</span></div></div>`;
+            } else if (section === 'diff') {
+                differencesContainer.innerHTML = `<div id='diffLoading' class='d-flex justify-content-center align-items-center' style='height: 80px;'><div class='spinner-border text-primary' role='status'><span class='visually-hidden'>Nalaganje ...</span></div></div>`;
+            }
+        }
+        // Prikažem loading na začetku
+        showLoading('um');
+        showLoading('matches');
+        showLoading('diff');
+
+        // Spremembe med verzijami se naložijo takoj po UM veščinah
+        async function autoLoadDifferences() {
+            showLoading('diff');
+            try {
+                // Pridobimo primerjavo (razlike in matches)
+                const dir1 = document.getElementById('dir1Input').value;
+                const dir2 = document.getElementById('dir2Input').value;
+                const response = await fetch(`${API_BASE_URL}/compare`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dir1, dir2 })
+                });
+                const data = await response.json();
+                if (data.error) {
+                    alert(`Napaka pri primerjavi: ${data.error}`);
+                    return;
+                }
+                // Prikažemo spremembe takoj
+                differences = data.differences;
+                renderStats(data.stats);
+                renderDifferences(differences);
+                // Matches naložimo posebej (lahko z zamikom, če želiš)
+                showLoading('matches');
+                setTimeout(() => {
+                    matches = data.matches;
+                    renderMatches(matches);
+                }, 200); // umetni zamik za občutek nalaganja
+            } catch (error) {
+                console.error('Napaka:', error);
+                alert(`Napaka pri nalaganju sprememb: ${error.message}`);
+            }
+        }
+
+        // Prikaz vseh sprememb ob preklopu na zavihek in ob nalaganju strani
+        function showAllChangesTab() {
+            const container = document.getElementById('allDifferencesContainer');
+            if (!differences || differences.length === 0) {
+                container.innerHTML = '<div class="d-flex justify-content-center align-items-center" style="height: 80px;"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje ...</span></div></div>';
+                // Počakaj in poskusi ponovno, ko bodo podatki na voljo
+                setTimeout(showAllChangesTab, 400);
+                return;
+            }
+            renderAllDifferencesFiltered(differences, document.getElementById('changeTypeFilter').value, getAllDiffSearchTerm());
+        }
+    </script>
+</body>
+</html> 

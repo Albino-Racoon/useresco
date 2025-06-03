@@ -1,0 +1,24 @@
+conceptType,conceptUri,skillType,reuseLevel,preferredLabel,altLabels,hiddenLabels,status,modifiedDate,scopeNote,definition,inScheme,description
+skill,http://data.europa.eu/esco/skill/um_007,knowledge,local,Customer service,,,,released,2025-05-04,,,Assisting and engaging customers
+skill,http://data.europa.eu/esco/skill/um_008,knowledge,local,Networking,,,,released,2025-05-04,,,Building professional relationships
+skill,http://data.europa.eu/esco/skill/um_009,knowledge,local,Teamwork,,,,released,2025-05-04,,,Collaborating with others
+skill,http://data.europa.eu/esco/skill/um_010,knowledge,local,Leadership,,,,released,2025-05-04,,,Leading and motivating others
+skill,http://data.europa.eu/esco/skill/um_011,knowledge,local,Negotiation,,,,released,2025-05-04,,,Reaching agreements through discussion
+skill,http://data.europa.eu/esco/skill/um_012,knowledge,local,Conflict resolution,,,,released,2025-05-04,,,Managing disagreements constructively
+skill,http://data.europa.eu/esco/skill/um_014,knowledge,local,Emotional intelligence,,,,released,2025-05-04,,,Understanding and managing emotions
+skill,http://data.europa.eu/esco/skill/um_015,knowledge,local,Decision making,,,,released,2025-05-04,,,Making informed choices
+skill,http://data.europa.eu/esco/skill/um_016,knowledge,local,Public speaking,,,,released,2025-05-04,,,Speaking effectively to an audience
+skill,http://data.europa.eu/esco/skill/um_017,knowledge,local,Research skills,,,,released,2025-05-04,,,Investigating topics systematically
+skill,http://data.europa.eu/esco/skill/um_018,knowledge,local,Technical writing,,,,released,2025-05-04,,,Writing about technical subjects
+skill,http://data.europa.eu/esco/skill/um_019,knowledge,local,Digital literacy,,,,released,2025-05-04,,,Using digital tools effectively
+skill,http://data.europa.eu/esco/skill/um_020,knowledge,local,Coding,,,,released,2025-05-04,,,Writing computer programs
+skill,http://data.europa.eu/esco/skill/um_021,knowledge,local,Database management,,,,released,2025-05-04,,,Organizing and using databases
+skill,http://data.europa.eu/esco/skill/um_022,knowledge,local,Cybersecurity awareness,,,,released,2025-05-04,,,Understanding digital threats
+skill,http://data.europa.eu/esco/skill/um_023,knowledge,local,SEO knowledge,,,,released,2025-05-04,,,Optimizing content for search engines
+skill,http://data.europa.eu/esco/skill/um_024,knowledge,local,Social media marketing,,,,released,2025-05-04,,,Promoting content via social media
+skill,http://data.europa.eu/esco/skill/um_025,knowledge,local,UX design principles,,,,released,2025-05-04,,,Designing user-friendly experiences
+skill,http://data.europa.eu/esco/skill/um_026,knowledge,local,Cloud computing,,,,released,2025-05-04,,,Using remote servers for storage and apps
+skill,http://data.europa.eu/esco/skill/um_027,knowledge,local,Financial literacy,,,,released,2025-05-04,,,Understanding basic finance
+skill,http://data.europa.eu/esco/skill/um_028,knowledge,local,Legal compliance knowledge,,,,released,2025-05-04,,,Understanding legal regulations
+skill,http://data.europa.eu/esco/skill/um_029,knowledge,local,Sustainability practices,,,,released,2025-05-04,,,Promoting environmental responsibility
+skill,http://data.europa.eu/esco/skill/um_030,knowledge,local,Ethical reasoning,,,,released,2025-05-04,,,Making moral decisions in the workplace

@@ -1,0 +1,2629 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drevo veščin iz baze</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .main-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-container {
+            flex: 1;
+            display: flex;
+            height: 100%;
+            min-height: 0;
+            overflow: hidden;
+        }
+        .tree-section {
+            flex: 1 1 0;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+        }
+        .tree-container {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            height: 100%;
+            min-height: 0;
+            max-height: 100%;
+        }
+        .middle-section {
+            flex: 1 1 0;
+            padding: 20px;
+            min-height: 0;
+            overflow-y: auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .right-section {
+            flex: 1 1 0;
+            padding: 20px;
+            background-color: white;
+            overflow-y: auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .toggle {
+            margin-right: 8px;
+            cursor: pointer;
+            user-select: none;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: none;
+            font-size: 22px;
+            transition: transform 0.2s;
+            color: #1e88e5;
+        }
+        .toggle svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+        }
+        .toggle.expanded {
+            transform: rotate(90deg);
+        }
+        .nav-menu {
+            background-color: #1e88e5;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 8px;
+        }
+        .nav-link {
+            color: white !important;
+            font-weight: bold;
+        }
+        .nav-link.active {
+            background-color: #0d47a1 !important;
+        }
+        .tree-node {
+            margin-left: 20px;
+            padding: 5px;
+            border-left: 1px solid #ccc;
+        }
+        .node-content {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+        .node-content:hover {
+            background-color: #e3f2fd;
+        }
+        .node-selected {
+            background-color: #ff9800 !important;
+            color: white !important;
+        }
+        
+        .node-highlighted {
+            animation: highlight-pulse 2s infinite;
+            box-shadow: 0 0 10px #1e88e5;
+            border-radius: 4px;
+            border-left: 5px solid #1e88e5 !important;
+        }
+        
+        @keyframes highlight-pulse {
+            0% { background-color: rgba(30, 136, 229, 0.1); }
+            50% { background-color: rgba(30, 136, 229, 0.3); }
+            100% { background-color: rgba(30, 136, 229, 0.1); }
+        }
+        
+        /* Dodamo stil za rumeno označevanje najdenega vozlišča */
+        .node-found {
+            animation: found-pulse 2s infinite;
+            box-shadow: 0 0 10px #FFC107;
+            border-radius: 4px;
+            border-left: 5px solid #FFC107 !important;
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+        
+        @keyframes found-pulse {
+            0% { background-color: rgba(255, 193, 7, 0.1); }
+            50% { background-color: rgba(255, 193, 7, 0.3); }
+            100% { background-color: rgba(255, 193, 7, 0.1); }
+        }
+        
+        /* Bolj izrazita animacija za iskane/najdene elemente */
+        .node-search-result {
+            animation: search-result-pulse 2s infinite;
+            box-shadow: 0 0 20px #FFC107;
+            border-radius: 4px;
+            border-left: 5px solid #FFC107 !important;
+            background-color: rgba(255, 193, 7, 0.2);
+            position: relative;
+            z-index: 100;
+        }
+        
+        @keyframes search-result-pulse {
+            0% { background-color: rgba(255, 193, 7, 0.2); box-shadow: 0 0 15px #FFC107; }
+            50% { background-color: rgba(255, 193, 7, 0.5); box-shadow: 0 0 25px #FFC107; }
+            100% { background-color: rgba(255, 193, 7, 0.2); box-shadow: 0 0 15px #FFC107; }
+        }
+        
+        /* Stil za izbrano vozlišče */
+        .node-selected {
+            animation: selected-pulse 2s infinite;
+            box-shadow: 0 0 15px #ff9800;
+            border-radius: 4px;
+            border-left: 5px solid #ff9800 !important;
+            background-color: rgba(255, 152, 0, 0.15);
+            position: relative;
+            z-index: 50;
+        }
+        
+        @keyframes selected-pulse {
+            0% { background-color: rgba(255, 152, 0, 0.15); }
+            50% { background-color: rgba(255, 152, 0, 0.3); }
+            100% { background-color: rgba(255, 152, 0, 0.15); }
+        }
+        
+        .search-container {
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        .search-results {
+            margin-top: 20px;
+            flex: 1 1 auto;
+            overflow-y: auto;
+        }
+        .search-result-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+        }
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        .status-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+        }
+        /* Stilizacija za vozlišča z otroki, da je bolj očitno, da so razširljiva */
+        .node-content:has(.toggle) {
+            position: relative;
+            background-color: #f8f9fa;
+            border-left: 3px solid #1e88e5;
+            padding-left: 5px;
+        }
+        .children-container {
+            margin-left: 20px;
+            display: none; /* Spremenjeno iz display: block !important; */
+        }
+        .um-badge {
+            display: inline-block;
+            background-color: #1e88e5;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-right: 6px;
+        }
+        .um-node {
+            position: relative;
+            border-left: 5px solid #1e88e5 !important;
+            padding-left: 5px;
+            background-color: rgba(30, 136, 229, 0.1);
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 5px;
+        }
+        .um-skill {
+            color: #1e88e5 !important;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+        .node-selected .um-skill {
+            color: white !important;
+        }
+        .um-icon {
+            display: inline-flex;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            background-color: #1e88e5;
+            color: white;
+            font-size: 11px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        /* Novi stili za boljši prikaz */
+        .tree-root {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .skills-node {
+            color: #d32f2f !important;
+            font-style: italic;
+        }
+        .knowledge-node {
+            color: #388e3c !important;
+            font-weight: bold;
+        }
+        /* Večji gumb za shranjevanje */
+        #saveButton {
+            padding: 10px 15px;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+        /* Posebno oblikovanje za korensko vozlišče */
+        .root-node {
+            background-color: #f5f5f5;
+            border-left: none !important;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Navigacija -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">Drevo veščin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="/static/index.html">Hierarhija</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/static/test.html">Test</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/static/baza_cache.html">Cached drevo</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/static/um_izpostava.html"><span class="badge bg-info text-dark">UM pregled</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <div class="content-container">
+            <!-- Leva sekcija - Drevo -->
+            <div class="tree-section">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Drevo veščin</h5>
+                    <select class="form-select d-inline-block" id="treeTypeSelect" style="width: auto;">
+                        <option value="all">Vse</option>
+                        <option value="skills">Veščine</option>
+                        <option value="knowledge">Znanja</option>
+                    </select>
+                </div>
+                <div id="loading" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Nalaganje...</span>
+                    </div>
+                    <p class="mt-3">Nalagam podatke iz baze... <span id="loadingTimer">0s</span></p>
+                </div>
+                <div id="dbTreeContainer" class="tree-container" style="display: none;"></div>
+                <button id="forceReload" class="btn btn-sm btn-warning mt-3" onclick="forceReloadData()">Ponovno naloži podatke</button>
+            </div>
+
+            <!-- Srednja sekcija - Iskanje -->
+            <div class="middle-section">
+                <div class="search-container">
+                    <div class="input-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Išči po drevesu...">
+                        <button class="btn btn-primary" type="button" id="searchButton">Išči</button>
+                    </div>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <!-- Desna sekcija - Upravljanje -->
+            <div class="right-section">
+                <h5>Upravljanje</h5>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div id="nodeDetails">
+                            <p class="text-muted">Izberite element v drevesu za prikaz podrobnosti.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Obrazec za dodajanje -->
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Dodaj nov element</h6>
+                    </div>
+                    <div class="card-body">
+                        <form id="addSkillForm" onsubmit="return false;">
+                            <div class="mb-3">
+                                <label for="skillName" class="form-label">Ime*</label>
+                                <input type="text" class="form-control" id="skillName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="skillDescription" class="form-label">Opis*</label>
+                                <textarea class="form-control" id="skillDescription" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Izbrana pot</label>
+                                <div id="selectedPath" class="form-text text-muted">
+                                    Ni izbrane poti
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="saveSkill()" id="saveButton" disabled>
+                                Shrani
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status popup -->
+    <div class="status-popup card" id="statusPopup">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Status povezave</h6>
+            <button type="button" class="btn-close" onclick="toggleStatusPopup()"></button>
+        </div>
+        <div class="card-body">
+            <div id="dbConnectionStatus" class="alert alert-info">
+                Povezujem se z bazo podatkov...
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const CACHE_DURATION = 5 * 60 * 1000; // 5 minut
+
+        class TreeCache {
+            constructor() {
+                this.storageKey = 'dbTreeData';
+            }
+
+            get() {
+                const cached = localStorage.getItem(this.storageKey);
+                if (!cached) return null;
+
+                const { data, timestamp } = JSON.parse(cached);
+                if (Date.now() - timestamp > CACHE_DURATION) {
+                    this.clear();
+                    return null;
+                }
+
+                return data;
+            }
+
+            set(data) {
+                localStorage.setItem(this.storageKey, JSON.stringify({
+                    data,
+                    timestamp: Date.now()
+                }));
+            }
+
+            clear() {
+                localStorage.removeItem(this.storageKey);
+            }
+        }
+
+        const treeCache = new TreeCache();
+        let treeData = {}; // Globalna spremenljivka za drevo
+        let selectedNodePath = [];
+        let editModal;
+        
+        // Funkcija za neposreden prikaz drevesa
+        async function displayDataDirectly() {
+            console.log('Poskušam neposredno prikazati podatke...');
+            
+            const treeContainer = document.getElementById('dbTreeContainer');
+            
+            // 1. Poskusimo pridobiti podatke iz sessionStorage
+            try {
+                const storedData = sessionStorage.getItem('treeData');
+                if (storedData) {
+                    window.treeData = JSON.parse(storedData);
+                    console.log('Podatki pridobljeni iz sessionStorage, število korenskih vozlišč:', Object.keys(window.treeData).length);
+                    
+                    // Poskrbimo, da je globalna spremenljivka treeData nastavljena
+                    treeData = window.treeData;
+                }
+            } catch (e) {
+                console.warn('Napaka pri branju iz sessionStorage:', e);
+            }
+            
+            // 2. Če ni podatkov v sessionStorage, naložimo iz API-ja
+            if (!treeData || Object.keys(treeData).length === 0) {
+                console.log('Ni shranjenih podatkov, nalagam iz API-ja...');
+                try {
+                    // Prikažemo nalaganje
+                    const loadingDiv = document.getElementById('loading');
+                    loadingDiv.style.display = 'block';
+                    loadingDiv.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje...</span></div><p class="mt-3">Nalagam podatke iz baze...</p>';
+                    
+                    // Kličemo API
+                    const response = await fetch('/tree');
+                    if (!response.ok) {
+                        throw new Error('Napaka pri pridobivanju podatkov iz API-ja: ' + response.status);
+                    }
+                    
+                    // Pridobimo podatke
+                    const apiData = await response.json();
+                    console.log('Podatki pridobljeni iz API-ja, število korenskih vozlišč:', Object.keys(apiData).length);
+                    
+                    // Preverimo, če so podatki veljavni
+                    if (!apiData || Object.keys(apiData).length === 0) {
+                        throw new Error('API je vrnil prazne podatke');
+                    }
+                    
+                    // Shranimo v globalno spremenljivko
+                    window.treeData = apiData;
+                    treeData = apiData;
+                    
+                    // Poskusimo naložiti UM veščine
+                    try {
+                        loadingDiv.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje...</span></div><p class="mt-3">Nalagam UM veščine...</p>';
+                        const umData = await loadUMSkills();
+                        
+                        // Integriramo UM veščine
+                        const mergedData = integrateUMSkills(treeData, umData);
+                        console.log('UM veščine integrirane, število korenskih vozlišč:', Object.keys(mergedData).length);
+                        
+                        // Posodobimo globalno spremenljivko
+                        window.treeData = mergedData;
+                        treeData = mergedData;
+                        
+                        // Shranimo posodobljene podatke
+                        try {
+                            sessionStorage.setItem('treeData', JSON.stringify(mergedData));
+                            console.log('Podatki z UM veščinami shranjeni v sessionStorage');
+                        } catch (e) {
+                            console.warn('Napaka pri shranjevanju v sessionStorage:', e);
+                        }
+                    } catch (umError) {
+                        console.warn('Napaka pri nalaganju UM veščin:', umError);
+                    }
+                    
+                    // Skrijemo loading indikator
+                    loadingDiv.style.display = 'none';
+                    
+                } catch (error) {
+                    console.error('Napaka pri pridobivanju podatkov iz API-ja:', error);
+                    return false;
+                }
+            }
+            
+            // 3. Če imamo podatke, jih prikažemo
+            if (treeData && Object.keys(treeData).length > 0) {
+                console.log('Prikaz drevesa, število vozlišč:', Object.keys(treeData).length);
+                
+                // Namesto poenostavljenega seznama prikažemo pravo interaktivno drevo
+                renderDbTree();
+                
+                // Prikažemo podatke v konzoli za debugiranje
+                console.log('Primeri ključev v treeData:', Object.keys(treeData).slice(0, 5));
+                
+                // Skrijemo indikator nalaganja
+                document.getElementById('loading').style.display = 'none';
+                treeContainer.style.display = 'block';
+                
+                return true;
+            } else {
+                console.error('Ni podatkov za prikaz drevesa po končanem nalaganju');
+                treeContainer.innerHTML = '<div class="alert alert-danger">Napaka: Ni podatkov za prikaz drevesa</div>';
+                return false;
+            }
+        }
+        
+        // Inicializacija strani - poženemo po nalaganju dokumenta
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('Stran naložena, začenjam nalaganje podatkov...');
+            
+            // Inicializacija iskalnika
+            document.getElementById('searchButton').addEventListener('click', performSearch);
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            // Auto update search results on input
+            searchInput.addEventListener('input', function(e) {
+                const val = e.target.value.trim();
+                if (val === '') {
+                    document.getElementById('searchResults').innerHTML = '<div class="alert alert-info">Vnesite iskalni niz</div>';
+                } else {
+                    performSearch();
+                }
+            });
+            
+            // Nastavimo minimalno višino za container
+            document.getElementById('dbTreeContainer').style.minHeight = '500px';
+            
+            try {
+                // Najprej poskusimo neposredno prikazati podatke, če so že naloženi
+                const dataDirectlyDisplayed = await displayDataDirectly();
+                
+                if (!dataDirectlyDisplayed) {
+                    // Če ni uspešno, poskusimo naložiti podatke
+                    await loadTreeFromDb();
+                }
+            } catch (error) {
+                console.error('Napaka pri inicializaciji strani:', error);
+                // Poskusimo še z neposrednim prikazom kot zadnjo možnost
+                await displayDataDirectly();
+            }
+            
+            // Filtriranje drevesa glede na dropdown
+            document.getElementById('treeTypeSelect').addEventListener('change', function() {
+                renderDbTreeFiltered(this.value);
+            });
+        });
+        
+        // Funkcija za nalaganje UM veščin iz CSV datotek
+        async function loadUMSkills() {
+            console.log('Nalagam UM veščine iz CSV datotek...');
+            
+            try {
+                // Naložimo UM veščine
+                const umSkillsResponse = await fetch('/static/um_csv/um_skills.csv');
+                const umSkillsText = await umSkillsResponse.text();
+                
+                // Naložimo UM relacije
+                const umRelationsResponse = await fetch('/static/um_csv/um_SkillSkillRelations.csv');
+                const umRelationsText = await umRelationsResponse.text();
+                
+                console.log('UM datoteke uspešno naložene, velikost veščin:', umSkillsText.length, 'velikost relacij:', umRelationsText.length);
+                
+                // Parsiramo CSV datoteke
+                const umSkills = parseCSV(umSkillsText);
+                const umRelations = parseCSV(umRelationsText);
+                
+                console.log('Število UM veščin:', umSkills.length);
+                console.log('Število UM relacij:', umRelations.length);
+                
+                if (umSkills.length === 0) {
+                    console.warn('Ni UM veščin za prikaz!');
+                    return { umSkillMap: {}, relations: {}, rootUris: [], uriToNameMap: {} };
+                }
+                
+                // Zgradimo strukturo UM veščin - najprej pripravimo vse veščine
+                const umSkillMap = {};
+                for (const skill of umSkills) {
+                    // Izluščimo ID iz URI-ja
+                    const skillId = skill.conceptUri.split('/').pop();
+                    
+                    // Nastavimo vsaki veščini oznako UM, da jo bomo prepoznali
+                    umSkillMap[skill.conceptUri] = {
+                        id: 'um_' + skillId,
+                        type: skill.skillType || 'skill',
+                        isSkill: true,
+                        description: skill.description || 'UM veščina',
+                        name: skill.preferredLabel, // Originalno ime brez UM predpone
+                        displayName: 'UM ' + skill.preferredLabel, // Za prikaz v drevesu
+                        originalName: skill.preferredLabel, // Originalno ime za iskanje v drevesu
+                        isUM: true, // Oznaka, da je to UM veščina
+                        label: skill.preferredLabel,
+                        uri: skill.conceptUri // Dodamo celoten URI za prikaz v podrobnostih
+                    };
+                    
+                    console.log(`Dodam UM veščino: ${skill.preferredLabel} (${skillId})`);
+                }
+                
+                // Sestavimo mapo URI->originalName za lažje iskanje
+                const uriToNameMap = {};
+                for (const uri in umSkillMap) {
+                    const name = umSkillMap[uri].originalName;
+                    uriToNameMap[uri] = name;
+                }
+                
+                // Pripravimo strukturo za mapiranje starš-otrok
+                const relations = {};
+                umRelations.forEach(rel => {
+                    const parentUri = rel.parent;
+                    const childUri = rel.child;
+                    
+                    if (!relations[parentUri]) {
+                        relations[parentUri] = [];
+                    }
+                    
+                    relations[parentUri].push(childUri);
+                });
+                
+                // Najdemo vsa korenska vozlišča (tista, ki niso otroci nikogar)
+                const allUris = new Set([
+                    ...umRelations.map(rel => rel.parent),
+                    ...umRelations.map(rel => rel.child)
+                ]);
+                
+                const childUris = new Set(umRelations.map(rel => rel.child));
+                const rootUris = [...allUris].filter(uri => !childUris.has(uri));
+                
+                console.log('UM drevo pripravljeno, število korenskih UM vozlišč:', rootUris.length);
+                console.log('Korenska UM vozlišča:', rootUris);
+                
+                return {
+                    umSkillMap,
+                    relations,
+                    rootUris,
+                    uriToNameMap
+                };
+                
+            } catch (error) {
+                console.error('Napaka pri nalaganju UM veščin:', error);
+                return { umSkillMap: {}, relations: {}, rootUris: [], uriToNameMap: {} };
+            }
+        }
+        
+        // Pomožna funkcija za parsiranje CSV
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n');
+            const headers = lines[0].split(',').map(h => h.trim());
+            
+            return lines.slice(1)
+                .filter(line => line.trim().length > 0) // Preskočimo prazne vrstice
+                .map(line => {
+                    const values = line.split(',');
+                    const obj = {};
+                    
+                    headers.forEach((header, i) => {
+                        obj[header] = values[i] ? values[i].trim() : '';
+                    });
+                    
+                    return obj;
+                });
+        }
+        
+        // Funkcija za nalaganje podatkov
+        async function loadTreeFromDb() {
+            console.clear(); // Očistimo konzolo za boljši pregled
+            console.log('===== ZAČETEK NALAGANJA PODATKOV =====');
+            
+            const loadingDiv = document.getElementById('loading');
+            const treeContainer = document.getElementById('dbTreeContainer');
+            
+            try {
+                // Prikažemo indikator nalaganja
+                loadingDiv.style.display = 'block';
+                loadingDiv.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje...</span></div><p class="mt-3">Nalagam podatke...</p>';
+                
+                treeContainer.style.display = 'none';
+                
+                try {
+                    // 1. Naložimo UM veščine
+                    loadingDiv.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje...</span></div><p class="mt-3">Nalagam UM veščine...</p>';
+                    const umData = await loadUMSkills();
+                    console.log('UM veščine naložene');
+                    
+                    // 2. Naložimo podatke iz API-ja - uporabljamo db_tree_data endpoint, ki vključuje vse podrobnosti
+                    loadingDiv.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje...</span></div><p class="mt-3">Nalagam podatke iz baze...</p>';
+                    console.log('Kličem API za podatke z vsemi podrobnostmi...');
+                    const response = await fetch('/db_tree_data');
+                    console.log('Odgovor API-ja:', response.status);
+                    
+                    if (!response.ok) {
+                        throw new Error('Napaka pri pridobivanju podatkov iz API-ja: ' + response.status);
+                    }
+                    
+                    // Naložimo podatke iz API-ja
+                    const apiData = await response.json();
+                    console.log('Podatki uspešno naloženi iz API-ja, število korenskih vozlišč:', Object.keys(apiData).length);
+                    
+                    // 3. Integriramo UM veščine v obstoječe drevo
+                    const mergedData = integrateUMSkills(apiData, umData);
+                    console.log('Združeni podatki, število korenskih vozlišč:', Object.keys(mergedData).length);
+                    
+                    // Shranimo globalne podatke
+                    treeData = mergedData;
+                    
+                    // Shranimo v sessionStorage
+                    try {
+                        sessionStorage.setItem('treeData', JSON.stringify(mergedData));
+                        console.log('Podatki shranjeni v sessionStorage');
+                    } catch (e) {
+                        console.warn('Napaka pri shranjevanju v sessionStorage:', e);
+                    }
+                    
+                    // 4. Prikažemo drevo
+                    loadingDiv.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje...</span></div><p class="mt-3">Prikazujem drevo...</p>';
+                    renderDbTree();
+                    
+                } catch (error) {
+                    console.error('Napaka pri nalaganju podatkov:', error);
+                    treeContainer.innerHTML = '<div class="alert alert-danger">Napaka pri nalaganju podatkov: ' + error.message + '</div>';
+                    treeContainer.innerHTML += '<button class="btn btn-primary mt-3" onclick="location.reload()">Poskusi ponovno</button>';
+                }
+                
+                // Skrijemo indikator nalaganja
+                loadingDiv.style.display = 'none';
+                treeContainer.style.display = 'block';
+                
+                console.log('===== KONEC NALAGANJA PODATKOV =====');
+                
+            } catch (error) {
+                console.error("Splošna napaka pri nalaganju:", error);
+                loadingDiv.style.display = 'none';
+                treeContainer.style.display = 'block';
+                treeContainer.innerHTML = '<div class="alert alert-danger">Splošna napaka: ' + error.message + '</div>';
+                treeContainer.innerHTML += '<button class="btn btn-primary mt-3" onclick="location.reload()">Poskusi ponovno</button>';
+            }
+        }
+        
+        // Funkcija za integracijo UM veščin v obstoječe drevo
+        function integrateUMSkills(apiData, umData) {
+            // Razpakiramo UM podatke
+            const { umSkillMap, relations, rootUris, uriToNameMap } = umData;
+            
+            // Če nimamo UM podatkov, vrnemo nespremenjen API objekt
+            if (!umSkillMap || Object.keys(umSkillMap).length === 0) {
+                console.warn('Ni UM podatkov za integracijo');
+                return apiData;
+            }
+            
+            // Naredimo kopijo API podatkov
+            const mergedData = JSON.parse(JSON.stringify(apiData));
+            
+            console.log('Začenjam integracijo UM veščin v obstoječe drevo...');
+            console.log('UM veščine za integracijo:', Object.keys(umSkillMap).length);
+            console.log('UM relacije:', Object.keys(relations).length);
+            
+            // Ustvarimo hierarhično drevo UM veščin
+            function buildUMTree(parentUri, processedUris = new Set()) {
+                if (processedUris.has(parentUri)) {
+                    console.warn(`Ciklična referenca zaznana za URI: ${parentUri}`);
+                    return {};
+                }
+                
+                processedUris.add(parentUri);
+                
+                const node = {};
+                const childUris = relations[parentUri] || [];
+                
+                for (const childUri of childUris) {
+                    const umSkill = umSkillMap[childUri];
+                    if (umSkill) {
+                        const displayName = umSkill.displayName || ('UM ' + umSkill.name);
+                        node[displayName] = {
+                            ...buildUMTree(childUri, new Set(processedUris)),
+                            id: umSkill.id,
+                            type: umSkill.type || 'skill',
+                            isSkill: true,
+                            isUM: true,
+                            description: umSkill.description || 'UM veščina',
+                            uri: umSkill.uri // Prenesi URI v drevo
+                        };
+                    }
+                }
+                
+                return node;
+            }
+            
+            // Najdemo ustrezne kategorije v obstoječem drevesu, kamor bomo dodali UM veščine
+            const categoryMappings = {
+                "http://data.europa.eu/esco/skill/language-skills-and-knowledge": ["knowledge", "language skills and knowledge"]
+                // Dodajte več mapiranj po potrebi za druge kategorije
+            };
+            
+            // Za vsako UM veščino najdemo ustrezno mesto v drevesu
+            for (const uri in umSkillMap) {
+                const umSkill = umSkillMap[uri];
+                const displayName = umSkill.displayName || ('UM ' + umSkill.name);
+                
+                // Preverimo, ali lahko to veščino dodamo v ustrezno kategorijo
+                let added = false;
+                
+                // 1. Najprej poskusimo najti starša v relacijah
+                const parentUris = [];
+                for (const parentUri in relations) {
+                    if (relations[parentUri].includes(uri)) {
+                        // Najden starš v relacijah
+                        parentUris.push(parentUri);
+                    }
+                }
+                
+                // 2. Za vsako možno kategorijo preverimo, ali obstaja v drevesu
+                for (const parentUri of parentUris) {
+                    if (umSkillMap[parentUri]) {
+                        // Starš je tudi UM veščina, preverimo ali že obstaja v drevesu
+                        const parentSkill = umSkillMap[parentUri];
+                        const parentDisplayName = parentSkill.displayName || ('UM ' + parentSkill.name);
+                        
+                        // Poiščemo vse poti, kjer bi lahko bil starš
+                        for (const [key, subtree] of Object.entries(mergedData)) {
+                            if (key === parentDisplayName || (subtree && subtree[parentDisplayName])) {
+                                if (!subtree[parentDisplayName]) {
+                                    subtree[parentDisplayName] = {
+                                        id: parentSkill.id,
+                                        type: parentSkill.type || 'skill',
+                                        isSkill: true,
+                                        isUM: true,
+                                        description: parentSkill.description || 'UM veščina',
+                                        uri: parentSkill.uri
+                                    };
+                                }
+                                
+                                if (!subtree[parentDisplayName][displayName]) {
+                                    subtree[parentDisplayName][displayName] = {
+                                        id: umSkill.id,
+                                        type: umSkill.type || 'skill',
+                                        isSkill: true,
+                                        isUM: true,
+                                        description: umSkill.description || 'UM veščina',
+                                        uri: umSkill.uri
+                                    };
+                                    added = true;
+                                    console.log(`Dodana UM veščina v kategorijo "${parentDisplayName}": ${displayName}`);
+                                }
+                            }
+                        }
+                    } else {
+                        // Parent je ESCO veščina (ni v umSkillMap)
+                        // Poišči parent v drevesu po uri
+                        function addUMToESCO(tree) {
+                            for (const [key, subtree] of Object.entries(tree)) {
+                                if (subtree && typeof subtree === 'object') {
+                                    if (subtree.uri === parentUri) {
+                                        if (!subtree[displayName]) {
+                                            subtree[displayName] = {
+                                                id: umSkill.id,
+                                                type: umSkill.type || 'skill',
+                                                isSkill: true,
+                                                isUM: true,
+                                                description: umSkill.description || 'UM veščina',
+                                                uri: umSkill.uri
+                                            };
+                                            added = true;
+                                            console.log(`Dodana UM veščina pod ESCO parent "${key}": ${displayName}`);
+                                        }
+                                    } else {
+                                        addUMToESCO(subtree); // REKURZIVNO išči v poddrevesih!
+                                    }
+                                }
+                            }
+                        }
+                        addUMToESCO(mergedData);
+                    }
+                    if (added) break;
+                }
+                
+                // Če veščina še ni bila dodana, preverimo, ali gre za korensko UM veščino
+                if (!added && rootUris.includes(uri)) {
+                    // Najdimo ustrezno kategorijo po imenu
+                    // Najprej poskusimo najti kategorijo "knowledge" ali "skills" direktno v drevesu
+                    let targetCategory = null;
+                    let targetMap = null;
+                    
+                    if (umSkill.type === 'knowledge' && mergedData['knowledge']) {
+                        targetCategory = 'knowledge';
+                        targetMap = mergedData;
+                    } else if (umSkill.type === 'skill' && mergedData['skills']) {
+                        targetCategory = 'skills';
+                        targetMap = mergedData;
+                    } else {
+                        // Poskusimo najti ustrezno kategorijo po vrsti
+                        for (const key in mergedData) {
+                            const lowerKey = key.toLowerCase();
+                            if ((umSkill.type === 'knowledge' && lowerKey.includes('knowledge')) || 
+                                (umSkill.type === 'skill' && lowerKey.includes('skill')) || 
+                                lowerKey.includes(umSkill.type)) {
+                                targetCategory = key;
+                                targetMap = mergedData;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // Če smo našli ustrezno kategorijo, dodamo vanj
+                    if (targetCategory && targetMap) {
+                        if (!targetMap[targetCategory][displayName]) {
+                            targetMap[targetCategory][displayName] = {
+                                id: umSkill.id,
+                                type: umSkill.type || 'skill',
+                                isSkill: true,
+                                isUM: true,
+                                description: umSkill.description || 'UM veščina',
+                                uri: umSkill.uri
+                            };
+                            added = true;
+                            console.log(`Dodana UM korenska veščina v kategorijo "${targetCategory}": ${displayName}`);
+                        }
+                    }
+                }
+            }
+            
+            console.log('Integracija UM veščin zaključena');
+            return mergedData;
+        }
+        
+        // Pomožna funkcija za prikaz poenostavljenega drevesa
+        function displaySimpleTree() {
+            console.log('Prikazujem poenostavljeno drevo...');
+            let html = '<ul class="list-group">';
+            
+            // Zgradimo preprost seznam za največ 100 vozlišč
+            let count = 0;
+            const maxItems = 100;
+            
+            for (const key in treeData) {
+                if (count >= maxItems) break;
+                
+                // Določimo ali je UM vozlišče
+                const isUM = isUMNode(key, treeData[key]);
+                const style = isUM ? 
+                    'background-color: #e3f2fd; color: #1e88e5; font-weight: bold; border-left: 5px solid #1e88e5;' : 
+                    '';
+                
+                html += '<li class="list-group-item" style="' + style + '">';
+                html += (isUM ? '<span class="badge bg-primary me-2">UM</span>' : '');
+                html += key;
+                html += '</li>';
+                
+                count++;
+            }
+            
+            html += '</ul>';
+            return html;
+        }
+        
+        // Pomožna funkcija za sortiranje vozlišč - UM veščine naj bodo na vrhu
+        function sortNodeEntries(entries) {
+            return entries.sort((a, b) => {
+                const [keyA, valueA] = a;
+                const [keyB, valueB] = b;
+                
+                // Preverimo ali je UM vozlišče
+                const isUMA = isUMNode(keyA, valueA);
+                const isUMB = isUMNode(keyB, valueB);
+                
+                // Če je eno UM, drugo pa ne, postavimo UM na prvo mesto
+                if (isUMA && !isUMB) return -1;
+                if (!isUMA && isUMB) return 1;
+                
+                // Sicer sortiramo po abecedi
+                return keyA.localeCompare(keyB);
+            });
+        }
+        
+        // Pomožna funkcija za preverjanje ali je vozlišče UM
+        function isUMNode(key, node) {
+            // Če nimamo podatkov, ne gre za UM vozlišče
+            if (!key || !node) return false;
+            
+            // Preverimo direktno lastnost isUM (najprej)
+            if (node.isUM === true) {
+                return true;
+            }
+            
+            // Preverimo ime vozlišča
+            const keyIsUM = typeof key === 'string' && (
+                key.toLowerCase().startsWith('um ') || 
+                key.toLowerCase().startsWith('um_') || 
+                key.toLowerCase().startsWith('um-') ||
+                key.toLowerCase() === 'um' ||
+                key.toLowerCase().includes(' um') ||
+                key.toLowerCase().includes('(um)')
+            );
+            
+            if (keyIsUM) return true;
+            
+            // Preverimo ID vozlišča
+            const idIsUM = node.id && typeof node.id === 'string' && (
+                node.id.includes('um_') || 
+                node.id.toLowerCase().startsWith('um-') ||
+                node.id.toLowerCase() === 'um'
+            );
+            
+            if (idIsUM) return true;
+            
+            // Preverimo opis
+            const descIsUM = node.description && 
+                            typeof node.description === 'string' && 
+                            node.description.toLowerCase().includes('(um)');
+            
+            return descIsUM;
+        }
+
+        // Poskrbimo, da se drevo vedno prikaže, tudi če pride do napake
+        window.addEventListener('error', function(e) {
+            if (e.message.includes('insertBefore') || e.message.includes('Node')) {
+                console.error('Zaznana je napaka pri manipulaciji DOM:', e.message);
+                // Poskusimo ponovo zagnati nalaganje po krajšem premoru
+                setTimeout(() => {
+                    const loadingDiv = document.getElementById('loading');
+                    if (loadingDiv) loadingDiv.style.display = 'none';
+                    
+                    const treeContainer = document.getElementById('dbTreeContainer');
+                    if (treeContainer) {
+                        treeContainer.style.display = 'block';
+                        treeContainer.innerHTML = `
+                            <div class="alert alert-warning mb-3">
+                                <strong>Opomba:</strong> Prišlo je do napake pri izrisu drevesa. 
+                                Prikazujem poenostavljeno verzijo.
+                            </div>
+                            <div class="tree-container" style="max-height: 600px; overflow-y: auto;">
+                                <h5>Vse veščine</h5>
+                                ${displaySimpleTree()}
+                            </div>
+                        `;
+                    }
+                }, 500);
+            }
+        });
+        
+        // Pomožna funkcija za prikaz poenostavljenega seznama veščin
+        function generateSimpleList() {
+            let html = '';
+            
+            function traverseTree(node, prefix = '') {
+                for (const [key, value] of Object.entries(node)) {
+                    if (key !== 'id' && key !== 'type' && key !== 'isSkill' && key !== 'description') {
+                        // Določimo ali je UM
+                        const isUM = isUMNode(key, value);
+                        const style = isUM ? 
+                            'background-color: #e3f2fd; color: #1e88e5; font-weight: bold; border-left: 5px solid #1e88e5;' : 
+                            '';
+                            
+                        html += '<li class="list-group-item" style="' + style + '">';
+                        html += (isUM ? '<span class="badge bg-primary me-2">UM</span>' : '');
+                        html += prefix + key;
+                        html += '</li>';
+                    }
+                }
+            }
+            
+            // Zgradimo preprost seznam
+            traverseTree(treeData);
+            
+            return html;
+        }
+        
+        // Funkcija za ustvarjanje elementa vozlišča
+        function createNodeElement(name, data, path) {
+            const isUM = isUMNode(name, data);
+            
+            const nodeDiv = document.createElement('div');
+            nodeDiv.className = 'tree-node';
+            if (isUM) nodeDiv.className += ' um-node';
+            
+            // Ustvarimo vsebino vozlišča
+            const nodeContent = document.createElement('div');
+            nodeContent.className = 'node-content';
+            
+            // Dodamo besedilo vozlišča
+            const nodeText = document.createElement('span');
+            
+            // Če je UM vozlišče, ga posebej označimo
+            if (isUM) {
+                // Dodamo UM oznako
+                const umLabel = document.createElement('span');
+                umLabel.className = 'um-badge';
+                umLabel.textContent = 'UM';
+                nodeContent.appendChild(umLabel);
+                
+                // Odstranimo "UM " iz začetka imena za prikaz (ker dodamo značko)
+                nodeText.textContent = name.startsWith('UM ') ? name.substring(3) : name;
+            } else {
+                nodeText.textContent = name;
+            }
+            
+            nodeContent.appendChild(nodeText);
+            nodeDiv.appendChild(nodeContent);
+            
+            // Shranimo podatke o vozlišču v data atribute
+            if (data) {
+                if (data.id) nodeDiv.dataset.id = data.id;
+                if (data.uri) nodeDiv.dataset.uri = data.uri;
+                if (data.type) nodeDiv.dataset.type = data.type;
+                if (data.description) nodeDiv.dataset.description = data.description;
+                if (isUM) nodeDiv.dataset.isUm = "true";
+            }
+            
+            // Nastavimo pot v data atributu
+            nodeDiv.dataset.path = [...path, name].join('>');
+            
+            return nodeDiv;
+        }
+        
+        // Funkcija za iskanje po drevesu
+        function performSearch() {
+            const searchText = document.getElementById('searchInput').value.trim().toLowerCase();
+            const searchResults = document.getElementById('searchResults');
+            
+            if (!searchText) {
+                searchResults.innerHTML = '<div class="alert alert-info">Vnesite iskalni niz</div>';
+                return;
+            }
+            
+            searchResults.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Iščem...</span></div>';
+            
+            try {
+                // Izvedemo iskanje po drevesu
+                console.log('Začenjam iskanje za:', searchText);
+                const results = searchTree(treeData, searchText);
+                console.log('Najdeni rezultati:', results.length);
+                
+                // Prikažemo rezultate
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<div class="alert alert-warning">Ni najdenih rezultatov</div>';
+                    return;
+                }
+                
+                // HTML za rezultate
+                let resultsHTML = '<div class="list-group">';
+                results.forEach(result => {
+                    const isUM = isUMNode(result.name, result.data);
+                    
+                    resultsHTML += '<div class="list-group-item search-result-item" style="cursor: pointer;';
+                    
+                    if (isUM) {
+                        resultsHTML += 'background-color: #e3f2fd; border-left: 3px solid #1e88e5;';
+                    }
+                    
+                    resultsHTML += '" data-path="' + result.path.join('>') + '">';
+                    
+                    if (isUM) {
+                        resultsHTML += '<span class="badge bg-primary me-2">UM</span> ';
+                    }
+                    
+                    // Označimo iskani izraz v rezultatu
+                    const highlightedName = result.name.replace(
+                        new RegExp(searchText, 'gi'), 
+                        match => `<span class="highlight">${match}</span>`
+                    );
+                    
+                    resultsHTML += '<div><strong>' + highlightedName + '</strong></div>';
+                    
+                    // Dodamo pot do elementa
+                    if (result.path.length > 1) {
+                        const pathStr = result.path.slice(0, -1).join(' > ');
+                        resultsHTML += '<div class="text-muted small">Pot: ' + pathStr + '</div>';
+                    }
+                    
+                    // Dodamo ID in tip, če sta na voljo
+                    let metaInfo = '';
+                    if (result.data.id) {
+                        metaInfo += `<span class="badge bg-secondary me-1">ID: ${result.data.id}</span>`;
+                    }
+                    if (result.data.type) {
+                        const typeClass = result.data.type === 'knowledge' ? 'bg-success' : 'bg-info';
+                        metaInfo += `<span class="badge ${typeClass} me-1">${result.data.type}</span>`;
+                    }
+                    if (metaInfo) {
+                        resultsHTML += `<div class="mt-1">${metaInfo}</div>`;
+                    }
+                    
+                    resultsHTML += '</div>';
+                });
+                
+                resultsHTML += '</div>';
+                searchResults.innerHTML = resultsHTML;
+                
+                // Dodamo poslušalce za klik na rezultate
+                document.querySelectorAll('.search-result-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const path = this.dataset.path.split('>');
+                        
+                        // Dodamo indikator nalaganja na kliknjeni element
+                        this.innerHTML += '<div class="spinner-border spinner-border-sm text-primary ms-2" role="status"><span class="visually-hidden">Nalagam...</span></div>';
+                        
+                        // Nastavimo status vseh rezultatov
+                        document.querySelectorAll('.search-result-item').forEach(el => {
+                            el.style.opacity = '0.5';
+                            el.style.pointerEvents = 'none';
+                        });
+                        
+                        // Prikazano obvestilo o navigaciji do vozlišča
+                        const alertElement = document.createElement('div');
+                        alertElement.className = 'alert alert-info mt-3';
+                        alertElement.innerHTML = 'Navigiram do vozlišča...';
+                        searchResults.appendChild(alertElement);
+                        
+                        // Počistimo vse obstoječe označbe
+                        clearAllHighlights();
+                        
+                        // Obvezno moramo najprej skočiti v drevo, da zagotovimo, da je vidno
+                        document.getElementById('dbTreeContainer').scrollIntoView({ behavior: 'auto', block: 'start' });
+                        
+                        // NOVO - Direkten pristop k odpiranju drevesa in označevanju vozlišča
+                        // Uporabljamo direktno pot click-by-click od korena navzdol
+                        openPathDirectly(path, 0, () => {
+                            // Po odpiranju drevesa, poskusimo označiti vozlišče
+                            tryToSelectNode(path);
+                            
+                            // Posodobimo status
+                            alertElement.className = 'alert alert-success mt-3';
+                            alertElement.innerHTML = 'Vozlišče najdeno in označeno!';
+                            
+                            // Ponovno omogočimo rezultate
+                            document.querySelectorAll('.search-result-item').forEach(el => {
+                                el.style.opacity = '1';
+                                el.style.pointerEvents = 'auto';
+                            });
+                            
+                            // Odstranimo indikator nalaganja
+                            this.querySelector('.spinner-border')?.remove();
+                            
+                            // Odstranimo opozorilo po določenem času
+                            setTimeout(() => {
+                                alertElement.style.opacity = '0';
+                                alertElement.style.transition = 'opacity 0.5s';
+                                setTimeout(() => alertElement.remove(), 500);
+                            }, 3000);
+                        });
+                    });
+                });
+                
+            } catch (error) {
+                console.error('Napaka pri iskanju:', error);
+                searchResults.innerHTML = '<div class="alert alert-danger">Napaka pri iskanju: ' + error.message + '</div>';
+            }
+        }
+        
+        // Funkcija za iskanje po drevesu
+        function searchTree(tree, searchText, currentPath = [], results = []) {
+            for (const key in tree) {
+                if (key === 'id' || key === 'type' || key === 'isSkill' || key === 'description') continue;
+                
+                const newPath = [...currentPath, key];
+                
+                // Normalizirano ime za iskanje - tako z UM kot brez
+                let normalizedKey = key.toLowerCase();
+                let keyWithoutUM = key.startsWith('UM ') ? key.substring(3).toLowerCase() : normalizedKey;
+                let keyWithUM = key.startsWith('UM ') ? normalizedKey : ('UM ' + key).toLowerCase();
+                let searchTextLower = searchText.toLowerCase();
+                
+                // Preverimo, če ime vozlišča vsebuje iskalni niz (v katerikoli obliki)
+                if (normalizedKey.includes(searchTextLower) || 
+                    keyWithoutUM.includes(searchTextLower) || 
+                    keyWithUM.includes(searchTextLower)) {
+                    results.push({
+                        name: key,
+                        path: newPath,
+                        data: tree[key]
+                    });
+                }
+                
+                // Rekurzivno iščemo v podvozliščih
+                if (typeof tree[key] === 'object' && tree[key] !== null) {
+                    searchTree(tree[key], searchText, newPath, results);
+                }
+            }
+            
+            return results;
+        }
+        
+        // Funkcija za navigacijo do vozlišča po poti
+        function navigateToNode(path) {
+            console.log('Navigacija do:', path);
+            
+            if (!path || path.length === 0) return;
+            
+            // Prikažemo drevo
+            const treeContainer = document.getElementById('dbTreeContainer');
+            treeContainer.style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+            
+            try {
+                // Najprej odstranimo vse prejšnje označbe
+                const allHighlightedNodes = treeContainer.querySelectorAll('.node-highlighted, .node-found, .node-search-result');
+                allHighlightedNodes.forEach(node => {
+                    node.classList.remove('node-highlighted');
+                    node.classList.remove('node-found');
+                    node.classList.remove('node-search-result');
+                    node.style.boxShadow = '';
+                });
+                
+                // Pomožna funkcija za rekurzivno odpiranje vozlišč od korena do cilja
+                async function openNodePath(currentPath, depth = 0) {
+                    if (depth >= path.length) return true;
+                    
+                    const targetName = path[depth];
+                    const nextPath = [...currentPath, targetName];
+                    const pathStr = nextPath.join('>');
+                    
+                    // Poiščemo vozlišče
+                    let targetNode = treeContainer.querySelector(`.tree-node[data-path="${pathStr}"]`);
+                    
+                    if (targetNode) {
+                        console.log(`Najdeno vozlišče na globini ${depth}: ${targetName}`);
+                        
+                        // Če še nismo na koncu poti, razširimo vozlišče
+                        if (depth < path.length - 1) {
+                            const toggle = targetNode.querySelector('.node-content .toggle');
+                            if (toggle && toggle.textContent === '▶') {
+                                console.log(`Razširjam vozlišče: ${targetName}`);
+                                toggle.click();
+                                
+                                // Počakamo, da se DOM posodobi
+                                await new Promise(resolve => setTimeout(resolve, 100));
+                                
+                                // Rekurzivno nadaljujemo po poti
+                                return openNodePath(nextPath, depth + 1);
+                            } else {
+                                // Vozlišče je že razširjeno ali nima toggle gumba
+                                return openNodePath(nextPath, depth + 1);
+                            }
+                        } else {
+                            // Smo na končnem vozlišču
+                            console.log(`Dosegli smo ciljno vozlišče: ${targetName}`);
+                            
+                            // Označimo in poskrbimo za fokus
+                            targetNode.classList.add('node-search-result');
+                            targetNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            return true;
+                        }
+                    } else {
+                        console.warn(`Ni najdeno vozlišče na globini ${depth}: ${targetName}`);
+                        
+                        // Če vozlišča ni v DOM, poskusimo razširiti nadrejeno vozlišče
+                        if (depth > 0) {
+                            const parentPath = currentPath.join('>');
+                            const parentNode = treeContainer.querySelector(`.tree-node[data-path="${parentPath}"]`);
+                            
+                            if (parentNode) {
+                                // Razširimo vsa nadrejena vozlišča
+                                const allToggles = parentNode.querySelectorAll('.toggle');
+                                let expanded = false;
+                                
+                                for (const toggle of allToggles) {
+                                    if (toggle.textContent === '▶') {
+                                        toggle.click();
+                                        expanded = true;
+                                        
+                                        // Počakamo, da se DOM posodobi
+                                        await new Promise(resolve => setTimeout(resolve, 100));
+                                    }
+                                }
+                                
+                                if (expanded) {
+                                    // Poskusimo znova najti vozlišče po razširitvi
+                                    targetNode = treeContainer.querySelector(`.tree-node[data-path="${pathStr}"]`);
+                                    if (targetNode) {
+                                        console.log(`Najdeno vozlišče po razširitvi: ${targetName}`);
+                                        if (depth < path.length - 1) {
+                                            return openNodePath(nextPath, depth + 1);
+                                        } else {
+                                            // Smo na končnem vozlišču
+                                            targetNode.classList.add('node-search-result');
+                                            targetNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Poskusimo z alternativnim iskanjem - poiščemo vozlišča, ki vsebujejo ciljno ime
+                        const allNodes = treeContainer.querySelectorAll('.node-content');
+                        let foundAlternative = false;
+                        
+                        for (const node of allNodes) {
+                            const nodeText = node.textContent;
+                            if (nodeText.includes(targetName)) {
+                                const toggle = node.querySelector('.toggle');
+                                if (toggle && toggle.textContent === '▶') {
+                                    console.log(`Razširjam alternativno vozlišče: ${nodeText}`);
+                                    toggle.click();
+                                    foundAlternative = true;
+                                    
+                                    // Počakamo, da se DOM posodobi
+                                    await new Promise(resolve => setTimeout(resolve, 100));
+                                }
+                            }
+                        }
+                        
+                        if (foundAlternative) {
+                            // Poskusimo znova najti vozlišče po razširitvi
+                            targetNode = treeContainer.querySelector(`.tree-node[data-path="${pathStr}"]`);
+                            if (targetNode) {
+                                console.log(`Najdeno vozlišče po alternativni razširitvi: ${targetName}`);
+                                if (depth < path.length - 1) {
+                                    return openNodePath(nextPath, depth + 1);
+                                } else {
+                                    // Smo na končnem vozlišču
+                                    targetNode.classList.add('node-search-result');
+                                    targetNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    return true;
+                                }
+                            }
+                        }
+                        
+                        // Če še vedno nismo našli vozlišča, poskusimo z ekstremno rešitvijo - razširimo vse
+                        console.log('Poskušam ekstremno rešitev - razširjam vse zaprte toggle gumbe');
+                        const allToggles = treeContainer.querySelectorAll('.toggle');
+                        let expandedAny = false;
+                        
+                        for (const toggle of allToggles) {
+                            if (toggle.textContent === '▶') {
+                                toggle.click();
+                                expandedAny = true;
+                                
+                                // Počakamo malo, da ne obremenimo brskalnika preveč
+                                await new Promise(resolve => setTimeout(resolve, 10));
+                            }
+                        }
+                        
+                        if (expandedAny) {
+                            // Počakamo, da se DOM popolnoma posodobi
+                            await new Promise(resolve => setTimeout(resolve, 300));
+                            
+                            // Poskusimo še zadnjič najti vozlišče
+                            targetNode = treeContainer.querySelector(`.tree-node[data-path="${pathStr}"]`);
+                            if (targetNode) {
+                                console.log(`Najdeno vozlišče po ekstremni razširitvi: ${targetName}`);
+                                if (depth < path.length - 1) {
+                                    return openNodePath(nextPath, depth + 1);
+                                } else {
+                                    // Smo na končnem vozlišču
+                                    targetNode.classList.add('node-search-result');
+                                    targetNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    return true;
+                                }
+                            }
+                        }
+                        
+                        // Če še vedno ni vozlišča, poiščemo vsaj nekaj s podobnim imenom na koncu
+                        if (depth === path.length - 1) {
+                            const targetName = path[path.length - 1];
+                            const similarNodes = Array.from(treeContainer.querySelectorAll('.node-content'))
+                                .filter(node => node.textContent.includes(targetName));
+                            
+                            if (similarNodes.length > 0) {
+                                console.log(`Našli smo ${similarNodes.length} podobnih vozlišč za: ${targetName}`);
+                                const similarNode = similarNodes[0].closest('.tree-node');
+                                similarNode.classList.add('node-search-result');
+                                similarNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                return true;
+                            }
+                        }
+                        
+                        // Če smo prišli do sem, nismo našli ustreznega vozlišča
+                        return false;
+                    }
+                }
+                
+                // Začnemo z odpiranjem poti od korena
+                openNodePath([]).then(success => {
+                    if (success) {
+                        console.log('Uspešno navigirano do ciljnega vozlišča');
+                        
+                        // Prikažemo še podrobnosti vozlišča v desnem panelu
+                        const nodeData = getNodeDataForPath(treeData, path);
+                        if (nodeData) {
+                            selectNode(path, nodeData);
+                        }
+                    } else {
+                        console.error('Ni mogoče najti ciljnega vozlišča po vseh poskusih');
+                        
+                        // Poskusimo z izpado rešitvijo - poiščemo vozlišče, ki vsebuje zadnji element poti
+                        const targetName = path[path.length - 1];
+                        const allNodes = treeContainer.querySelectorAll('.node-content');
+                        
+                        let bestMatch = null;
+                        let bestScore = 0;
+                        
+                        for (const node of allNodes) {
+                            const nodeText = node.textContent.toLowerCase();
+                            const searchText = targetName.toLowerCase();
+                            
+                            // Ocenimo ustreznost ujemanja
+                            let score = 0;
+                            if (nodeText === searchText) score = 100; // Popolno ujemanje
+                            else if (nodeText.includes(searchText)) score = 75; // Vsebuje celotno iskano besedilo
+                            else if (searchText.includes(nodeText)) score = 50; // Del iskanega besedila
+                            else {
+                                // Ocenimo delno ujemanje
+                                const searchTerms = searchText.split(/\s+/);
+                                for (const term of searchTerms) {
+                                    if (nodeText.includes(term)) score += 10;
+                                }
+                            }
+                            
+                            if (score > bestScore) {
+                                bestScore = score;
+                                bestMatch = node;
+                            }
+                        }
+                        
+                        if (bestMatch && bestScore > 20) {
+                            console.log(`Našli najboljše ujemanje za: ${targetName} (ocena: ${bestScore})`);
+                            const nodeElement = bestMatch.closest('.tree-node');
+                            nodeElement.classList.add('node-search-result');
+                            nodeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            // Razširimo vozlišče, če je zaprto
+                            const toggle = bestMatch.querySelector('.toggle');
+                            if (toggle && toggle.textContent === '▶') {
+                                toggle.click();
+                            }
+                        } else {
+                            console.error('Ni najdeno nobeno ustrezno vozlišče');
+                        }
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Napaka pri navigaciji do vozlišča:', error);
+                
+                // Poskusimo najti vozlišče po imenu (zadnji poskus)
+                try {
+                    const targetName = path[path.length - 1];
+                    const allNodeContents = treeContainer.querySelectorAll('.node-content');
+                    
+                    for (const nodeContent of allNodeContents) {
+                        const nodeText = nodeContent.textContent;
+                        if (nodeText.includes(targetName)) {
+                            // Označimo vozlišče
+                            nodeContent.closest('.tree-node').classList.add('node-search-result');
+                            
+                            // Poskrbimo, da je vozlišče vidno
+                            nodeContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            // Prikažemo podrobnosti vozlišča
+                            const nodeData = getNodeDataForPath(treeData, path);
+                            if (nodeData) {
+                                selectNode(path, nodeData);
+                            }
+                            break;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Končna napaka pri iskanju vozlišča:', e);
+                }
+            }
+        }
+        
+        // Funkcija za pridobivanje podatkov vozlišča po poti
+        function getNodeDataForPath(tree, path) {
+            if (!tree || !path || path.length === 0) return null;
+            
+            let current = tree;
+            for (let i = 0; i < path.length; i++) {
+                const segment = path[i];
+                if (current[segment] === undefined) {
+                    // Preverimo za UM alternativo
+                    const umSegment = segment.startsWith('UM ') ? segment.substring(3) : ('UM ' + segment);
+                    if (current[umSegment] !== undefined) {
+                        current = current[umSegment];
+                    } else {
+                        console.warn(`Segment poti ni najden: ${segment}`);
+                        return null;
+                    }
+                } else {
+                    current = current[segment];
+                }
+            }
+            
+            return current;
+        }
+        
+        // Funkcija za pridobivanje poddrevesa (za lazy loading)
+        function getSubtree(tree, path) {
+            const nodeData = getNodeDataForPath(tree, path);
+            if (!nodeData) return null;
+            
+            // Odstrani posebne atribute, ki jih ne želimo vključiti v poddrevo
+            const specialKeys = ['id', 'type', 'isSkill', 'description', 'uri', 'isUM'];
+            const result = {};
+            
+            for (const key in nodeData) {
+                if (!specialKeys.includes(key)) {
+                    result[key] = nodeData[key];
+                }
+            }
+            
+            return result;
+        }
+        
+        async function saveSkill() {
+            console.log('===== SHRANJEVANJE V BAZO =====');
+            const skillName = document.getElementById('skillName').value.trim();
+            const skillDescription = document.getElementById('skillDescription').value.trim();
+            if (!skillName || !skillDescription) {
+                alert('Prosim izpolnite vsa obvezna polja!');
+                return;
+            }
+            if (!selectedNodePath || !selectedNodePath.length) {
+                alert('Prosim izberite pot v drevesu!');
+                return;
+            }
+            console.log(`Shranjevanje veščine: "${skillName}" pod potjo:`, selectedNodePath);
+            try {
+                // Določi tip glede na izbrano pot
+                const isKnowledge = selectedNodePath.some(part => part.toLowerCase().includes('knowledge'));
+                const skillType = isKnowledge ? 'knowledge' : 'skill';
+                // Pripravi podatke za API
+                const parentId = document.getElementById('selectedNodeId')?.textContent || null;
+                const parentUri = (() => {
+                  const detailsDiv = document.getElementById('nodeDetails');
+                  if (!detailsDiv) return null;
+                  const match = detailsDiv.innerHTML.match(/<strong>URI:<\/strong>.*?>(.*?)<\/span>/);
+                  return match ? match[1] : null;
+                })();
+                const payload = {
+                    path: selectedNodePath,
+                    name: skillName,
+                    type: skillType,
+                    description: skillDescription,
+                    parent_id: parentId,
+                    parent_uri: parentUri
+                };
+                const response = await fetch('/skill', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                let result;
+                try {
+                    result = await response.json();
+                } catch (e) {
+                    result = await response.text();
+                }
+                // Izpis v konzolo
+                console.log('--- INFO O SHRANJEVANJU V BAZO ---');
+                console.log('Ime veščine:', skillName);
+                console.log('Opis:', skillDescription);
+                console.log('Tip:', skillType);
+                console.log('Pot:', selectedNodePath);
+                console.log('Rezultat API:', result);
+                console.log('Shranjeno v: bazo (um_skills, um_skillskillrelations)');
+                // Resetiraj obrazec
+                document.getElementById('skillName').value = '';
+                document.getElementById('skillDescription').value = '';
+                // Osveži drevo
+                renderDbTree();
+            } catch (error) {
+                console.error('Napaka pri shranjevanju:', error);
+                // Prikaži obvestilo o napaki
+                const errorAlert = document.createElement('div');
+                errorAlert.className = 'alert alert-danger';
+                errorAlert.style.position = 'fixed';
+                errorAlert.style.top = '20px';
+                errorAlert.style.right = '20px';
+                errorAlert.style.zIndex = '9999';
+                errorAlert.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+                errorAlert.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <strong>Napaka pri shranjevanju: ${error.message}</strong>
+                        <button type="button" class="btn-close ms-auto" aria-label="Close" onclick="this.parentElement.parentElement.remove()"></button>
+                    </div>
+                `;
+                document.body.appendChild(errorAlert);
+                setTimeout(() => {
+                    errorAlert.style.opacity = '0';
+                    errorAlert.style.transition = 'opacity 1s';
+                    setTimeout(() => errorAlert.remove(), 10000);
+                }, 10000);
+            }
+        }
+        
+        // Funkcija za izbiro vozlišča in prikaz podrobnosti
+        async function selectNode(path, node) {
+            // Odstrani prejšnjo izbiro - samo node-selected razred, ne drugih označb
+            document.querySelectorAll('.node-content.node-selected').forEach(el => {
+                el.classList.remove('node-selected');
+            });
+            
+            selectedNodePath = path;
+            
+            const detailsDiv = document.getElementById('nodeDetails');
+            const selectedPathDiv = document.getElementById('selectedPath');
+            const saveButton = document.getElementById('saveButton');
+            
+            detailsDiv.style.display = 'block';
+            
+            // Prikažemo začasno sporočilo, da se podrobnosti nalagajo
+            detailsDiv.innerHTML = '<div class="card mt-3"><div class="card-body"><p>Nalaganje podrobnosti...</p></div></div>';
+            
+            // Preverimo, ali je UM vozlišče
+            const isUMNode = node && node.isUM === true || 
+                (node && node.id && node.id.includes('um_')) || 
+                path[path.length - 1].startsWith('UM ');
+            
+            const nodeName = path[path.length - 1];
+            
+            // Poskusimo pridobiti dodatne podatke iz node, če so na voljo
+            let nodeDetails = {
+                name: nodeName,
+                id: node && node.id ? node.id : null,
+                uri: node && node.uri ? node.uri : null,
+                type: node && node.type ? node.type : (isUMNode ? 'skill' : null),
+                description: node && node.description ? node.description : null
+            };
+            
+            // Izvirno ime za prikaz (če je UM veščina, dodamo "UM" predpono za prikaz v podrobnostih)
+            let displayName = nodeName;
+            if (isUMNode && !nodeName.startsWith('UM ')) {
+                displayName = 'UM ' + nodeName;
+            }
+            
+            // Sestavimo HTML za prikaz podrobnosti
+            let detailsHtml = '<div class="card mt-3"><div class="card-body">';
+            detailsHtml += `<h6>Podrobnosti vozlišča</h6>`;
+            detailsHtml += `<p><strong>Ime:</strong> ${displayName}</p>`;
+            if (nodeDetails.id) detailsHtml += `<p><strong>ID:</strong> <span class="badge bg-secondary" id="selectedNodeId">${nodeDetails.id}</span></p>`;
+            detailsHtml += `<p><strong>Pot:</strong> ${path.join(' > ')}</p>`;
+            if (nodeDetails.uri) detailsHtml += `<p><strong>URI:</strong> <span class="badge bg-info text-dark">${nodeDetails.uri}</span></p>`;
+            if (nodeDetails.type) detailsHtml += `<p><strong>Tip:</strong> ${nodeDetails.type}</p>`;
+            if (nodeDetails.description) detailsHtml += `<p><strong>Opis:</strong> ${nodeDetails.description}</p>`;
+            detailsHtml += `<p><strong>isUM:</strong> ${isUMNode ? 'DA' : 'NE'}</p>`;
+            detailsHtml += `<button class="btn btn-sm btn-outline-secondary mt-2" type="button" onclick="toggleRawData()">Prikaži raw podatke</button>`;
+            detailsHtml += `<div id="rawDataContainer" style="display:none;"><pre style='font-size:11px;background:#f8f9fa;border:1px solid #eee;padding:5px;'>${JSON.stringify(node, null, 2)}</pre></div>`;
+            detailsHtml += '</div></div>';
+            detailsDiv.innerHTML = detailsHtml;
+            
+            // Posodobi prikaz izbrane poti in omogoči/onemogoči gumb za shranjevanje
+            selectedPathDiv.textContent = path.length > 0 ? path.join(' > ') : 'Ni izbrane poti';
+            saveButton.disabled = path.length === 0;
+            
+            // Označi izbrano vozlišče v drevesu - poišči točno ustrezno vozlišče po poti
+            const pathStr = path.join('>');
+            const exactNode = document.querySelector(`.tree-node[data-path="${pathStr}"]`);
+            
+            if (exactNode) {
+                // Najprej poiščemo node-content znotraj najdenega vozlišča
+                const nodeContent = exactNode.querySelector('.node-content');
+                if (nodeContent) {
+                    nodeContent.classList.add('node-selected');
+                    nodeContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else {
+                // Poskusimo najti po vsebini, če točno ujemanje ni uspelo
+                const treeContainer = document.getElementById('dbTreeContainer');
+                const allNodeContents = treeContainer.querySelectorAll('.node-content');
+                const targetName = path[path.length - 1];
+                
+                for (const nodeContent of allNodeContents) {
+                    const nodeText = nodeContent.textContent.trim();
+                    // Uporabi bolj natančno ujemanje, da ne označimo preveč vozlišč
+                    if (nodeText === targetName || 
+                        nodeText === targetName.replace('UM ', '') || // Če je v poti s predpono, a v drevesu brez
+                        'UM ' + nodeText === targetName) { // Če je v poti brez predpone, a v drevesu s
+                        nodeContent.classList.add('node-selected');
+                        nodeContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        break;
+                    }
+                }
+            }
+            
+            // Če ima node id in je tip skill ali knowledge, pridobi podrobnosti iz baze
+            if ((node && node.id && (node.type === 'skill' || node.type === 'knowledge')) || (node && node.type === 'skill') || (node && node.type === 'knowledge')) {
+                let skillIdOrName = node.id ? node.id : nodeName;
+                try {
+                    const resp = await fetch(`/skill_details/${encodeURIComponent(skillIdOrName)}`);
+                    if (resp.ok) {
+                        const data = await resp.json();
+                        // Prikaži podrobnosti z ID
+                        let detailsHtml = '<div class="card mt-3"><div class="card-body">';
+                        detailsHtml += '<h6>Podrobnosti vozlišča</h6>';
+                        detailsHtml += `<p><strong>Ime:</strong> ${data.name}</p>`;
+                        detailsHtml += `<p><strong>ID:</strong> <span class="badge bg-secondary">${data.id ? data.id : (node.id ? node.id : '-')}</span></p>`;
+                        if (data.uri) detailsHtml += `<p><strong>ESCO URI:</strong> <span class="badge bg-info text-dark">${data.uri}</span></p>`;
+                        if (data.type) detailsHtml += `<p><strong>Tip:</strong> ${data.type}</p>`;
+                        if (data.description) detailsHtml += `<p><strong>Opis:</strong> ${data.description}</p>`;
+                        detailsHtml += '</div></div>';
+                        detailsDiv.innerHTML = detailsHtml;
+                    } else {
+                        detailsDiv.innerHTML = `<div class="alert alert-warning">Podrobnosti ni mogoče pridobiti iz baze.<br><strong>ID:</strong> <span class='badge bg-secondary'>${node.id ? node.id : '-'}</span></div>`;
+                    }
+                } catch (e) {
+                    detailsDiv.innerHTML = `<div class="alert alert-danger">Napaka pri pridobivanju podrobnosti iz baze.<br><strong>ID:</strong> <span class='badge bg-secondary'>${node.id ? node.id : '-'}</span></div>`;
+                }
+            } else {
+                // ... obstoječa koda ...
+            }
+        }
+        
+        function checkAuth() {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                window.location.href = '/static/login.html';
+                return;
+            }
+            
+            const userData = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `Prijavljen kot: ${userData.username}`
+        }
+
+        async function loadCSVData() {
+            try {
+                console.log('Nalaganje CSV podatkov...');
+                
+                // Preveri, če imamo lokalne podatke iz sessionStorage
+                const cachedData = sessionStorage.getItem('csvData');
+                if (cachedData) {
+                    console.log('Nalagam podatke iz cache...');
+                    try {
+                        const parsed = JSON.parse(cachedData);
+                        // Če so podatki v skladišču, jih uporabimo
+                        for (const key in parsed) {
+                            treeData[key] = parsed[key];
+                        }
+                        console.log('Podatki uspešno naloženi iz cache');
+                        return;
+                    } catch(e) {
+                        console.warn('Napaka pri branju cache:', e);
+                        // Nadaljujemo z nalaganjem iz strežnika
+                    }
+                }
+                
+                // Nalaganje iz strežnika - uporabimo timeout za hitrejšo izvedbo
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
+                
+                try {
+                    // Poskusimo naložiti podatke iz CSV datotek
+                    const response = await fetch('/static/um_csv/um_skills.csv', {
+                        signal: controller.signal
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Napaka pri nalaganju CSV: ${response.status}`);
+                    }
+                    
+                    // Dodamo UM veščine v treeData z nekaj osnovnimi podatki
+                    // To bo dovolj za hiter prikaz
+                    treeData['UM veščine'] = {
+                        id: 'um_vescine',
+                        type: 'category',
+                        description: 'Veščine Univerze v Mariboru'
+                    };
+                    
+                    // Če uspemo dobiti tudi relacije, naložimo še njih
+                    try {
+                        const relResponse = await fetch('/static/um_csv/um_SkillSkillRelations.csv', {
+                            signal: controller.signal
+                        });
+                        
+                        if (relResponse.ok) {
+                            console.log('Naložene CSV relacije');
+                        }
+                    } catch(e) {
+                        console.warn('Napaka pri nalaganju relacij:', e);
+                    }
+                    
+                    // Shranimo podatke v cache za prihodnje nalaganje
+                    try {
+                        sessionStorage.setItem('csvData', JSON.stringify(treeData));
+                    } catch (e) {
+                        console.warn('Napaka pri shranjevanju v cache:', e);
+                    }
+                    
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        console.warn('Nalaganje CSV prekinjeno zaradi timeout');
+                    } else {
+                        console.error('Napaka pri nalaganju CSV:', error);
+                    }
+                } finally {
+                    clearTimeout(timeoutId);
+                }
+            } catch (error) {
+                console.error('Napaka pri nalaganju CSV podatkov:', error);
+            }
+        }
+        
+        // Funkcija za razširjanje začetnih vozlišč
+        function expandInitialTree() {
+            try {
+                // Omejimo razširjanje na samo prvo vozlišče za hitrejši prikaz
+                const firstToggle = document.querySelector('.toggle');
+                if (firstToggle) {
+                    firstToggle.click();
+                }
+            } catch (error) {
+                console.warn('Napaka pri razširjanju drevesa:', error);
+            }
+        }
+
+        // Funkcija za izris celotnega drevesa
+        function renderDbTree() {
+            console.log('Risanje drevesa...');
+            
+            const treeContainer = document.getElementById('dbTreeContainer');
+            if (!treeContainer) {
+                console.error('Napaka: Container za drevo ni najden!');
+                return;
+            }
+            
+            // Počistimo obstoječe drevo
+            treeContainer.innerHTML = '';
+            
+            if (!treeData || Object.keys(treeData).length === 0) {
+                treeContainer.innerHTML = '<div class="alert alert-warning">Ni podatkov za prikaz. Poskusite ponovno naložiti stran.</div>';
+                return;
+            }
+            
+            // Uporabimo renderDbTreeNodes za izris drevesa
+            renderDbTreeNodes(treeData, treeContainer);
+            
+            // Dodamo poslušalca za iskanje
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const searchText = e.target.value.trim();
+                searchAndHighlight(searchText);
+            });
+            
+            // Dodamo poslušalca za tipko Enter pri iskanju
+            document.getElementById('searchInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const searchText = e.target.value.trim();
+                    searchAndHighlight(searchText);
+                    
+                    // Če je bila najdena vsaj ena pot, odpremo prvo
+                    if (searchResults.length > 0) {
+                        openPathDirectly(searchResults[0], 0, () => {
+                            tryToSelectNode(searchResults[0]);
+                        });
+                    }
+                }
+            });
+            
+            console.log('Drevo uspešno izrisano.');
+        }
+        
+        // Funkcija za lazily ustvarjanje vozlišča - dodati moramo funkcijo, če je še ni
+        function createLazyNode(name, data, path) {
+            // Ustvarimo div za vozlišče
+            const nodeDiv = document.createElement('div');
+            nodeDiv.className = 'tree-node';
+            nodeDiv.dataset.path = [...path, name].join('>');
+            
+            // Preverimo ali je UM vozlišče
+            const isUM = isUMNode(name, data);
+            if (isUM) {
+                nodeDiv.classList.add('um-node');
+            }
+            
+            // Shranimo podatke o vozlišču v data atribute
+            if (data) {
+                if (data.id) nodeDiv.dataset.id = data.id;
+                if (data.uri) nodeDiv.dataset.uri = data.uri;
+                if (data.type) nodeDiv.dataset.type = data.type;
+                if (data.description) nodeDiv.dataset.description = data.description;
+                if (isUM) nodeDiv.dataset.isUm = "true";
+            }
+            
+            // Ustvarimo vsebino vozlišča z informacijami
+            const nodeContent = document.createElement('div');
+            nodeContent.className = 'node-content';
+            nodeContent.onclick = (e) => {
+                // Če je bil klik na toggle, ne izberemo vozlišča
+                if (e.target.classList.contains('toggle')) return;
+                
+                // Izbira vozlišča - zberemo podatke iz data atributov in iz drevesa
+                const selectedPath = nodeDiv.dataset.path.split('>');
+                let nodeData = getNodeDataForPath(treeData, selectedPath);
+                
+                // Če nodeData iz drevesa ni na voljo, uporabimo dataset
+                if (!nodeData) {
+                    nodeData = {
+                        id: nodeDiv.dataset.id,
+                        uri: nodeDiv.dataset.uri,
+                        type: nodeDiv.dataset.type,
+                        description: nodeDiv.dataset.description,
+                        isUM: nodeDiv.dataset.isUm === "true"
+                    };
+                }
+                
+                selectNode(selectedPath, nodeData);
+            };
+            
+            // Ustvarimo toggle gumb za razširjanje/stiskanje
+            const toggleBtn = document.createElement('span');
+            toggleBtn.className = 'toggle';
+            toggleBtn.innerHTML = `
+                <svg viewBox="0 0 24 24">
+                    <polyline points="8 4 16 12 8 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            `;
+            toggleBtn.onclick = (e) => {
+                e.stopPropagation(); // Preprečimo izbiro vozlišča
+                const childrenContainer = nodeDiv.querySelector('.children-container');
+                if (childrenContainer) {
+                    // Razširi/skrij obstoječa vozlišča
+                    if (toggleBtn.classList.contains('expanded')) {
+                        childrenContainer.style.display = 'none';
+                        toggleBtn.classList.remove('expanded');
+                    } else {
+                        childrenContainer.style.display = 'block';
+                        toggleBtn.classList.add('expanded');
+                    }
+                } else {
+                    // Naredimo lazily nalaganje podvozlišč
+                    toggleBtn.classList.add('expanded');
+                    // Ustvarimo vsebnik za otroke
+                    const childrenDiv = document.createElement('div');
+                    childrenDiv.className = 'children-container';
+                    childrenDiv.style.paddingLeft = '20px';
+                    nodeDiv.appendChild(childrenDiv);
+                    // Dodamo poddrevesa
+                    const nodePath = nodeDiv.dataset.path.split('>');
+                    const subtree = getSubtree(treeData, nodePath);
+                    if (subtree) {
+                        renderDbTreeNodes(subtree, childrenDiv, nodePath);
+                    }
+                }
+            };
+            
+            // Dodamo UM značko, če je UM vozlišče
+            if (isUM) {
+                const umLabel = document.createElement('span');
+                umLabel.className = 'um-badge';
+                umLabel.textContent = 'UM';
+                nodeContent.appendChild(umLabel);
+                
+                // Za UM vozlišča odstranimo "UM " iz začetka imena (ker dodamo značko)
+                const nodeText = document.createElement('span');
+                nodeText.textContent = name.startsWith('UM ') ? name.substring(3) : name;
+                nodeContent.appendChild(nodeText);
+            } else {
+                // Za ne-UM vozlišča samo dodamo ime
+                const nodeText = document.createElement('span');
+                nodeText.textContent = name;
+                nodeContent.appendChild(nodeText);
+            }
+            
+            // Dodamo toggle gumb, če je objekt
+            if (data && typeof data === 'object' && Object.keys(data).filter(k => k !== 'id' && k !== 'type' && k !== 'isSkill' && k !== 'description' && k !== 'uri' && k !== 'isUM').length > 0) {
+                nodeContent.insertBefore(toggleBtn, nodeContent.firstChild);
+            }
+            
+            nodeDiv.appendChild(nodeContent);
+            return nodeDiv;
+        }
+
+        // Nova funkcija za virtualiziran prikaz drevesa
+        function renderVirtualizedTree() {
+            console.log('Prikazujem virtualizirano drevo...');
+            
+            const treeContainer = document.getElementById('dbTreeContainer');
+            const containerHeight = treeContainer.clientHeight;
+            const itemHeight = 30; // Povprečna višina elementa v pikslih
+            const visibleItems = Math.ceil(containerHeight / itemHeight);
+            
+            // Počistimo container
+            treeContainer.innerHTML = '';
+            
+            // Ustvarimo div za virtualno drevo
+            const virtualTreeRoot = document.createElement('div');
+            virtualTreeRoot.className = 'tree-root virtual-tree';
+            virtualTreeRoot.style.position = 'relative';
+            
+            // Omejimo število korenskih vozlišč
+            const rootKeys = Object.keys(treeData).filter(k => 
+                k !== 'id' && k !== 'type' && k !== 'isSkill' && k !== 'description'
+            );
+            
+            // Razdelimo korenski nivo na "strani" (paginacija)
+            const maxRootsPerPage = 25;
+            const totalPages = Math.ceil(rootKeys.length / maxRootsPerPage);
+            let currentPage = 1;
+            
+            // Sortiramo ključe - UM vozlišča na vrhu, nato abecedno
+            const sortedRootKeys = rootKeys.sort((a, b) => {
+                const isAUM = isUMNode(a, treeData[a]);
+                const isBUM = isUMNode(b, treeData[b]);
+                
+                if (isAUM && !isBUM) return -1; // UM vozlišča na vrh
+                if (!isAUM && isBUM) return 1;
+                return a.localeCompare(b); // Abecedno znotraj skupine
+            });
+            
+            // Število UM vozlišč za statistiko
+            const umRootCount = rootKeys.filter(k => isUMNode(k, treeData[k])).length;
+            
+            // Ustvarimo paginacijo
+            const paginationDiv = document.createElement('div');
+            paginationDiv.className = 'pagination mb-3';
+            paginationDiv.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-primary">${rootKeys.length}</span> korenskih vozlišč 
+                        (<span class="badge bg-info">${umRootCount}</span> UM vozlišč)
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-sm btn-outline-primary" id="prevPage" ${currentPage === 1 ? 'disabled' : ''}>
+                            &laquo; Prejšnja
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary disabled">
+                            Stran ${currentPage}/${totalPages}
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary" id="nextPage" ${currentPage === totalPages ? 'disabled' : ''}>
+                            Naslednja &raquo;
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            treeContainer.appendChild(paginationDiv);
+            
+            // Dodamo DocumentFragment za boljšo učinkovitost
+            const fragment = document.createDocumentFragment();
+            
+            // Prikazujemo vozlišča za trenutno stran s paginacijo
+            const startIdx = (currentPage - 1) * maxRootsPerPage;
+            const endIdx = Math.min(startIdx + maxRootsPerPage, sortedRootKeys.length);
+            
+            // Prikažemo vsa vozlišča za trenutno stran
+            const currentPageKeys = sortedRootKeys.slice(startIdx, endIdx);
+            currentPageKeys.forEach(key => {
+                try {
+                    const childElement = createNodeElement(key, treeData[key], []);
+                    if (childElement) {
+                        fragment.appendChild(childElement);
+                    }
+                } catch (e) {
+                    console.warn(`Napaka pri dodajanju vozlišča ${key}:`, e);
+                }
+            });
+            
+            virtualTreeRoot.appendChild(fragment);
+            treeContainer.appendChild(virtualTreeRoot);
+            
+            // Dodamo poslušalce za paginacijo
+            document.getElementById('prevPage')?.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderVirtualizedTree();
+                }
+            });
+            
+            document.getElementById('nextPage')?.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderVirtualizedTree();
+                }
+            });
+            
+            // Optimizacija: dodamo detekcijo vidnega območja za dinamično nalaganje
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const nodeDiv = entry.target;
+                            const toggleBtn = nodeDiv.querySelector('.toggle');
+                            
+                            // Če ima toggle in še ni bila naložena vsebina
+                            if (toggleBtn && toggleBtn.textContent === '▶' && !nodeDiv._contentLoaded) {
+                                // Označimo, da smo že naložili vsebino, da ne ponovimo operacije
+                                nodeDiv._contentLoaded = true;
+                                
+                                // Simuliramo klik za nalaganje vsebine
+                                setTimeout(() => {
+                                    if (nodeDiv.getBoundingClientRect().top > 0 && 
+                                        nodeDiv.getBoundingClientRect().bottom < window.innerHeight) {
+                                        toggleBtn.click();
+                                    }
+                                }, 100);
+                            }
+                        }
+                    });
+                },
+                { threshold: 0.1 }
+            );
+            
+            // Opazujemo samo korenski nivo (za začetek)
+            document.querySelectorAll('.tree-node').forEach(node => {
+                if (node.parentElement === virtualTreeRoot) {
+                    observer.observe(node);
+                }
+            });
+            
+            console.log('Virtualizirano drevo uspešno prikazano');
+        }
+        
+        // Funkcija za optimizirano predpomnjenje podatkov
+        function initializeTreeCache() {
+            // Preverimo, če je cache že inicializiran
+            if (!window.treeNodeCache) {
+                window.treeNodeCache = new Map();
+            }
+            
+            // Preverimo, če je tree walker že inicializiran
+            if (!window.treePathIndex) {
+                // Ustvarimo indeks poti za hitrejše iskanje
+                window.treePathIndex = new Map();
+                
+                // Rekurzivno indeksiramo drevo
+                function indexTree(node, path = []) {
+                    for (const key in node) {
+                        if (key !== 'id' && key !== 'type' && key !== 'isSkill' && key !== 'description') {
+                            const currentPath = [...path, key];
+                            const pathString = currentPath.join('>');
+                            
+                            // Shranimo referenco na vozlišče
+                            window.treePathIndex.set(pathString, node[key]);
+                            
+                            // Rekurzija za podvozlišča
+                            indexTree(node[key], currentPath);
+                        }
+                    }
+                }
+                
+                // Začnemo z indeksiranjem
+                if (treeData && Object.keys(treeData).length > 0) {
+                    console.log('Indeksiram drevo za hitrejši dostop...');
+                    indexTree(treeData);
+                    console.log(`Indeksiranje končano, ${window.treePathIndex.size} vozlišč indeksiranih`);
+                }
+            }
+        }
+
+        // Funkcija za ročno nalaganje podatkov
+        async function forceReloadData() {
+            console.log('Ročno nalaganje podatkov...');
+            
+            // Počistimo obstoječe podatke
+            sessionStorage.removeItem('treeData');
+            treeData = {};
+            
+            const loadingDiv = document.getElementById('loading');
+            const treeContainer = document.getElementById('dbTreeContainer');
+            
+            // Prikažemo nalaganje
+            loadingDiv.style.display = 'block';
+            treeContainer.style.display = 'none';
+            loadingDiv.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Nalaganje...</span></div><p class="mt-3">Nalagam podatke iz API-ja...</p>';
+            
+            try {
+                // Naložimo podatke iz API-ja
+                const response = await fetch('/tree');
+                if (!response.ok) {
+                    throw new Error(`Napaka pri pridobivanju podatkov: ${response.status}`);
+                }
+                
+                // Pretvorimo odgovor v JSON
+                const apiData = await response.json();
+                console.log('Podatki iz API-ja:', apiData);
+                
+                if (!apiData || Object.keys(apiData).length === 0) {
+                    throw new Error('API je vrnil prazne podatke');
+                }
+                
+                // Shranimo v globalno spremenljivko
+                window.treeData = apiData;
+                treeData = apiData;
+                
+                // Prikažemo osnovne podatke o drevesu
+                const statsHtml = `
+                    <div class="alert alert-info">
+                        <strong>Podatki iz API-ja:</strong><br>
+                        Število korenskih vozlišč: ${Object.keys(apiData).length}<br>
+                        Primeri ključev: ${Object.keys(apiData).slice(0, 5).join(', ')}
+                    </div>
+                `;
+                
+                // Naložimo še UM veščine
+                loadingDiv.innerHTML = `
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Nalaganje...</span>
+                    </div>
+                    <p class="mt-3">Nalagam UM veščine...</p>
+                    ${statsHtml}
+                `;
+                
+                try {
+                    const umData = await loadUMSkills();
+                    console.log('UM podatki:', umData);
+                    
+                    if (umData && umData.umSkillMap && Object.keys(umData.umSkillMap).length > 0) {
+                        // Integriramo UM veščine
+                        const mergedData = integrateUMSkills(treeData, umData);
+                        
+                        // Posodobimo globalno spremenljivko
+                        window.treeData = mergedData;
+                        treeData = mergedData;
+                        
+                        // Shranimo v sessionStorage
+                        sessionStorage.setItem('treeData', JSON.stringify(mergedData));
+                    }
+                } catch (umError) {
+                    console.warn('Napaka pri nalaganju UM veščin:', umError);
+                }
+                
+                // Prikažemo drevo
+                renderDbTree();
+                
+                // Skrijemo indikator nalaganja
+                loadingDiv.style.display = 'none';
+                treeContainer.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Napaka pri ročnem nalaganju:', error);
+                loadingDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <strong>Napaka:</strong> ${error.message}
+                    </div>
+                    <button class="btn btn-primary mt-3" onclick="forceReloadData()">Poskusi ponovno</button>
+                `;
+            }
+        }
+
+        // Nova funkcija za čiščenje vseh označb v drevesu
+        function clearAllHighlights() {
+            // Očistimo vse možne označbe
+            document.querySelectorAll('.node-highlighted, .node-found, .node-search-result, .node-selected').forEach(node => {
+                node.classList.remove('node-highlighted');
+                node.classList.remove('node-found');
+                node.classList.remove('node-search-result');
+                node.classList.remove('node-selected');
+                node.style.boxShadow = '';
+            });
+            
+            // Očistimo še oznake na .node-content elementih
+            document.querySelectorAll('.node-content.node-selected').forEach(el => {
+                el.classList.remove('node-selected');
+            });
+        }
+        
+        // Nova funkcija za direktno odpiranje poti od korena navzdol
+        function openPathDirectly(path, currentIndex = 0, callback) {
+            if (currentIndex >= path.length) {
+                if (callback) callback();
+                return;
+            }
+            
+            const treeContainer = document.getElementById('dbTreeContainer');
+            
+            // Gradimo pot do trenutnega nivoja
+            const currentPath = path.slice(0, currentIndex + 1);
+            const pathStr = currentPath.join('>');
+            
+            // Poiščemo vozlišče
+            const node = treeContainer.querySelector(`.tree-node[data-path="${pathStr}"]`);
+            
+            if (node) {
+                console.log(`Najdeno vozlišče na nivoju ${currentIndex}: ${path[currentIndex]}`);
+                
+                // Če še nismo na koncu poti, razširimo vozlišče
+                if (currentIndex < path.length - 1) {
+                    const toggle = node.querySelector('.node-content .toggle');
+                    if (toggle && toggle.textContent === '▶') {
+                        toggle.click();
+                        
+                        // Počakamo, da se DOM posodobi
+                        setTimeout(() => openPathDirectly(path, currentIndex + 1, callback), 100);
+                    } else {
+                        // Vozlišče je že razširjeno, nadaljujemo na naslednjem nivoju
+                        openPathDirectly(path, currentIndex + 1, callback);
+                    }
+                } else {
+                    // Smo na končnem vozlišču
+                    if (callback) callback();
+                }
+            } else {
+                console.warn(`Ni najdeno vozlišče na nivoju ${currentIndex}: ${path[currentIndex]}`);
+                
+                // Poskusimo z alternativnim pristopom - razširimo vse
+                if (currentIndex === 0) {
+                    // Na prvem nivoju poskusimo najti vozlišče po imenu
+                    const allRootNodes = treeContainer.querySelectorAll('.tree-node');
+                    let found = false;
+                    
+                    for (const rootNode of allRootNodes) {
+                        const nodeContent = rootNode.querySelector('.node-content');
+                        if (nodeContent && nodeContent.textContent.includes(path[0])) {
+                            const toggle = nodeContent.querySelector('.toggle');
+                            if (toggle && toggle.textContent === '▶') {
+                                toggle.click();
+                                found = true;
+                                
+                                // Počakamo in nadaljujemo na naslednjem nivoju
+                                setTimeout(() => openPathDirectly(path, currentIndex + 1, callback), 100);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (!found) {
+                        // Če še vedno nismo našli, razširimo vse
+                        expandAllNodes(() => openPathDirectly(path, currentIndex + 1, callback));
+                    }
+                } else {
+                    // Razširimo vse zaprte gumbe
+                    expandAllNodes(() => openPathDirectly(path, currentIndex + 1, callback));
+                }
+            }
+        }
+
+        // Pomožna funkcija za razširitev vseh zaprtih vozlišč
+        function expandAllNodes(callback) {
+            const treeContainer = document.getElementById('dbTreeContainer');
+            const closedToggles = treeContainer.querySelectorAll('.toggle:not(.expanded)');
+            
+            console.log(`Razširjam vsa zaprta vozlišča (${closedToggles.length})`);
+            
+            // Če ni zaprtih gumbov, končamo
+            if (closedToggles.length === 0) {
+                if (callback) callback();
+                return;
+            }
+            
+            // Razširimo največ 10 naenkrat, da ne preobremenjujemo brskalnika
+            const batchSize = Math.min(10, closedToggles.length);
+            
+            for (let i = 0; i < batchSize; i++) {
+                const toggle = closedToggles[i];
+                if (toggle.textContent === '▶') {
+                    toggle.click();
+                }
+            }
+            
+            // Počakamo, da se DOM posodobi in nadaljujemo
+            if (closedToggles.length > batchSize) {
+                setTimeout(() => expandAllNodes(callback), 200);
+            } else {
+                setTimeout(callback, 300);
+            }
+        }
+
+        // Funkcija za izbiro vozlišča po poti
+        function tryToSelectNode(path) {
+            // Poiščemo vozlišče
+            const treeContainer = document.getElementById('dbTreeContainer');
+            const pathStr = path.join('>');
+            const node = treeContainer.querySelector(`.tree-node[data-path="${pathStr}"]`);
+            
+            if (node) {
+                console.log(`Najdeno vozlišče za izbiro: ${path[path.length - 1]}`)
+                
+                // Dobimo podatke o vozlišču iz drevesa
+                let nodeData = null;
+                let current = treeData;
+                for (let i = 0; i < path.length; i++) {
+                    current = current[path[i]];
+                    if (!current) break;
+                }
+                
+                if (current) {
+                    nodeData = current;
+                }
+                
+                // Asinhrono kličemo selectNode
+                selectNode(path, nodeData).catch(err => {
+                    console.error('Napaka pri izbiri vozlišča:', err);
+                });
+                
+                return true;
+            } else {
+                console.warn('Vozlišče za izbiro ni bilo najdeno');
+                return false;
+            }
+        }
+
+        // Funkcija za izris drevesa iz podatkov
+        function renderDbTreeNodes(treeObj, container, basePath = []) {
+            // Če je objekt prazen, to sporočimo
+            if (!treeObj || Object.keys(treeObj).length === 0) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'alert alert-info';
+                emptyDiv.textContent = 'Ni podatkov za prikaz';
+                container.appendChild(emptyDiv);
+                return;
+            }
+            
+            // Najprej ločimo posebne atribute in dejanska podvozlišča
+            const specialKeys = ['id', 'type', 'isSkill', 'description', 'uri', 'isUM'];
+            let nodeKeys = Object.keys(treeObj).filter(key => !specialKeys.includes(key));
+
+            // --- NOVO: UM veščine vedno na vrhu ---
+            if (nodeKeys.includes('UM veščine')) {
+                nodeKeys = nodeKeys.filter(k => k !== 'UM veščine');
+                nodeKeys = ['UM veščine', ...nodeKeys];
+            }
+
+            // Sortiramo ključe - kategorije pred veščinami, nato abecedno
+            nodeKeys.sort((a, b) => {
+                if (a === 'UM veščine') return -1;
+                if (b === 'UM veščine') return 1;
+                const aIsCategory = 
+                    treeObj[a] && (treeObj[a].type === 'category' || 
+                               (typeof treeObj[a] === 'object' && Object.keys(treeObj[a]).some(k => !specialKeys.includes(k))));
+                const bIsCategory = 
+                    treeObj[b] && (treeObj[b].type === 'category' || 
+                               (typeof treeObj[b] === 'object' && Object.keys(treeObj[b]).some(k => !specialKeys.includes(k))));
+                // Najprej po tipu (kategorije pred veščinami)
+                if (aIsCategory && !bIsCategory) return -1;
+                if (!aIsCategory && bIsCategory) return 1;
+                // Nato UM vozlišča pred ostalimi
+                const aIsUM = isUMNode(a, treeObj[a]);
+                const bIsUM = isUMNode(b, treeObj[b]);
+                if (aIsUM && !bIsUM) return -1;
+                if (!aIsUM && bIsUM) return 1;
+                // Končno po abecedi
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+            });
+            
+            // Dodamo vozlišča za vsak ključ
+            for (const key of nodeKeys) {
+                try {
+                    const childData = treeObj[key];
+                    const nodeElement = createLazyNode(key, childData, basePath);
+                    container.appendChild(nodeElement);
+                } catch (e) {
+                    console.error('Napaka pri dodajanju vozlišča:', key, e);
+                }
+            }
+        }
+        
+        // Funkcija za filtriranje drevesa
+        function renderDbTreeFiltered(filterType) {
+            let filteredTree = {};
+            if (filterType === 'all') {
+                filteredTree = treeData;
+            } else {
+                function filterTree(node) {
+                    let result = {};
+                    const specialKeys = ['id', 'type', 'isSkill', 'description', 'uri', 'isUM'];
+                    for (const key in node) {
+                        if (specialKeys.includes(key)) continue;
+                        const value = node[key];
+                        if (typeof value === 'object' && value !== null) {
+                            // Če je tip pravilen, ga prikažemo
+                            if (value.type === filterType) {
+                                result[key] = value;
+                            } else {
+                                // Rekurzivno filtriraj podvozlišča
+                                const sub = filterTree(value);
+                                if (Object.keys(sub).length > 0) {
+                                    // Ohranimo strukturo, a samo s filtriranimi otroki
+                                    result[key] = { ...value, ...sub };
+                                }
+                            }
+                        }
+                    }
+                    return result;
+                }
+                filteredTree = filterTree(treeData);
+            }
+            const treeContainer = document.getElementById('dbTreeContainer');
+            treeContainer.innerHTML = '';
+            renderDbTreeNodes(filteredTree, treeContainer);
+        }
+
+        // Funkcija za prikaz/skritje raw podatkov
+        window.toggleRawData = function() {
+          const el = document.getElementById('rawDataContainer');
+          if (el.style.display === 'none') {
+            el.style.display = 'block';
+          } else {
+            el.style.display = 'none';
+          }
+        };
+    </script>
+</body>
+</html> 

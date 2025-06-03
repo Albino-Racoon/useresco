@@ -1,0 +1,23 @@
+conceptType,conceptUri,skillType,reuseLevel,preferredLabel,altLabels,hiddenLabels,status,modifiedDate,scopeNote,definition,inScheme,description
+skill,http://data.europa.eu/esco/skill/test-skill,knowledge,local,test programming skill,,,released,2024-03-19,,,http://data.europa.eu/esco/framework/skill_hierarchy,A test programming skill for demonstration
+skill,http://data.europa.eu/esco/skill/test-skill2,knowledge,local,test programming skill 2,,,released,2024-03-19,,,http://data.europa.eu/esco/framework/skill_hierarchy,Another test programming skill for demonstration
+skill,http://data.europa.eu/esco/skill/asd,knowledge,local,asd,,,,released,2025-04-13,,,"asd"
+skill,http://data.europa.eu/esco/skill/q,knowledge,local,"Q",,,,released,2025-04-13,,,"Q"
+skill,http://data.europa.eu/esco/skill/w,knowledge,local,"W",,,,released,2025-04-13,,,"W"
+skill,http://data.europa.eu/esco/skill/w,knowledge,local,"W",,,,released,2025-04-13,,,"W"
+skill,http://data.europa.eu/esco/skill/w,knowledge,local,"W",,,,released,2025-04-13,,,"W"
+skill,http://data.europa.eu/esco/skill/aaa,knowledge,local,"AAA",,,,released,2025-04-13,,,"AAA"
+skill,http://data.europa.eu/esco/skill/aaa,knowledge,local,"AAA",,,,released,2025-04-13,,,"AAA"
+skill,http://data.europa.eu/esco/skill/ppp,knowledge,local,"PPP",,,,released,2025-04-13,,,"PPP"
+skill,http://data.europa.eu/esco/skill/ppppppp,knowledge,local,"PPPPPPP",,,,released,2025-04-13,,,"KJB"
+skill,http://data.europa.eu/esco/skill/asd,knowledge,local,"asd",,,,released,2025-04-13,,,"asd"
+skill,http://data.europa.eu/esco/skill/ijijij,knowledge,local,"ijijij",,,,released,2025-04-14,,,"ijij"
+skill,http://data.europa.eu/esco/skill/um_use-chainsaw,skill,local,"UM use chainsaw",,,,released,2025-05-04,,,"use chainsaw (UM)"
+skill,http://data.europa.eu/esco/skill/um_dajdajdaj,knowledge,local,"UM dajdajdaj",,,,released,2025-05-04,,,"dajdajdaj (UM)"
+skill,http://data.europa.eu/esco/skill/um_qweqwe,knowledge,local,"UM qweqwe",,,,released,2025-05-04,,,"qweqwe (UM)"
+skill,http://data.europa.eu/esco/skill/um_martinscina,knowledge,local,"UM martinscina",,,,released,2025-05-04,,,"mass (UM)"
+skill,http://data.europa.eu/esco/skill/um_yxc,knowledge,local,"UM yxc",,,,released,2025-05-04,,,"yxc (UM)"
+skill,http://data.europa.eu/esco/skill/um_cxy,knowledge,local,"UM cxy",,,,released,2025-05-04,,,"cxy (UM)"
+skill,http://data.europa.eu/esco/skill/um_asd,knowledge,local,"UM asd",,,,released,2025-05-18,,,"asd (UM)"
+skill,http://data.europa.eu/esco/skill/um_testni-um,knowledge,local,"UM testni um",,,,released,2025-06-02,,,"qweqweqweqwe (UM)"
+skill,http://data.europa.eu/esco/skill/um_123,knowledge,local,"UM 123",,,,released,2025-06-02,,,"123 (UM)"
